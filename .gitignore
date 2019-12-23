@@ -3,3 +3,5 @@ node_modules/**
 app/**
 scss/**
     
+*.json
+gulpfile.js
