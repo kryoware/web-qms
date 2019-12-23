@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  
+  <!-- vendor css -->
+  <link href="../app/lib/font-awesome/css/font-awesome.css" rel="stylesheet">
+  <link href="../app/lib/Ionicons/css/ionicons.css" rel="stylesheet">
+  <link href="../app/lib/select2/css/select2.min.css" rel="stylesheet">
+  
+  <!-- Slim CSS -->
+  <link rel="stylesheet" href="../app/css/slim.css">
+  <link rel='stylesheet' type='text/css' media='screen' href='assets/css/app.css'>
+  <style>
+    .show-ticker {
+      height: 95vh;
+    }
+
+    .hide-ticker {
+      height: 100vh;
+    }
+    
+    #announce-modal .modal-content {
+      height: 100vh !important;
+    }
+    
+    #announce-modal .modal-dialog {
+      height: 100vh;
+      width: 100vw;
+      max-width: 100vw;
+      margin: 0;
+    }
+    
+    #large .carousel-item {
+      height: 66.6666vh;
+    }
+    
+    #horizontal {
+      height: 33.3333vh;
+    }
+    
+    .main-content {
+      transition: all .5s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container-fluid pd-0">
+<!--
+    <div class="d-flex" style="height: 5vh;">
+      <div class="text-right tx-semibold">
+        <p class="mg-0" style="line-height: 5vh; font-size: 4vh;">NOW SERVING: #0012</p>
+      </div>
+    </div>
+-->
+    
+    <div class="d-flex main-content show-ticker">
+    
+      <div id="vertical" class="d-flex flex-column wd-40p pd-10 bg-teal" style="overflow-y: hidden">
+        
+        <div class="bg-white mg-b-10">
+          <div class="tx-dark">
+            <div class="row no-gutters">
+            
+              <div class="col text-center pd-y-20">
+                <div class="d-flex flex-column justify-content-around">
+                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Ticket</p>
+                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">0001</p>
+                </div>
+              </div>
+
+              <div class="col text-center pd-y-20">
+                <div class="d-flex flex-column justify-content-around">
+                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Counter</p>
+                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">01</p>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white mg-b-10">
+          <div class="tx-dark">
+            <div class="row no-gutters">
+            
+              <div class="col text-center pd-y-20">
+                <div class="d-flex flex-column justify-content-around">
+                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Ticket</p>
+                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">0001</p>
+                </div>
+              </div>
+
+              <div class="col text-center pd-y-20">
+                <div class="d-flex flex-column justify-content-around">
+                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Counter</p>
+                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">01</p>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white mg-b-10">
+          <div class="tx-dark">
+            <div class="row no-gutters">
+            
+              <div class="col text-center pd-y-20">
+                <div class="d-flex flex-column justify-content-around">
+                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Ticket</p>
+                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">0001</p>
+                </div>
+              </div>
+
+              <div class="col text-center pd-y-20">
+                <div class="d-flex flex-column justify-content-around">
+                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Counter</p>
+                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">01</p>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white mg-b-10">
+          <div class="tx-dark">
+            <div class="row no-gutters">
+            
+              <div class="col text-center pd-y-20">
+                <div class="d-flex flex-column justify-content-around">
+                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Ticket</p>
+                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">0001</p>
+                </div>
+              </div>
+
+              <div class="col text-center pd-y-20">
+                <div class="d-flex flex-column justify-content-around">
+                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Counter</p>
+                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">01</p>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white mg-b-10">
+          <div class="tx-dark">
+            <div class="row no-gutters">
+            
+              <div class="col text-center pd-y-20">
+                <div class="d-flex flex-column justify-content-around">
+                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Ticket</p>
+                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">0001</p>
+                </div>
+              </div>
+
+              <div class="col text-center pd-y-20">
+                <div class="d-flex flex-column justify-content-around">
+                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Counter</p>
+                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">01</p>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white mg-b-10">
+          <div class="tx-dark">
+            <div class="row no-gutters">
+            
+              <div class="col text-center pd-y-20">
+                <div class="d-flex flex-column justify-content-around">
+                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Ticket</p>
+                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">0001</p>
+                </div>
+              </div>
+
+              <div class="col text-center pd-y-20">
+                <div class="d-flex flex-column justify-content-around">
+                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Counter</p>
+                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">01</p>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+    
+      <div class="d-flex flex-column wd-60p">
+        
+        <div id="large" class="row no-gutters">
+          
+          <div class="col ht-100p">
+            <div id="carousel12" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" role="listbox">
+              <div class="carousel-item" data-interval="10000">
+                <div class="ht-100p d-flex align-items-center">
+                  
+                  <img class="img-fluid" src="./assets/media_1.jpg">
+                  
+                </div><!-- d-flex -->
+              </div>
+              <div class="carousel-item" data-interval="10000">
+                <div class="ht-100p d-flex align-items-center">
+                  
+                  <img class="img-fluid" src="./assets/media_2.jpg">
+                  
+                </div><!-- d-flex -->
+              </div>
+              <div class="carousel-item active" data-interval="10000">
+                <div class="ht-100p d-flex align-items-center">
+                  
+                  <img class="img-fluid" src="./assets/media_3.jpg">
+                  
+                </div><!-- d-flex -->
+              </div>
+            </div><!-- carousel-inner -->
+          </div>
+          </div>
+        </div>
+        
+        <div id="horizontal" class="row no-gutters">
+          <div class="col tx-dark">
+            <div class="pd-10">
+              <div class="d-flex">
+              
+                
+                
+                <div class="d-inline">
+                  <label>Hide delay (seconds)</label>
+                  <input type="number" class="form-control" id="sample_fullscreen_duration" step="1" min="3">
+                  <button class="btn btn-outline-secondary" type="button" id="sample_fullscreen">Fullscreen Sample</button>
+                </div>
+              </div>
+<!--  
+              <form id="layout_config">
+                <label class="ckbox">
+                  <input type="checkbox" name="ticker_enabled"><span>Show Ticker</span>
+                </label>
+                
+                <input type="number" name="left_width" class="form-control" placeholder="Left Panel Width (percent)">
+                
+                <input type="number" name="right_width" class="form-control" placeholder="Right Panel Width (percent)">
+                
+                <input type="number" name="counter_time" class="form-control" placeholder="Counter Display Time (secs)">
+
+                <label class="ckbox">
+                  <input type="checkbox" name="fullscreen_enabled"><span>Fullscreen Announcement</span>
+                </label>
+                
+                <dib id="fullscreen-settings">
+                  <input type="number" name="fullscreen_time" class="form-control" placeholder="Fullscreen Display Time (secs)">
+
+                  <button class="btn btn-primary" type="button" id="sample-fullscreen">Fullscreen Demo</button>
+                </dib>
+                
+                <button class="btn btn-success" type="submit">Save</button>
+              </form>
+-->
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+
+    <div id="ticker" style="height: 5vh" class="bg-teal tx-white">
+      <marquee style="line-height: 5vh; font-size: 4vh;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor hendrerit placerat. Donec pretium, felis congue semper fringilla, quam massa egestas arcu, vel rutrum risus ex sed odio</marquee>
+    </div>
+  </div>
+  
+  <div class="modal fade effect-scale" id="announce-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="announceModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body mg-0 pd-0">
+          
+          <div class="row no-gutters ht-100p">
+
+            <div class="col-5 bg-teal ht-100p">
+              <div class="d-flex flex-column justify-content-center ht-100p">
+                <div class="pd-25 tx-white tx-uppercase tx-center">
+                  <h4 style="font-size: 7.5rem;">Ticket #</h4>
+
+                  <h1 id="ticket" style="font-size: 15rem;"></h1>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-7 tx-teal ht-100p">
+              <div class="d-flex flex-column justify-content-center ht-100p">
+                <div class="pd-25 tx-uppercase tx-center">
+                  <h4 style="font-size: 7.5rem;">Counter #</h4>
+
+                  <h1 id="counter" style="font-size: 15rem;"></h1>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="../app/lib/jquery/js/jquery.js"></script>
+  <script src="../app/lib/popper.js/js/popper.js"></script>
+  <script src="../app/lib/bootstrap/js/bootstrap.js"></script>
+  <script src="../app/lib/jquery.maskedinput/js/jquery.maskedinput.js"></script>
+  <script src="../app/lib/select2/js/select2.full.min.js"></script>
+  <script src="../app/lib/parsleyjs/js/parsley.js"></script>
+  <script src="../app/js/slim.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
