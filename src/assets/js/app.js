@@ -1,118 +1,83 @@
 $(document).ready(function() {
   var AUDIO = new Audio('./assets/ding_dong.mp3'),
-    MODAL_TIMEOUT = 5000,
-    COUNTER_TIMEOUT = 5000,
+    MODAL_TIMEOUT = null,
+    COUNTER_TIMEOUT = null,
     MAX = 4,
-    CURR = 0
+    CURR = 0,
+    FULLSCREEN_ENABLED = false,
+    FULLSCREEN_TIMEOUT = null,
 
-  var data = {
-    "counters": [
-      {
-        "id": 1,
-        "name": "Counter 1",
-        "enabled": true
-      },
-      {
-        "id": 2,
-        "name": "Counter 2",
-        "enabled": false
-      },
-      {
-        "id": 3,
-        "name": "Counter 3",
-        "enabled": true
-      },
-      {
-        "id": 4,
-        "name": "Counter 4",
-        "enabled": false
-      },
-      {
-        "id": 5,
-        "name": "Counter 5",
-        "enabled": true
-      },
-      {
-        "id": 6,
-        "name": "Counter 6",
-        "enabled": true
-      },
-      {
-        "id": 7,
-        "name": "Counter 7",
-        "enabled": true
-      }
-    ]
-  }
+    COUNTERS = null,
+    DEPARTMENTS = null,
+    TICKETS = null,
+    CONFIG = null
 
-  $('#counter_carousel').append('<div class="carousel-item active"><div class="counter-wrap d-flex flex-column"></div></div>')
+  // Counter Carousel
+  // $('#counter_carousel').append('<div class="carousel-item active"><div class="counter-wrap d-flex flex-column"></div></div>')
 
-  data.counters.forEach(counter => {
-    if (counter.enabled) {
-      if (CURR < MAX) CURR++
-      else {
-        $('#counter_carousel').append('<div class="carousel-item"><div class="counter-wrap d-flex flex-column"></div></div>')
-        CURR = 0
-      }
-
-      var items = $('#counter_carousel').children()
-      $(items[items.length - 1]).find('.counter-wrap').append(`
-        <div class="bg-white mg-b-10">
-          <div class="tx-dark">
-            <div class="row no-gutters">
-
-              <div class="col text-center pd-y-20">
-                <div class="d-flex flex-column justify-content-around">
-                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Ticket</p>
-                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">{0001}</p>
-                </div>
-              </div>
-
-              <div class="col text-center pd-y-20">
-                <div class="d-flex flex-column justify-content-around">
-                  <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Counter</p>
-                  <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">${counter.id.toString().padStart(2, '0')}</p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      `)
-    }
-  })
-
-  $('#counter_carousel').carousel({
-    interval: COUNTER_TIMEOUT,
-    ride: 'carousel'
-  })
-
-  // getConfig()
-  //
-  // function getConfig() {
-  //   $.ajax({
-  //     url: '/src/config.json',
-  //     success: function(res) {
-  //       if (res.stat === 'ok' && Object.keys(res.data).length) {
-  //         initializeLayout(res.data)
-  //       }
-  //     },
-  //     error: function(err) {
-  //       console.error(err)
+  // data.counters.forEach(counter => {
+  //   if (counter.enabled) {
+  //     if (CURR < MAX) CURR++
+  //     else {
+  //       $('#counter_carousel').append('<div class="carousel-item"><div class="counter-wrap d-flex flex-column"></div></div>')
+  //       CURR = 0
   //     }
-  //   })
-  // }
+
+  //     var items = $('#counter_carousel').children()
+  //     $(items[items.length - 1]).find('.counter-wrap').append(`
+  //       <div class="bg-white mg-b-10">
+  //         <div class="tx-dark">
+  //           <div class="row no-gutters">
+
+  //             <div class="col text-center pd-y-20">
+  //               <div class="d-flex flex-column justify-content-around">
+  //                 <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Ticket</p>
+  //                 <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">{0001}</p>
+  //               </div>
+  //             </div>
+
+  //             <div class="col text-center pd-y-20">
+  //               <div class="d-flex flex-column justify-content-around">
+  //                 <p style="font-size: 2.5rem; line-height: 2.5rem;" class="text-uppercase tx-semibold mg-0">Counter</p>
+  //                 <p style="font-size: 4rem; line-height: 4rem;" class="tx-semibold mg-0 mg-t-10">${counter.id.toString().padStart(2, '0')}</p>
+  //               </div>
+  //             </div>
+
+  //           </div>
+  //         </div>
+  //       </div>
+  //     `)
+  //   }
+  // })
+
+  // $('#counter_carousel').carousel({
+  //   interval: COUNTER_TIMEOUT,
+  //   ride: 'carousel'
+  // })
+
+  getConfig()
+  
+  function getConfig() {
+    $.ajax({
+      url: 'config.json',
+      success: function(res) {
+        if (res.stat === 'ok' && Object.keys(res.data).length) {
+          // FIXME: MOCK API
+          CONFIG = res.data
+
+          initializeLayout()
+        }
+      },
+      error: function(err) {
+        console.error(err)
+      }
+    })
+  }
 
   $('#ticker_toggle').on('click', function() {
     $(this).toggleClass('active')
 
-    if ($(this).hasClass('active')) {
-      $('.main-content').css('height', '95vh')
-    } else {
-      $('.main-content').css('height', '100vh')
-    }
-
-    $('#ticker').toggle()
+    $('.main-content').toggleClass('show-ticker')
   })
 
   $('[name="fullscreen_enabled"]').on('change', function() {
@@ -135,31 +100,63 @@ $(document).ready(function() {
     sampleFullScreen()
   })
 
-  function initializeLayout(data) {
-    Object.keys(data.panel_config).forEach(function(key) {
-//      var panel = data.panel_config[key]
-//      var panel_dom = $('#' + key)
-//
-//      if (panel.enabled) {
-//        panel_dom.show()
-//        panel_dom.addClass('order-' + panel.order)
-//        panel_dom.css('width', panel.width + '%')
+  // FIXME: Remove when live
+  var host = 'http://dev.teaconcepts.net/CleverQMS'
 
-//        if (key == 'vertical') {
-//          var MAX_COUNTERS = parseInt(data.max_counters_displayed)
-//          var CURR = 0
-//
-//          data.counters.forEach(function(counter) {
-//            if (CURR )
-//            panel_dom.find('.carousel-inner').append('<div clascarousel-item')
-//
-//
-//          })
-//        }
-//      }
+  function loadDepartments() {
+    $.ajax({
+      url: host + '/engine/api=?act=load_departments&stat=open',
+      success: function(res) {
+        if (res.stat == 'ok' && res.data) {
+          DEPARTMENTS = res.data
+        }
+      }
     })
   }
 
+  function loadCounters() {
+    $.ajax({
+      url: host + '/engine/api=?act=load_counters&stat=open',
+      success: function(res) {
+        if (res.stat == 'ok' && res.data) {
+          COUNTERS = res.data
+        }
+      }
+    })
+  }
+
+  function loadTickets() {
+    var dept_id = '' // FIXME: This should be dynamic
+    
+    $.ajax({
+      url: host + '/engine/api=?act=load_tickets&stat=active' + dept_id,
+      success: function(res) {
+        if (res.stat == 'ok' && res.data) {
+          TICKETS = res.data
+        }
+      }
+    })
+  }
+
+  function initializeLayout(data) {
+    // Object.keys(data.panel_config).forEach(function(key) {
+    //  var panel = data.panel_config[key]
+    //  var panel_dom = $('#' + key)
+    //  if (panel.enabled) {
+    //    panel_dom.show()
+    //    panel_dom.addClass('order-' + panel.order)
+    //    panel_dom.css('width', panel.width + '%')
+    //    if (key == 'vertical') {
+    //      var MAX_COUNTERS = parseInt(data.max_counters_displayed)
+    //      var CURR = 0
+    //      data.counters.forEach(function(counter) {
+    //        if (CURR )
+    //        panel_dom.find('.carousel-inner').append('<div clascarousel-item')
+    //      })
+    //    }
+    //  }
+    // })
+  }
 
   function sampleFullScreen() {
 

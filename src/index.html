@@ -15,11 +15,7 @@
   <link rel='stylesheet' type='text/css' media='screen' href='assets/css/app.css'>
   <style>
     .show-ticker {
-      height: 95vh;
-    }
-
-    .hide-ticker {
-      height: 100vh;
+      height: 95vh !important;
     }
 
     #announce-modal .modal-content {
@@ -42,11 +38,16 @@
     }
 
     .main-content {
-      transition: all .5s ease-in-out;
+      transition: all .3s ease-in-out;
+      height: 100vh;
     }
 
     #counter_carousel .carousel-item {
       height: 80vh;
+    }
+
+    body {
+      overflow: hidden !important;
     }
   </style>
 </head>
@@ -61,7 +62,7 @@
     </div>
 -->
 
-    <div class="d-flex main-content show-ticker">
+    <div class="d-flex main-content">
 
       <div id="vertical" class="d-flex flex-column wd-40p bg-teal" style="overflow-y: hidden">
 
@@ -75,7 +76,6 @@
         </div>
 
       </div>
-
 
       <div class="d-flex flex-column wd-60p">
 
@@ -113,14 +113,18 @@
         <div id="horizontal" class="row no-gutters">
           <div class="col tx-dark">
             <div class="pd-10">
-              <div class="d-flex">
+              <div class="row no-gutters">
 
+                <div class="col-2">
+                  <button class="btn btn-outline-secondary" type="button" id="ticker_toggle">Toggle Ticker</button>
+                </div>
 
-
-                <div class="d-inline">
-                  <label>Hide delay (seconds)</label>
-                  <input type="number" class="form-control" id="sample_fullscreen_duration" step="1" min="3">
-                  <button class="btn btn-outline-secondary" type="button" id="sample_fullscreen">Fullscreen Sample</button>
+                <div class="col-5">
+                  <div class="d-inline">
+                    <label>Hide delay (seconds)</label>
+                    <input type="number" class="form-control" id="sample_fullscreen_duration" step="1" min="3">
+                  </div>
+                    <button class="btn btn-outline-secondary" type="button" id="sample_fullscreen">Fullscreen Sample</button>
                 </div>
               </div>
 <!--
@@ -155,7 +159,7 @@
 
     </div>
 
-    <div id="ticker" style="height: 5vh" class="bg-teal tx-white">
+    <div id="ticker" style="height: 5vh;" class="bg-teal tx-white">
       <marquee style="line-height: 5vh; font-size: 4vh;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor hendrerit placerat. Donec pretium, felis congue semper fringilla, quam massa egestas arcu, vel rutrum risus ex sed odio</marquee>
     </div>
   </div>
