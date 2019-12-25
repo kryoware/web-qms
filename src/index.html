@@ -22,6 +22,14 @@
       height: 100vh !important;
     }
 
+    #announce-modal h1 {
+      font-size: 15vw;
+    }
+
+    #announce-modal h4 {
+      font-size: 10vw;
+    }
+
     #announce-modal .modal-dialog {
       height: 100vh;
       width: 100vw;
@@ -113,18 +121,24 @@
         <div id="horizontal" class="row no-gutters">
           <div class="col tx-dark">
             <div class="pd-10">
-              <div class="row no-gutters">
+              <div class="row content">
 
-                <div class="col-2">
+                <div class="col-4">
                   <button class="btn btn-outline-secondary" type="button" id="ticker_toggle">Toggle Ticker</button>
                 </div>
 
-                <div class="col-5">
-                  <div class="d-inline">
-                    <label>Hide delay (seconds)</label>
-                    <input type="number" class="form-control" id="sample_fullscreen_duration" step="1" min="3">
-                  </div>
+                <div class="col-4">
+                  <div class="d-flex">
+                    <input type="number" class="form-control" id="sample_fullscreen_duration" step="1" min="3" placeholder="Hide Delay">
                     <button class="btn btn-outline-secondary" type="button" id="sample_fullscreen">Fullscreen Sample</button>
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div class="d-flex">
+                    <select class="form-control"></select>
+                      <button class="btn btn-outline-secondary" type="button" id="generate_ticket">Generate Ticket</button>
+                  </div>
                 </div>
               </div>
 <!--
@@ -171,22 +185,22 @@
 
           <div class="row no-gutters ht-100p">
 
-            <div class="col-5 bg-teal ht-100p">
+            <div class="col-6 bg-teal ht-100p">
               <div class="d-flex flex-column justify-content-center ht-100p">
                 <div class="pd-25 tx-white tx-uppercase tx-center">
-                  <h4 style="font-size: 7.5rem;">Ticket #</h4>
+                  <h4>Ticket #</h4>
 
-                  <h1 id="ticket" style="font-size: 15rem;"></h1>
+                  <h1 id="ticket"></h1>
                 </div>
               </div>
             </div>
 
-            <div class="col-7 tx-teal ht-100p">
+            <div class="col-6 tx-teal ht-100p">
               <div class="d-flex flex-column justify-content-center ht-100p">
                 <div class="pd-25 tx-uppercase tx-center">
-                  <h4 style="font-size: 7.5rem;">Counter #</h4>
+                  <h4>Counter</h4>
 
-                  <h1 id="counter" style="font-size: 15rem;"></h1>
+                  <h1 id="counter"></h1>
                 </div>
               </div>
             </div>

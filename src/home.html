@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <!-- vendor css -->
+  <link href="../app/lib/font-awesome/css/font-awesome.css" rel="stylesheet">
+  <link href="../app/lib/Ionicons/css/ionicons.css" rel="stylesheet">
+  <link href="../app/lib/select2/css/select2.min.css" rel="stylesheet">
+
+  <!-- Slim CSS -->
+  <link rel="stylesheet" href="../app/css/slim.css">
+  <link rel='stylesheet' type='text/css' media='screen' href='assets/css/app.css'>
+  <style>
+  .main-content {
+    height: calc(100vh - 57px);
+  }
+  .overflow-panel {
+    transition: all .5s ease-in-out;
+    transform: translateY(90%);
+  }
+
+  .overflow-panel.show {
+    transform: translateY(0);
+  }
+
+
+
+  .custom-rounded {
+    border-radius: 0.5rem;
+  }
+  </style>
+</head>
+<body class="bg-gray-500">
+  <div style="height: 100vh; overflow: hidden;">
+    <nav class="navbar navbar-light bg-teal">
+      <a class="navbar-brand" href="#">
+        <img src="https://getbootstrap.com/docs/4.4/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
+      </a>
+    </nav>
+
+    <div class="main-content row no-gutters">
+      <div class="col-12 col-sm-6 ht-100p">
+        <div class="d-flex flex-column ht-100p">
+        <div class="flex-grow-1 mg-15">
+          <div class="now-serving custom-rounded bg-white ht-100p pd-15">
+            <div class="d-flex flex-column justify-content-around">
+              <div class="now-serving-header text-center">
+
+              </div>
+
+              <div class="now-serving-ticket text-center tx-bold tx-dark">
+                <span style="font-size: 5vw">S-001</span>
+              </div>
+
+              <div class="now-serving-timer text-center">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ht-25p mg-b-15">
+                  <div class="user-stats custom-rounded bg-white mg-x-15 pd-15 ht-100p">
+
+                  </div>
+                </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 ht-100p">
+        <div class="actions-panel d-flex flex-wrap mg-l-15 mg-sm-l-0 mg-y-15 mg-r-15">
+          <button class="btn btn-outline btn-teal btn-lg btn-block">Next</button>
+          <button class="btn btn-outline btn-teal btn-lg btn-block">Call</button>
+          <button class="btn btn-outline btn-teal btn-lg btn-block">Recall</button>
+          <button class="btn btn-outline btn-teal btn-lg btn-block">Transfer</button>
+          <button class="btn btn-outline btn-teal btn-lg btn-block">Start</button>
+          <button class="btn btn-outline btn-teal btn-lg btn-block">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../app/lib/jquery/js/jquery.js"></script>
+  <script src="../app/lib/popper.js/js/popper.js"></script>
+  <script src="../app/lib/bootstrap/js/bootstrap.js"></script>
+  <script src="../app/lib/jquery.maskedinput/js/jquery.maskedinput.js"></script>
+  <script src="../app/lib/select2/js/select2.full.min.js"></script>
+  <script src="../app/lib/parsleyjs/js/parsley.js"></script>
+  <script src="../app/js/slim.js"></script>
+
+  <script src="assets/js/home.js"></script>
+</body>
+</html>
