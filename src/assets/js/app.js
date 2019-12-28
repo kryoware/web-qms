@@ -9,7 +9,7 @@
 
     COUNTERS = null,
     DEPARTMENTS = null,
-    TICKETS = null,
+    TICKETS = [],
     CONFIG = null
 
 $(document).ready(function() {
@@ -256,7 +256,10 @@ function loadTickets() {
     url: host + 'engine/api.php?act=load_tickets&stat=active' + dept_id,
     success: function(res) {
       if (res.stat == 'ok' && res.data) {
-        var NEW_TICKETS = Object.values(res.data).forEach(deptTickets => {
+        var NEW_TICKETS = Object.values(res.data)
+        if (TICKETS.length == 0) TICKETS = NEW_TICKETS
+
+        NEW_TICKETS.forEach(deptTickets => {
           Object.values(deptTickets).forEach(ticket => {
             if (parseInt(ticket.counter_id) != 0) {
               var counter_card = $(`[data-dept_id="${ticket.dept_id}"]`).find(`[data-counter_id="${ticket.counter_id}"]`)
@@ -273,9 +276,12 @@ function loadTickets() {
           })
         })
 
-        if (TICKETS.length != NEW_TICKETS.length) {
-            
-        }
+        // if (TICKETS.length != NEW_TICKETS.length) {
+          let NOTIFICATION = TICKETS.filter(x => !NEW_TICKETS.includes(x))
+          console.log(NOTIFICATION)
+          let NOTIFICATION2 = NEW_TICKETS.filter(x => !TICKETS.includes(x))
+          console.log(NOTIFICATION2)
+        // }
       }
     }
   })
