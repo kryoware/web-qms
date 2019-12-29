@@ -62,16 +62,17 @@
 <body>
 
   <div class="container-fluid pd-0">
-<!--
-    <div class="d-flex" style="height: 5vh;">
-      <div class="text-right tx-semibold">
-        <p class="mg-0" style="line-height: 5vh; font-size: 4vh;">NOW SERVING: #0012</p>
+    <div class="row no-gutters" style="height: 7.5vh;">
+      <div class="d-flex wd-100p">
+        <div class="ml-auto time ht-100p" style="display: none;">
+          <div class="d-flex flex-column justify-content-center tx-teal tx-semibold ht-100p pd-10">
+            <p class="mg-0" style="line-height: 5vh; font-size: 4vh;"></p>
+          </div>
+        </div>
       </div>
     </div>
--->
 
     <div class="d-flex main-content">
-
       <div id="vertical" class="d-flex flex-column wd-40p bg-teal" style="overflow-y: hidden">
 
         <div class="row no-gutters">
@@ -125,6 +126,7 @@
 
                 <div class="col-4">
                   <button class="btn btn-outline-secondary" type="button" id="ticker_toggle">Toggle Ticker</button>
+                  <button class="btn btn-outline-secondary" type="button" id="clock_toggle">Toggle Clock</button>
                 </div>
 
                 <div class="col-4">
@@ -141,31 +143,6 @@
                   </div>
                 </div>
               </div>
-<!--
-              <form id="layout_config">
-                <label class="ckbox">
-                  <input type="checkbox" name="ticker_enabled"><span>Show Ticker</span>
-                </label>
-
-                <input type="number" name="left_width" class="form-control" placeholder="Left Panel Width (percent)">
-
-                <input type="number" name="right_width" class="form-control" placeholder="Right Panel Width (percent)">
-
-                <input type="number" name="counter_time" class="form-control" placeholder="Counter Display Time (secs)">
-
-                <label class="ckbox">
-                  <input type="checkbox" name="fullscreen_enabled"><span>Fullscreen Announcement</span>
-                </label>
-
-                <dib id="fullscreen-settings">
-                  <input type="number" name="fullscreen_time" class="form-control" placeholder="Fullscreen Display Time (secs)">
-
-                  <button class="btn btn-primary" type="button" id="sample-fullscreen">Fullscreen Demo</button>
-                </dib>
-
-                <button class="btn btn-success" type="submit">Save</button>
-              </form>
--->
             </div>
           </div>
         </div>
@@ -217,6 +194,7 @@
   <script src="../app/lib/jquery.maskedinput/js/jquery.maskedinput.js"></script>
   <script src="../app/lib/select2/js/select2.full.min.js"></script>
   <script src="../app/lib/parsleyjs/js/parsley.js"></script>
+  <script src="../app/lib/moment/js/moment.js"></script>
   <script src="../app/js/slim.js"></script>
   <script src="assets/js/app.js"></script>
 </body>

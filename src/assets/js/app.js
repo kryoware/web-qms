@@ -2,7 +2,7 @@
     MODAL_TIMEOUT = 60000,
     COUNTER_TIMEOUT = 10000,
     REFRESH_INTERVAL = 5000,
-    MAX = 2,
+    MAX = 3,
     CURR = 0,
     FULLSCREEN_ENABLED = false,
     FULLSCREEN_TIMEOUT = null,
@@ -10,9 +10,32 @@
     COUNTERS = null,
     DEPARTMENTS = null,
     TICKETS = [],
-    CONFIG = null
+    CONFIG = null,
+    QUEUE = [],
+    ANNOUNCED = []
 
 $(document).ready(function() {
+  setInterval(() => {
+    loadAnnouncements()
+  }, 5000)
+
+  setInterval(() => {
+    console.log('ANNS IN QUEUE: ' + QUEUE.length)
+
+    if (QUEUE.length) announce(QUEUE)
+    else return
+  }, 2000)
+
+  function loadAnnouncements() {
+    $.ajax({
+      url: host + 'engine/api.php?act=announcements',
+      success: function(res) {
+        if (res.stat == 'ok' && res.data) {
+            QUEUE = QUEUE.concat(Object.values(res.data).filter(data => !ANNOUNCED.includes(data.ann_id)))
+        }
+      }
+    })
+  }
 
   $('body').on('click', '.btn-call', function() {
     var counter_id = $(this).data('counter_id')
@@ -88,7 +111,7 @@ $(document).ready(function() {
       success: function(res) {
         if (res.stat === 'ok' && Object.keys(res.data).length) {
           // FIXME: MOCK API
-          CONFIG = res.data
+          CONFIG = res.data.config
 
           initializeLayout()
         }
@@ -98,6 +121,12 @@ $(document).ready(function() {
       }
     })
   }
+
+  $('#clock_toggle').on('click', function() {
+    $(this).toggleClass('active')
+
+    $('.time').parent().parent().slideToggle()
+  })
 
   $('#ticker_toggle').on('click', function() {
     $(this).toggleClass('active')
@@ -126,6 +155,27 @@ $(document).ready(function() {
   })
 
   function initializeLayout(data) {
+    if (CONFIG['clock']) {
+      var clock = CONFIG['clock']
+      $('.time').toggle(clock.enabled)
+
+      var format = ''
+      if (clock.date_format.show_dow) {
+        format += clock.date_format.dow == 'short' ? 'ddd, ' : 'dddd, '
+      }
+
+      format += clock.date_format.month == 'short' ? 'MMM ' : 'MMMM '
+      format += clock.date_format.day == 'short' ? 'D ' : 'DD '
+      format += clock.date_format.show_year ? 'Y' : ''
+
+      format += clock.time_format.hours == 'short' ? ' h:mm' : ' hh:mm'
+      format += clock.time_format.show_seconds ? ':ss ' : ''
+      format += clock.time_format.show_suffix ? 'A' : ''
+
+      setInterval(() => {
+        $('.time p').text(moment().format(format))
+      }, 500)
+    }
     loadDepartments()
     // Object.keys(data.panel_config).forEach(function(key) {
     //  var panel = data.panel_config[key]
@@ -163,7 +213,7 @@ $(document).ready(function() {
     $('#announce-modal').modal('show')
 
     setTimeout(function() {
-      $('#announce-modal').modal('hide')
+
     }, MODAL_TIMEOUT)
   }
 })
@@ -177,24 +227,22 @@ function loadDepartments() {
     success: function(res) {
       if (res.stat == 'ok' && res.data) {
         $('#counter_carousel .carousel-inner').html('')
-        DEPARTMENTS = Object.values(res.data).forEach((dept, key) => {
+        DEPARTMENTS = Object.values(res.data)
+
+        Object.values(res.data).forEach((dept, key) => {
           CURR = 0
           $('#generate_ticket').parent().find('select').append(`<option value="${dept.dept_id}">${dept.dept_name}</option>`)
 
           $('#counter_carousel .carousel-inner').append(`
             <div class="carousel-item ${key == 0 ? 'active' : ''}">
               <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
-                <p class="dept-name tx-semibold mg-b-10 pd-10 tx-teal bg-white text-center text-uppercase" style="font-size: 2.75vw">${dept.dept_name}</p>
+                ${DEPARTMENTS.length > 1 ? `<p class="dept-name tx-semibold mg-b-10 pd-10 tx-teal bg-white text-center text-uppercase" style="font-size: 2.75vw">${dept.dept_name}</p>` : ''}
               </div>
             </div>
           `)
-          console.log(dept.dept_name);
           Object.values(dept.counters).forEach(counter => {
-            console.log(CURR)
-
             if (CURR < MAX) CURR++
             else {
-              console.log('Add new page')
               $('#counter_carousel .carousel-inner').append(`
                 <div class="carousel-item">
                   <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
@@ -219,15 +267,15 @@ function loadDepartments() {
 
                     <div class="col text-center pd-y-20">
                       <div class="d-flex flex-column justify-content-around">
-                        <p style="font-size: 2.5vw; line-height: 2.5vw;" class="ticket-label text-uppercase tx-semibold mg-0">Ticket</p>
-                        <p style="font-size: 4vw; line-height: 4vw;" class="ticket-no tx-semibold mg-0 mg-t-10"></p>
+                        <p style="font-size: 2.5vw; line-height: 2.5vw;" class="counter-label text-uppercase tx-semibold mg-0">Counter</p>
+                        <p style="font-size: 4vw; line-height: 4vw;" class="counter-no tx-semibold mg-0 mg-t-10">${counter.counter_no.toString().padStart(2, '0')}</p>
                       </div>
                     </div>
 
                     <div class="col text-center pd-y-20">
                       <div class="d-flex flex-column justify-content-around">
-                        <p style="font-size: 2.5vw; line-height: 2.5vw;" class="counter-label text-uppercase tx-semibold mg-0">Counter</p>
-                        <p style="font-size: 4vw; line-height: 4vw;" class="counter-no tx-semibold mg-0 mg-t-10">${counter.counter_no.toString().padStart(2, '0')}</p>
+                        <p style="font-size: 2.5vw; line-height: 2.5vw;" class="ticket-label text-uppercase tx-semibold mg-0">Ticket</p>
+                        <p style="font-size: 4vw; line-height: 4vw;" class="ticket-no tx-semibold mg-0 mg-t-10"></p>
                       </div>
                     </div>
 
@@ -253,28 +301,29 @@ function loadTickets() {
   var dept_id = '' // FIXME: This should be dynamic
 
   $.ajax({
-    url: host + 'engine/api.php?act=load_tickets&stat=active' + dept_id,
+    url: host + 'engine/api.php?act=load_tickets&ds=active' + dept_id,
     success: function(res) {
       if (res.stat == 'ok' && res.data) {
-        var NEW_TICKETS = Object.values(res.data)
-        if (TICKETS.length == 0) TICKETS = NEW_TICKETS
+        var NEW_TICKETS = []
 
-        NEW_TICKETS.forEach(deptTickets => {
-          Object.values(deptTickets).forEach(ticket => {
-            if (parseInt(ticket.counter_id) != 0) {
-              var counter_card = $(`[data-dept_id="${ticket.dept_id}"]`).find(`[data-counter_id="${ticket.counter_id}"]`)
-              var ticket_dom = $(counter_card).find('.ticket-no')
+        Object.values(res.data).forEach(ticket => {
+          NEW_TICKETS.push(ticket)
 
-              // console.table({
-              //   dept_id: ticket.dept_id,
-              //   counter_id: ticket.counter_id,
-              //   ticket: ticket.ticket_label
-              // })
+          if (parseInt(ticket.counter_id) != 0) {
+            var counter_card = $(`[data-dept_id="${ticket.dept_id}"]`).find(`[data-counter_id="${ticket.counter_id}"]`)
+            var ticket_dom = $(counter_card).find('.ticket-no')
 
-              ticket_dom.text(ticket.ticket_label)
-            }
-          })
+            // console.table({
+            //   dept_id: ticket.dept_id,
+            //   counter_id: ticket.counter_id,
+            //   ticket: ticket.ticket_label
+            // })
+
+            ticket_dom.text(ticket.ticket_label)
+          }
         })
+
+        if (TICKETS.length == 0) TICKETS = NEW_TICKETS
 
         // if (TICKETS.length != NEW_TICKETS.length) {
           let NOTIFICATION = TICKETS.filter(x => !NEW_TICKETS.includes(x))
@@ -285,4 +334,44 @@ function loadTickets() {
       }
     }
   })
+}
+
+
+function announce(queue) {
+  var modal_shown = $('#announce-modal').hasClass('show')
+  var data = queue[0]
+
+  if (!data || modal_shown) return
+
+  console.log(JSON.stringify(data))
+
+  // Already announced, removed from queue
+  if (ANNOUNCED.includes(data.ann_id)) {
+    QUEUE.shift()
+    announce(QUEUE)
+    return
+  } else {
+    ANNOUNCED.push(data.ann_id)
+
+    // Play audio / Text-to-speech ?
+    AUDIO.play()
+
+    // Update counter carousel data
+    var counter_card_dom = $(`[data-dept_id="${data.dept_id}"] [data-counter_id="${data.counter_no}"]`)
+    $(counter_card_dom).find('.ticket-no').text(data.ticket_label)
+    // Update counter carousel data
+
+    $('#ticket').text(data.ticket_label)
+    $('#counter').text(data.counter_no)
+
+    if (CONFIG['fullscreen_enabled']) $('#announce-modal').modal('show')
+    setTimeout(() => {
+      if (CONFIG['fullscreen_enabled']) $('#announce-modal').modal('hide')
+
+      setTimeout(() => {
+        QUEUE.shift()
+        announce(QUEUE)
+      }, 500)
+    }, 5000)
+  }
 }
