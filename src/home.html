@@ -14,6 +14,18 @@
   <link rel="stylesheet" href="../app/css/slim.css">
   <link rel='stylesheet' type='text/css' media='screen' href='assets/css/app.css'>
   <style>
+  .slim-logo a {
+    color: inherit;
+  }
+
+  .logged-user img {
+    border-color: #1CAF9A;
+
+  }
+  .slim-header-right .dropdown-c .nav-link .icon {
+    color: #1CAF9A;
+  }
+
   .main-content {
     height: calc(100vh - 75px);
   }
@@ -28,13 +40,10 @@
 
   .actions-panel .btn {
     font-size: 5vh;
-    height: calc(33% - 15px);
-    width: calc(50% - 7.5px);
+    padding: 0 !important;
+    /*height: calc(33% - 15px);*/
+    /*width: calc(50% - 7.5px);*/
     /*text-transform: uppercase;*/
-  }
-
-  .custom-rounded {
-    border-radius: 0.5rem;
   }
 
   .user-stats-wrap {
@@ -47,7 +56,7 @@
     <div class="slim-header">
       <div class="container-fluid">
         <div class="slim-header-left">
-          <h2 class="slim-logo"><a href="index.html">Brand</a></h2>
+          <h2 class="slim-logo tx-teal"><a href="index.html">Brand</a></h2>
         </div>
 
         <div class="slim-header-right">
@@ -115,13 +124,10 @@
       </div>
 
       <div class="col-12 col-sm-5 ht-100p">
-        <div class="actions-panel d-flex flex-wrap justify-content-between ht-100p mg-l-15 mg-sm-l-0 pd-t-15 mg-r-15">
-          <button class="btn btn-outline btn-teal btn-lg custom-rounded tx-semibold">Next</button>
-          <button class="btn btn-outline btn-teal btn-lg custom-rounded tx-semibold">Call</button>
-          <button class="btn btn-outline btn-teal btn-lg custom-rounded tx-semibold">Recall</button>
-          <button class="btn btn-outline btn-teal btn-lg custom-rounded tx-semibold">Transfer</button>
-          <button class="btn btn-outline btn-teal btn-lg custom-rounded tx-semibold">Start</button>
-          <button class="btn btn-outline btn-teal btn-lg custom-rounded tx-semibold">Close</button>
+        <div class="actions-panel d-flex flex-wrap justify-content-between ht-100p mg-l-15 mg-sm-l-0 pd-y-15 mg-r-15">
+          <button class="btn btn-outline btn-teal btn-lg btn-block custom-rounded tx-semibold">Next</button>
+          <button class="btn btn-outline btn-teal btn-lg btn-block custom-rounded tx-semibold">Recall</button>
+          <button class="btn btn-outline btn-teal btn-lg btn-block custom-rounded tx-semibold">No Show</button>
         </div>
 
       </div>
@@ -134,6 +140,7 @@
   <script src="../app/lib/jquery.maskedinput/js/jquery.maskedinput.js"></script>
   <script src="../app/lib/select2/js/select2.full.min.js"></script>
   <script src="../app/lib/parsleyjs/js/parsley.js"></script>
+  <script src="../app/lib/moment/js/moment.js"></script>
   <script src="../app/js/slim.js"></script>
 
   <script src="assets/js/home.js"></script>

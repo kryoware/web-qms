@@ -246,7 +246,7 @@ function loadDepartments() {
               $('#counter_carousel .carousel-inner').append(`
                 <div class="carousel-item">
                   <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
-                    <p class="dept-name tx-semibold mg-b-10 pd-10 tx-teal bg-white text-center text-uppercase" style="font-size: 2.75vw">${dept.dept_name}</p>
+                    <p class="custom-rounded dept-name tx-semibold mg-b-10 pd-10 tx-teal bg-white text-center text-uppercase" style="font-size: 2.75vw">${dept.dept_name}</p>
                   </div>
                 </div>
               `)
@@ -261,21 +261,20 @@ function loadDepartments() {
 
             var containers = $('#counter_carousel').find(`[data-dept_id="${counter.dept_id}"]`)
             $(containers[containers.length - 1]).append(`
-              <div class="bg-white mg-b-10" data-counter_id="${counter.counter_id}">
+              <div class="custom-rounded bg-white mg-b-10" data-counter_id="${counter.counter_id}">
                 <div class="tx-dark">
                   <div class="row no-gutters">
 
-                    <div class="col text-center pd-y-20">
-                      <div class="d-flex flex-column justify-content-around">
-                        <p style="font-size: 2.5vw; line-height: 2.5vw;" class="counter-label text-uppercase tx-semibold mg-0">Counter</p>
-                        <p style="font-size: 4vw; line-height: 4vw;" class="counter-no tx-semibold mg-0 mg-t-10">${counter.counter_no.toString().padStart(2, '0')}</p>
+                    <div class="col text-left">
+                      <div class="d-flex flex-column justify-content-around pd-y-20 pd-l-10">
+                        <p style="font-size: 4vw; line-height: 4vw;" class="counter-no tx-semibold mg-0">Counter ${counter.counter_no}</p>
                       </div>
                     </div>
 
-                    <div class="col text-center pd-y-20">
-                      <div class="d-flex flex-column justify-content-around">
-                        <p style="font-size: 2.5vw; line-height: 2.5vw;" class="ticket-label text-uppercase tx-semibold mg-0">Ticket</p>
-                        <p style="font-size: 4vw; line-height: 4vw;" class="ticket-no tx-semibold mg-0 mg-t-10"></p>
+                    <div class="col text-right">
+                      <div class="d-flex flex-column justify-content-around pd-y-20 pd-r-10">
+                        <p style="font-size: 2.5vw; line-height: 2.5vw; display: none;" class="ticket-label text-uppercase tx-semibold mg-0">Ticket</p>
+                        <p style="font-size: 4vw; line-height: 4vw;" class="ticket-no tx-semibold mg-0"></p>
                       </div>
                     </div>
 
@@ -371,7 +370,7 @@ function announce(queue) {
       setTimeout(() => {
         QUEUE.shift()
         announce(QUEUE)
-      }, 500)
-    }, 5000)
+      }, 250)
+    }, MODAL_TIMEOUT)
   }
 }
