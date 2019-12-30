@@ -117,21 +117,39 @@ function loadDepartments() {
         Object.values(res.data).forEach(function (dept, key) {
           CURR = 0;
           $('#generate_ticket').parent().find('select').append("<option value=\"".concat(dept.dept_id, "\">").concat(dept.dept_name, "</option>"));
-          $('#counter_carousel .carousel-inner').append("\n            <div class=\"carousel-item ".concat(key == 0 ? 'active' : '', "\">\n              <div class=\"d-flex flex-column\" data-dept_id=\"").concat(dept.dept_id, "\">\n                ").concat(DEPARTMENTS.length > 1 ? "<p class=\"dept-name tx-semibold mg-b-10 pd-10 tx-teal bg-white text-center text-uppercase\" style=\"font-size: 2.75vw\">".concat(dept.dept_name, "</p>") : '', "\n              </div>\n            </div>\n          "));
+          $('#counter_carousel .carousel-inner').append(`
+            <div class="carousel-item ${key === 0 ? 'active' : ''}">
+              <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
+                <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
+                  <div class="d-flex flex-column justify-content-center">
+                    <span class="dept-name mg-0 tx-semibold tx-teal text-left text-uppercase" style="font-size: 2vw;">${dept.dept_name}</span>
+                  </div>
+
+                  <div class="d-flex flex-column justify-content-center">
+                    <span class="mg-0 tx-semibold text-center text-uppercase" style="font-size: 1.5vw;line-height: 1.5vw;">Now Serving</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `)
+
           Object.values(dept.counters).forEach(function (counter) {
-            if (CURR < MAX) CURR++;else {
+            if (CURR < MAX) {
+              CURR++;
+            } else {
               $('#counter_carousel .carousel-inner').append("\n                <div class=\"carousel-item\">\n                  <div class=\"d-flex flex-column\" data-dept_id=\"".concat(dept.dept_id, "\">\n                    <p class=\"custom-rounded dept-name tx-semibold mg-b-10 pd-10 tx-teal bg-white text-center text-uppercase\" style=\"font-size: 2.75vw\">").concat(dept.dept_name, "</p>\n                  </div>\n                </div>\n              "));
               CURR = 0;
             }
             $('#horizontal .content').append("\n              <div class=\"col\">\n                <button type=\"button\" data-counter_id=\"".concat(counter.counter_id, "\" class=\"btn btn-outline-success btn-call text-uppercase\">").concat(counter.counter_id, " call next</button>\n              </div>\n            "));
             var containers = $('#counter_carousel').find("[data-dept_id=\"".concat(counter.dept_id, "\"]"));
-            $(containers[containers.length - 1]).append("\n              <div class=\"custom-rounded bg-white mg-b-10\" data-counter_id=\"".concat(counter.counter_id, "\">\n                <div class=\"tx-dark\">\n                  <div class=\"row no-gutters\">\n\n                    <div class=\"col-7 text-left\">\n                      <div class=\"d-flex flex-column justify-content-around pd-y-20 pd-l-10\">\n                        <p style=\"font-size: 4vw; line-height: 4vw;\" class=\"counter-no tx-semibold mg-0\">Counter ").concat(counter.counter_no, "</p>\n                      </div>\n                    </div>\n\n                    <div class=\"col-5 text-right\">\n                      <div class=\"d-flex flex-column justify-content-around pd-y-20 pd-r-10\">\n                        <p style=\"font-size: 2.5vw; line-height: 2.5vw; display: none;\" class=\"ticket-label text-uppercase tx-semibold mg-0\">Ticket</p>\n                        <p style=\"font-size: 4vw; line-height: 4vw;\" class=\"ticket-no tx-semibold mg-0\"></p>\n                      </div>\n                    </div>\n\n                  </div>\n                </div>\n              </div>\n            "));
+            $(containers[containers.length - 1]).append("\n              <div class=\"custom-rounded bg-white mg-b-10\" data-counter_id=\"".concat(counter.counter_id, "\">\n                <div class=\"tx-dark\">\n                  <div class=\"row no-gutters\">\n\n                    <div class=\"col-7 text-left\">\n                      <div class=\"d-flex flex-column justify-content-around pd-y-20 pd-l-10\">\n                        <p class=\"counter-no tx-semibold text-uppercase mg-0\">Counter ").concat(counter.counter_no, "</p>\n                      </div>\n                    </div>\n\n                    <div class=\"col-5 text-right\">\n                      <div class=\"d-flex flex-column justify-content-around pd-y-20 pd-r-10\">\n\n<p class=\"ticket-no tx-semibold mg-0\"></p>\n                      </div>\n                    </div>\n\n                  </div>\n                </div>\n              </div>\n"));
           });
         });
-        $('#counter_carousel').carousel({
-          interval: COUNTER_TIMEOUT,
-          ride: 'carousel'
-        });
+
+        // $('#counter_carousel').carousel({
+        //   interval: COUNTER_TIMEOUT,
+        //   ride: 'carousel'
+        // });
         setInterval(loadTickets(), REFRESH_INTERVAL);
       }
     }
@@ -162,11 +180,13 @@ function loadTickets() {
 }
 
 function announce(queue) {
+  console.log('attempt');
+
   var modal_shown = $('#announce-modal').hasClass('show');
   var data = queue[0];
   if (!data || modal_shown) return;
-  console.log('do stuff'); // Already announced, removed from queue
-
+  
+  // Already announced, removed from queue
   if (ANNOUNCED.includes(data.ann_id)) {
     QUEUE.shift();
     announce(QUEUE);
@@ -189,11 +209,12 @@ function announce(queue) {
     setTimeout(function () {
       console.log('setup modal close');
       $('#announce-modal').modal('hide');
+
       setTimeout(function () {
         QUEUE.shift();
         announce(QUEUE);
-      }, 250);
-    }, MODAL_TIMEOUT);
+      }, 500);
+    }, 5000);
   }
 }
 

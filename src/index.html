@@ -54,6 +54,16 @@
       height: 80vh;
     }
 
+    .ticket-no {
+      font-size: 2.25vw;
+      line-height: 2.25vw;
+    }
+
+    .counter-no {
+      font-size: 1.75vw;
+      line-height: 1.75vw;
+    }
+
     body {
       overflow: hidden !important;
     }
@@ -92,59 +102,34 @@
 
           <div class="col ht-100p">
             <div id="media" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner" role="listbox">
-              <div class="carousel-item" data-interval="10000">
-                <div class="ht-100p d-flex align-items-center">
+              <div class="carousel-inner" role="listbox">
+                <div class="carousel-item" data-interval="10000">
+                  <div class="ht-100p d-flex align-items-center">
 
-                  <img class="img-fluid" src="./assets/media_1.jpg">
+                    <img class="img-fluid" src="./assets/media_1.jpg">
 
-                </div><!-- d-flex -->
+                  </div><!-- d-flex -->
+                </div>
+                <div class="carousel-item" data-interval="10000">
+                  <div class="ht-100p d-flex align-items-center">
+
+                    <img class="img-fluid" src="./assets/media_2.jpg">
+
+                  </div><!-- d-flex -->
+                </div>
+                <div class="carousel-item active" data-interval="10000">
+                  <div class="ht-100p d-flex align-items-center">
+
+                    <img class="img-fluid" src="./assets/media_3.jpg">
+
+                  </div><!-- d-flex -->
+                </div>
               </div>
-              <div class="carousel-item" data-interval="10000">
-                <div class="ht-100p d-flex align-items-center">
-
-                  <img class="img-fluid" src="./assets/media_2.jpg">
-
-                </div><!-- d-flex -->
-              </div>
-              <div class="carousel-item active" data-interval="10000">
-                <div class="ht-100p d-flex align-items-center">
-
-                  <img class="img-fluid" src="./assets/media_3.jpg">
-
-                </div><!-- d-flex -->
-              </div>
-            </div><!-- carousel-inner -->
           </div>
           </div>
         </div>
 
         <div id="horizontal" class="row no-gutters">
-          <div class="col tx-dark">
-            <div class="pd-10">
-              <div class="row content">
-
-                <div class="col-4">
-                  <button class="btn btn-outline-secondary" type="button" id="ticker_toggle">Toggle Ticker</button>
-                  <button class="btn btn-outline-secondary" type="button" id="clock_toggle">Toggle Clock</button>
-                </div>
-
-                <div class="col-4">
-                  <div class="d-flex">
-                    <input type="number" class="form-control" id="sample_fullscreen_duration" step="1" min="3" placeholder="Hide Delay">
-                    <button class="btn btn-outline-secondary" type="button" id="sample_fullscreen">Fullscreen Sample</button>
-                  </div>
-                </div>
-
-                <div class="col-4">
-                  <div class="d-flex">
-                    <select class="form-control"></select>
-                      <button class="btn btn-outline-secondary" type="button" id="generate_ticket">Generate Ticket</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
