@@ -1,3 +1,15 @@
+<?php
+error_reporting("all");
+$dir_level = 1;
+require_once('../_ini.php');
+require("../_template_parts.php");
+require("../_template_parts.php");
+
+$page_title = "";
+$content_title = "$page_title";
+$crumbs_title = "$page_title";
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,72 +17,12 @@
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
 
-  <!-- vendor css -->
-  <link href="../app/lib/font-awesome/css/font-awesome.css" rel="stylesheet">
-  <link href="../app/lib/Ionicons/css/ionicons.css" rel="stylesheet">
-  <link href="../app/lib/select2/css/select2.min.css" rel="stylesheet">
-
-  <!-- Slim CSS -->
-  <link rel="stylesheet" href="../app/css/slim.css">
-  <link rel='stylesheet' type='text/css' media='screen' href='assets/css/app.css'>
-  <style>
-    .show-ticker {
-      height: 95vh !important;
-    }
-
-    #announce-modal .modal-content {
-      height: 100vh !important;
-    }
-
-    #announce-modal h1 {
-      font-size: 15vw;
-    }
-
-    #announce-modal h4 {
-      font-size: 10vw;
-    }
-
-    #announce-modal .modal-dialog {
-      height: 100vh;
-      width: 100vw;
-      max-width: 100vw;
-      margin: 0;
-    }
-
-    #large .carousel-item {
-      height: 66.6666vh;
-    }
-
-    #horizontal {
-      height: 33.3333vh;
-    }
-
-    .main-content {
-      transition: all .3s ease-in-out;
-      height: 100vh;
-    }
-
-    #counter_carousel .carousel-item {
-      height: 80vh;
-    }
-
-    .ticket-no {
-      font-size: 2.25vw;
-      line-height: 2.25vw;
-    }
-
-    .counter-no {
-      font-size: 1.75vw;
-      line-height: 1.75vw;
-    }
-
-    body {
-      overflow: hidden !important;
-    }
-  </style>
+  <?php echo "$_template_head"; ?>
+  <title><?php echo "$page_title"; ?></title>
+  <link rel="stylesheet" href="aseets/css/app.css">
+  <link rel="stylesheet" href="aseets/css/display.css">
 </head>
 <body>
-
   <div class="container-fluid pd-0">
     <div class="row no-gutters" style="height: 7.5vh;">
       <div class="d-flex wd-100p">
@@ -87,7 +39,7 @@
 
         <div class="row no-gutters">
           <div class="col">
-            <div id="counter_carousel" class="carousel carousel-fade slide pd-t-10 pd-x-10" style="overflow: hidden">
+            <div id="counter_carousel" class="carousel slide pd-t-10 pd-x-10" style="overflow: hidden">
               <div class="carousel-inner" role="listbox">
               </div>
             </div>
@@ -173,14 +125,10 @@
     </div>
   </div>
 
-  <script src="../app/lib/jquery/js/jquery.js"></script>
-  <script src="../app/lib/popper.js/js/popper.js"></script>
-  <script src="../app/lib/bootstrap/js/bootstrap.js"></script>
-  <script src="../app/lib/jquery.maskedinput/js/jquery.maskedinput.js"></script>
-  <script src="../app/lib/select2/js/select2.full.min.js"></script>
-  <script src="../app/lib/parsleyjs/js/parsley.js"></script>
-  <script src="../app/lib/moment/js/moment.js"></script>
-  <script src="../app/js/slim.js"></script>
+  <?php echo "$_template_footer_inc_1"; ?>
+  <?php echo "$_template_footer_inc_2"; ?>
+
+  <script src="assets/js/utils.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>

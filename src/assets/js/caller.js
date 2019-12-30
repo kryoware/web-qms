@@ -1,32 +1,36 @@
-'use strict';
+$(document).ready(function() {
+  $('form').on('submit', function(e) {
+    e.preventDefault()
 
-$(document).ready(function () {
-  
-  $('form').on('submit', function (e) {
-    e.preventDefault();
+    var payload = {}
+    var input = $(this).serializeArray()
 
-    var input = $(this).serializeArray(), payload = {};
+    console.log(input)
 
-    input.forEach(function (i) {
-      payload[i.name] = i.value;
-    });
+    input.forEach(i => {
+      console.log(i)
+      payload[i.name] = i.value
+    })
 
-    appendSpinner($(this).find('[type="submit"]'));
+    appendSpinner($(this).find('[type="submit"]'))
 
-    if (payload.email === 'staff@example.com' && payload.password === 'staff') {
-      setTimeout(function () {
-        window.location = 'home.html';
-      }, 1000);
+    console.log(payload)
+
+    if (payload.email == 'staff@example.com' && payload.password == 'staff') {
+      console.log('valid')
+      setTimeout(() => {
+        window.location = 'home.php'
+      }, 1000)
     } else {
-      setTimeout(function () {
-        removeSpinner($(this).find('[type="submit"]'));
+      setTimeout(() => {
+        removeSpinner($(this).find('[type="submit"]'))
 
-        $(this).find('.form-control').addClass('is-invalid');
-        $(this).find('.tx-danger').text('Invalid email or password');
+        $(this).find('.form-control').addClass('is-invalid')
+        $(this).find('.tx-danger').text('Invalid email or password')
         $(this).find('.tx-danger').animate({
           opacity: 1
-        }, 300);
-      }, 1000);
+        }, 300)
+      }, 1000)
     }
-  });
-});
+  })
+})

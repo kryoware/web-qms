@@ -1,0 +1,20 @@
+.custom-container {
+  height: calc(100vh - 2rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.custom-signin {
+  border-radius: 0.5rem;
+  background-color: #fff;
+}
+
+.custom-signin-bg {
+  background-image: url('assets/placeholder.jpg');
+  background-attachment: fixed;
+  background-size: contain;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}

@@ -1,0 +1,44 @@
+
+.show-ticker {
+  height: 95vh !important;
+}
+
+#announce-modal .modal-content {
+  height: 100vh !important;
+}
+
+#announce-modal h1 {
+  font-size: 15vw;
+}
+
+#announce-modal h4 {
+  font-size: 10vw;
+}
+
+#announce-modal .modal-dialog {
+  height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+}
+
+#large .carousel-item {
+  height: 66.6666vh;
+}
+
+#horizontal {
+  height: 33.3333vh;
+}
+
+.main-content {
+  transition: all .3s ease-in-out;
+  height: 100vh;
+}
+
+#counter_carousel .carousel-item {
+  height: 80vh;
+}
+
+body {
+  overflow: hidden !important;
+}

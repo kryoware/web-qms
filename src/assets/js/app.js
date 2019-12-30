@@ -142,15 +142,38 @@ function loadDepartments() {
             }
             $('#horizontal .content').append("\n              <div class=\"col\">\n                <button type=\"button\" data-counter_id=\"".concat(counter.counter_id, "\" class=\"btn btn-outline-success btn-call text-uppercase\">").concat(counter.counter_id, " call next</button>\n              </div>\n            "));
             var containers = $('#counter_carousel').find("[data-dept_id=\"".concat(counter.dept_id, "\"]"));
-            $(containers[containers.length - 1]).append("\n              <div class=\"custom-rounded bg-white mg-b-10\" data-counter_id=\"".concat(counter.counter_id, "\">\n                <div class=\"tx-dark\">\n                  <div class=\"row no-gutters\">\n\n                    <div class=\"col-7 text-left\">\n                      <div class=\"d-flex flex-column justify-content-around pd-y-20 pd-l-10\">\n                        <p class=\"counter-no tx-semibold text-uppercase mg-0\">Counter ").concat(counter.counter_no, "</p>\n                      </div>\n                    </div>\n\n                    <div class=\"col-5 text-right\">\n                      <div class=\"d-flex flex-column justify-content-around pd-y-20 pd-r-10\">\n\n<p class=\"ticket-no tx-semibold mg-0\"></p>\n                      </div>\n                    </div>\n\n                  </div>\n                </div>\n              </div>\n"));
+            $(containers[containers.length - 1]).append(`
+              <div class="custom-rounded bg-white mg-b-10" data-counter_id="${counter.counter_id}">
+                <div class="tx-dark">
+                  <div class="row no-gutters">
+
+                    <div class="col-7 text-left">
+                      <div class="d-flex flex-column justify-content-center ht-100p pd-10">
+                        <p class="counter-no tx-semibold text-uppercase mg-0">Counter ${counter.counter_no}</p>
+                      </div>
+                    </div>
+
+                    <div class="col-5 text-right">
+                      <div class="d-flex justify-content-end ht-100p">
+                        <span class="custom-rounded bg-teal ticket-no tx-semibold pd-10 mg-y-10 mg-r-10 tx-white">
+                          <span style="opacity: 0">S-001</span>
+                        </span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            `);
           });
         });
 
-        // $('#counter_carousel').carousel({
-        //   interval: COUNTER_TIMEOUT,
-        //   ride: 'carousel'
-        // });
-        setInterval(loadTickets(), REFRESH_INTERVAL);
+        $('#counter_carousel').carousel({
+          interval: COUNTER_TIMEOUT,
+          ride: 'carousel'
+        });
+        
+        loadTickets()
       }
     }
   });
@@ -180,8 +203,6 @@ function loadTickets() {
 }
 
 function announce(queue) {
-  console.log('attempt');
-
   var modal_shown = $('#announce-modal').hasClass('show');
   var data = queue[0];
   if (!data || modal_shown) return;
@@ -192,13 +213,13 @@ function announce(queue) {
     announce(QUEUE);
     return;
   } else {
-    ANNOUNCED.push(data.ann_id); // try {
-    //   // Play audio / Text-to-speech ?
-    //   AUDIO.play();
-    // } catch(e) {
-    //   console.error(e)
-    // }
-    // Update counter carousel data
+    ANNOUNCED.push(data.ann_id);
+    
+
+    AUDIO.play();
+    setTimeout(function () {
+      speak(data.message);
+    }, 500);
 
     var counter_card_dom = $("[data-dept_id=\"".concat(data.dept_id, "\"] [data-counter_id=\"").concat(data.counter_no, "\"]"));
     $(counter_card_dom).find('.ticket-no').text(data.ticket_label); // Update counter carousel data
@@ -207,7 +228,7 @@ function announce(queue) {
     $('#counter').text(data.counter_no);
     $('#announce-modal').modal('show');
     setTimeout(function () {
-      console.log('setup modal close');
+      console.log('Remove Announcement');
       $('#announce-modal').modal('hide');
 
       setTimeout(function () {
@@ -226,10 +247,11 @@ function loadAnnouncements() {
         var T_QUEUE = QUEUE.map(function (ann) {
           return ann.ann_id;
         });
+        
         var NEW_QUEUE = Object.values(res.data).filter(function (data) {
           return !ANNOUNCED.includes(data.ann_id) || !T_QUEUE.includes(data.ann_id);
         });
-        console.log(NEW_QUEUE);
+
         QUEUE = QUEUE.concat(NEW_QUEUE);
       }
     }
