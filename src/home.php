@@ -19,8 +19,8 @@ $crumbs_title = "$page_title";
 
   <?php echo "$_template_head"; ?>
   <title><?php echo "$page_title"; ?></title>
-  <link rel="stylesheet" href="aseets/css/app.css">
-  <link rel="stylesheet" href="aseets/css/home.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/home.css">
 </head>
 <body class="bg-gray-300">
   <div style="height: 100vh; overflow: hidden;">

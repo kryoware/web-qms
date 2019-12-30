@@ -1,4 +1,3 @@
-
 .show-ticker {
   height: 95vh !important;
 }
@@ -37,6 +36,16 @@
 
 #counter_carousel .carousel-item {
   height: 80vh;
+}
+
+.ticket-no {
+  font-size: 2.25vw;
+  line-height: 2.25vw;
+}
+
+.counter-no {
+  font-size: 1.75vw;
+  line-height: 1.75vw;
 }
 
 body {
