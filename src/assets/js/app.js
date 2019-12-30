@@ -122,11 +122,11 @@ function loadDepartments() {
               <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
                 <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
                   <div class="d-flex flex-column justify-content-center">
-                    <span class="dept-name mg-0 tx-semibold tx-teal text-left text-uppercase" style="font-size: 2vw;">${dept.dept_name}</span>
+                    <span class="dept-name mg-0 tx-semibold tx-teal text-left text-uppercase">${dept.dept_name}</span>
                   </div>
 
                   <div class="d-flex flex-column justify-content-center">
-                    <span class="mg-0 tx-semibold text-center text-uppercase" style="font-size: 1.5vw;line-height: 1.5vw;">Now Serving</span>
+                    <span class="tx-dark now-serving mg-0 tx-semibold text-center text-uppercase">Now Serving</span>
                   </div>
                 </div>
               </div>
@@ -137,7 +137,21 @@ function loadDepartments() {
             if (CURR < MAX) {
               CURR++;
             } else {
-              $('#counter_carousel .carousel-inner').append("\n                <div class=\"carousel-item\">\n                  <div class=\"d-flex flex-column\" data-dept_id=\"".concat(dept.dept_id, "\">\n                    <p class=\"custom-rounded dept-name tx-semibold mg-b-10 pd-10 tx-teal bg-white text-center text-uppercase\" style=\"font-size: 2.75vw\">").concat(dept.dept_name, "</p>\n                  </div>\n                </div>\n              "));
+              $('#counter_carousel .carousel-inner').append(`
+                <div class="carousel-item">
+                  <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
+                    <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
+                      <div class="d-flex flex-column justify-content-center">
+                        <span class="dept-name mg-0 tx-semibold tx-teal text-left text-uppercase">${dept.dept_name}</span>
+                      </div>
+
+                      <div class="d-flex flex-column justify-content-center">
+                        <span class="tx-dark now-serving mg-0 tx-semibold text-center text-uppercase">Now Serving</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `)
               CURR = 0;
             }
             $('#horizontal .content').append("\n              <div class=\"col\">\n                <button type=\"button\" data-counter_id=\"".concat(counter.counter_id, "\" class=\"btn btn-outline-success btn-call text-uppercase\">").concat(counter.counter_id, " call next</button>\n              </div>\n            "));

@@ -9,3 +9,49 @@
 .flex-shrink-1 {
   flex-shrink: 1 !important;
 }
+
+.dept-name,
+.ticket-no {
+  font-size: 2.25vw;
+  line-height: 2.25vw;
+}
+
+.now-serving,
+.counter-no {
+  font-size: 1.75vw;
+  line-height: 1.75vw;
+}
+
+/*
+ * SCREEN SPECIFIC CSS
+ */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .dept-name,
+  .ticket-no {
+    font-size: 3vw;
+    line-height: 3vw;
+  }
+
+  .now-serving,
+  .counter-no {
+    font-size: 2vw;
+    line-height: 2vw;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}

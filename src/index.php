@@ -27,7 +27,7 @@ $crumbs_title = "$page_title";
     <div class="row no-gutters" style="height: 7.5vh;">
       <div class="d-flex wd-100p">
         <div class="ml-auto time ht-100p" style="display: none;">
-          <div class="d-flex flex-column justify-content-center tx-teal tx-semibold ht-100p pd-10">
+          <div class="d-flex flex-column justify-content-center tx-dark tx-semibold ht-100p pd-10">
             <p class="mg-0" style="line-height: 5vh; font-size: 4vh;"></p>
           </div>
         </div>
