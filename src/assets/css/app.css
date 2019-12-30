@@ -38,16 +38,24 @@
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-  .dept-name,
-  .ticket-no {
+  .dept-name {
     font-size: 3vw;
     line-height: 3vw;
   }
 
-  .now-serving,
-  .counter-no {
+  .now-serving {
     font-size: 2vw;
     line-height: 2vw;
+  }
+  
+  .ticket-no {
+    font-size: 4vw;
+    line-height: 4vw;
+  }
+
+  .counter-no {
+    font-size: 3vw;
+    line-height: 3vw;
   }
 }
 
