@@ -39,8 +39,7 @@ $crumbs_title = "$page_title";
 
         <div class="row no-gutters">
           <div class="col">
-            <div id="counter_carousel" class="pd-t-10 pd-x-10" style="overflow: hidden">
-            </div>
+            <div id="counter_carousel"></div>
           </div>
         </div>
 

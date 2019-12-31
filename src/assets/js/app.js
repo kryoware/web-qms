@@ -1,52 +1,28 @@
 "use strict";
 
+var AUDIO = new Audio('./assets/ding_dong.mp3'),
+  MODAL_TIMEOUT = 60000,
+  xCOUNTER_TIMEOUT = 10000,
+  REFRESH_INTERVAL = 5000,
+  MAX = 5,
+  CURR = 0,
+  FULLSCREEN_ENABLED = false,
+  FULLSCREEN_TIMEOUT = null,
+  COUNTERS = null,
+  DEPARTMENTS = null,
+  TICKETS = [],
+  CONFIG = null,
+  QUEUE = [],
+  ANNOUNCED = [],
+  CAROUSEL_PAGE = 1,
+  CAROUSEL_INTERVAL_ID = null;
+
 $(document).ready(function () {
-  var AUDIO = new Audio('./assets/ding_dong.mp3'),
-    MODAL_TIMEOUT = 60000,
-    COUNTER_TIMEOUT = 10000,
-    REFRESH_INTERVAL = 5000,
-    MAX = 5,
-    CURR = 0,
-    FULLSCREEN_ENABLED = false,
-    FULLSCREEN_TIMEOUT = null,
-    COUNTERS = null,
-    DEPARTMENTS = null,
-    TICKETS = [],
-    CONFIG = null,
-    QUEUE = [],
-    ANNOUNCED = [],
-    CAROUSEL_PAGE = 1,
-    CAROUSEL_INTERVAL_ID = null;
-
-  function carouselScroll(page) {
-    console.log('CAROUSEL SLIDE: ' + page);
-
-    var max_pages = $('#counter_carousel').children().length - 1;
-    var carousel = $('#counter_carousel').width();
-    var slide = $($('#counter_carousel').children()[page - 1]);
-
-    $('#counter_carousel .active').removeClass('active');
-    $(slide).addClass('active');
-
-    document.querySelector('.carousel-item.active').scrollIntoView();
-
-    // Return to first slide
-    if (page === max_pages) {
-      CAROUSEL_PAGE = 1;
-    }
-  }
-
-  rideCarousel();
-  function rideCarousel() {
-    console.warn('Start Carousel');
-    CAROUSEL_INTERVAL_ID = setInterval(function () {
-      carouselScroll(CAROUSEL_PAGE++);
-    }, COUNTER_TIMEOUT);
-  }
-
-  $('body').click();
-
   (function () {
+    rideCarousel();
+
+    $('body').click();
+
     $.ajax({
       url: 'config.json',
       success: function success(res) {
@@ -257,9 +233,6 @@ $(document).ready(function () {
   }
 
   function announce(queue) {
-    // Stop sliding for now
-    clearInterval(CAROUSEL_INTERVAL_ID);
-
     var modal_shown = $('#announce-modal').hasClass('show');
     var data = queue[0];
 
@@ -286,18 +259,19 @@ $(document).ready(function () {
       $('#announce-modal').modal('show');
 
       setTimeout(function () {
-        console.log('Remove Announcement from queue');
         $('#announce-modal').modal('hide');
 
-        // Go to announced counter's page
-        carouselScroll(CAROUSEL_PAGE);
+        (function () {
+          // Stop sliding for now
+          clearInterval(CAROUSEL_INTERVAL_ID);
+
+          // Start Sliding
+          rideCarousel();
+        })();
         
         setTimeout(function () {
           QUEUE.shift();
           announce(QUEUE);
-
-          // Restart sliding
-          rideCarousel();
         }, 500);
       }, 5000);
     }
@@ -322,3 +296,27 @@ $(document).ready(function () {
     });
   }
 }); // Ready
+
+function carouselScroll(page) {
+  console.log('slide')
+  var max_pages = $('#counter_carousel').children().length;
+  var carousel = $('#counter_carousel').width();
+  var slide = $($('#counter_carousel').children()[page - 1]);
+
+  $('#counter_carousel .active').removeClass('active');
+  $(slide).addClass('active');
+
+  document.querySelector('.carousel-item.active').scrollIntoView();
+
+  // Return to first slide
+  if (page === max_pages) {
+    CAROUSEL_PAGE = 1;
+  }
+}
+
+function rideCarousel() {
+  console.log('start carousel')
+  CAROUSEL_INTERVAL_ID = setInterval(function () {
+    carouselScroll(CAROUSEL_PAGE++);
+  }, 5000);
+}
