@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <style>
-        .wrapper {
-            transition: all .5s ease-in-out;
-            overflow: hidden;
-            white-space: nowrap;
-            width: 40vw;
-        }
-
-        .slide {
-            display: inline-block;
-            width: 40vw;
-            height: 400px;
-        }
-
-        .bg-red { background-color: red; }
-        .bg-blue { background-color: blue; }
-        .bg-green { background-color: green; }
-    </style>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Page Title</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <style>
+    .wrapper {
+      transition: all .5s ease-in-out;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 40vw;
+    }
+    
+    .slide {
+      display: inline-block;
+      width: 40vw;
+      height: 400px;
+    }
+    
+    .bg-red { background-color: red; }
+    .bg-blue { background-color: blue; }
+    .bg-green { background-color: green; }
+  </style>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="slide bg-red"></div>
-        <div class="slide bg-blue"></div>
-        <div class="slide bg-green"></div>
-    </div>
+  <div class="wrapper">
+    <div class="slide active bg-red"></div>
+    <div class="slide bg-blue"></div>
+    <div class="slide bg-green"></div>
+  </div>
+
   <script src="../app/lib/jquery/js/jquery.js"></script>
+  <script src="assets/js/test.js"></script>
 </body>
 </html>
