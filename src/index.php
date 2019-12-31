@@ -39,9 +39,7 @@ $crumbs_title = "$page_title";
 
         <div class="row no-gutters">
           <div class="col">
-            <div id="counter_carousel" class="carousel slide pd-t-10 pd-x-10" style="overflow: hidden">
-              <div class="carousel-inner" role="listbox">
-              </div>
+            <div id="counter_carousel" class="pd-t-10 pd-x-10" style="overflow: hidden">
             </div>
           </div>
         </div>
@@ -153,7 +151,7 @@ $crumbs_title = "$page_title";
   <?php echo "$_template_footer_inc_1"; ?>
   <?php echo "$_template_footer_inc_2"; ?>
 
-  <script src="assets/js/utils.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="assets/js/utils.js?v=<?php echo microtime() ?>"></script>
+  <script src="assets/js/app.js?v=<?php echo microtime() ?>"></script>
 </body>
 </html>

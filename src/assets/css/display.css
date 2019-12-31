@@ -36,6 +36,14 @@
 
 #counter_carousel .carousel-item {
   height: 80vh;
+  padding: 10px;
+  display: inline-block;
+}
+
+#counter_carousel {
+  overflow: hidden;
+  white-space: nowrap;
+  scroll-behavior: smooth;
 }
 
 body {
