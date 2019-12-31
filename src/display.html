@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Page Title</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <link href="../app/lib/font-awesome/css/font-awesome.css" rel="stylesheet">
+  <link href="../app/lib/Ionicons/css/ionicons.css" rel="stylesheet">
+  <link href="../app/lib/select2/css/select2.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../app/css/slim.css">
+  <link rel='stylesheet' type='text/css' media='screen' href='assets/css/app.css'>
+  <link rel='stylesheet' type='text/css' media='screen' href='assets/css/display.css'>
+</head>
+<body>
+  <div class="container-fluid pd-0">
+    <div class="row no-gutters" style="height: 7.5vh;">
+      <div class="d-flex wd-100p">
+        <div class="ml-auto time ht-100p" style="display: none;">
+          <div class="d-flex flex-column justify-content-center tx-dark tx-semibold ht-100p pd-10">
+            <p class="mg-0" style="line-height: 5vh; font-size: 4vh;"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="d-flex main-content">
+      <div id="vertical" class="d-flex flex-column wd-40p bg-teal" style="overflow-y: hidden">
+  
+        <div class="row no-gutters">
+          <div class="col">
+            <div id="counter_carousel" class="carousel slide pd-t-10 pd-x-10" style="overflow: hidden">
+              <div class="carousel-inner" role="listbox">
+              </div>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+  
+      <div class="d-flex flex-column wd-60p">
+  
+        <div id="large" class="row no-gutters">
+  
+          <div class="col ht-100p">
+            <div id="media" class="carousel slide" data-ride="carousel">
+              <div class="carousel-inner" role="listbox">
+                <div class="carousel-item" data-interval="10000">
+                  <div class="ht-100p d-flex align-items-center">
+  
+                    <img class="img-fluid" src="./assets/media_1.jpg">
+  
+                  </div><!-- d-flex -->
+                </div>
+                <div class="carousel-item" data-interval="10000">
+                  <div class="ht-100p d-flex align-items-center">
+  
+                    <img class="img-fluid" src="./assets/media_2.jpg">
+  
+                  </div><!-- d-flex -->
+                </div>
+                <div class="carousel-item active" data-interval="10000">
+                  <div class="ht-100p d-flex align-items-center">
+  
+                    <img class="img-fluid" src="./assets/media_3.jpg">
+  
+                  </div><!-- d-flex -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div id="horizontal" class="row no-gutters">
+          <div class="col tx-dark">
+            <div class="pd-10">
+              <div class="row content">
+  
+                <div class="col-4">
+                  <button class="btn btn-outline-secondary" type="button" id="ticker_toggle">Toggle Ticker</button>
+                  <button class="btn btn-outline-secondary" type="button" id="clock_toggle">Toggle Clock</button>
+                </div>
+  
+                <div class="col-4">
+                  <div class="d-flex">
+                    <input type="number" class="form-control" id="sample_fullscreen_duration" step="1" min="3"
+                      placeholder="Hide Delay">
+                    <button class="btn btn-outline-secondary" type="button" id="sample_fullscreen">Fullscreen
+                      Sample</button>
+                  </div>
+                </div>
+  
+                <div class="col-4">
+                  <div class="d-flex">
+                    <select class="form-control"></select>
+                    <button class="btn btn-outline-secondary" type="button" id="generate_ticket">Generate Ticket</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  
+    <div id="ticker" style="height: 5vh;" class="bg-teal tx-white">
+      <marquee style="line-height: 5vh; font-size: 4vh;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+        porttitor hendrerit placerat. Donec pretium, felis congue semper fringilla, quam massa egestas arcu, vel rutrum
+        risus ex sed odio</marquee>
+    </div>
+  </div>
+  
+  <div class="modal fade effect-scale" id="announce-modal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="announceModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body mg-0 pd-0">
+  
+          <div class="row no-gutters ht-100p">
+  
+            <div class="col-6 bg-teal ht-100p">
+              <div class="d-flex flex-column justify-content-center ht-100p">
+                <div class="pd-25 tx-white tx-uppercase tx-center">
+                  <h4>Ticket #</h4>
+  
+                  <h1 id="ticket"></h1>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-6 tx-teal ht-100p">
+              <div class="d-flex flex-column justify-content-center ht-100p">
+                <div class="pd-25 tx-uppercase tx-center">
+                  <h4>Counter</h4>
+  
+                  <h1 id="counter"></h1>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../app/lib/jquery/js/jquery.js"></script>
+  <script src="../app/lib/popper.js/js/popper.js"></script>
+  <script src="../app/lib/bootstrap/js/bootstrap.js"></script>
+  <script src="../app/lib/jquery.maskedinput/js/jquery.maskedinput.js"></script>
+  <script src="../app/lib/select2/js/select2.full.min.js"></script>
+  <script src="../app/lib/parsleyjs/js/parsley.js"></script>
+  <script src="../app/lib/moment/js/moment.js"></script>
+  <script src="../app/js/slim.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

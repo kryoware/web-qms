@@ -182,12 +182,14 @@ function loadDepartments() {
           });
         });
 
-        $('#counter_carousel').carousel({
-          interval: COUNTER_TIMEOUT,
-          ride: 'carousel'
-        });
+        // $('#counter_carousel').carousel({
+        //   interval: COUNTER_TIMEOUT,
+        //   ride: 'carousel'
+        // });
         
-        loadTickets()
+        setInterval(function () {
+          loadTickets()
+        }, 3000)
       }
     }
   });
@@ -235,8 +237,8 @@ function announce(queue) {
       speak(data.message);
     }, 500);
 
-    var counter_card_dom = $("[data-dept_id=\"".concat(data.dept_id, "\"] [data-counter_id=\"").concat(data.counter_no, "\"]"));
-    $(counter_card_dom).find('.ticket-no').text(data.ticket_label); // Update counter carousel data
+    // var counter_card_dom = $("[data-dept_id=\"".concat(data.dept_id, "\"] [data-counter_id=\"").concat(data.counter_no, "\"]"));
+    // $(counter_card_dom).find('.ticket-no').text(data.ticket_label); // Update counter carousel data
 
     $('#ticket').text(data.ticket_label);
     $('#counter').text(data.counter_no);
