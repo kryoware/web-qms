@@ -2,6 +2,7 @@ bower_components/**
 node_modules/**
 app/**
 scss/**
-    
-*.json
 gulpfile.js
+package-lock.json
+package.json
+bower.json
