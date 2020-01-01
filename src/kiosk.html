@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Page Title</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <link href="../app/lib/font-awesome/css/font-awesome.css" rel="stylesheet">
+  <link href="../app/lib/Ionicons/css/ionicons.css" rel="stylesheet">
+  <link href="../app/lib/select2/css/select2.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../app/css/slim.css">
+  <link rel='stylesheet' type='text/css' media='screen' href='assets/css/app.css'>
+  
+  <style>
+    .content {
+      height: 100vh;
+    }
+    
+    .btn.custom-rounded {
+      text-transform: uppercase;
+      font-size: 1.75rem;
+    }
+    
+    .welcome-card {
+      transition: all .5s ease-in-out;
+      height: 50vh
+    }
+  </style>
+</head>
+<body>
+  <div class="content container-fluid bg-teal">
+    
+    <div class="d-flex flex-column justify-content-center ht-100p">
+      <div class="welcome-card wd-80p m-auto bg-white custom-rounded pd-20">
+        
+        <div class="d-flex flex-column justify-content-between ht-100p">
+          <div>
+            <div class="d-flex justify-content-center mg-b-20">
+              <img src="http://dev.teaconcepts.net/CleverQMS/assets/header_logo.jpg" class="img-fluid">
+            </div>
+            <h1 class="text-center text-uppercase tx-semibold tx-dark mg-y-40">Welcome</h1>
+            <h3 class="text-center tx-semibold tx-dark">What can we help you with today?</h3>
+          </div>
+          
+          <div id="departments" class="mg-t-20">
+            <div class="d-flex ht-100p flex-column justify-content-around">
+            </div>
+          </div>
+          
+          <div id="actions" class="mg-t-20" style="display: none;">
+            <div class="d-flex flex-column justify-content-between">
+              
+              <h4 class="text-center tx-dark tx-semibold">Currently in queue: 3</h4>
+              <h4 class="text-center tx-dark tx-semibold mg-b-20">Waiting Time: 10 mins</h4>
+              
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn custom-rounded btn-back wd-50p ht-100p mg-r-5">Go Back</button>
+                <button type="button" class="btn btn-success custom-rounded btn-print wd-50p ht-100p mg-l-5">Print Ticket</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="confirm-modal" class="modal show fade effect-slide-in-bottom" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body tx-center pd-y-20 pd-x-20">
+          <i class="icon ion-ios-checkmark-outline tx-100 tx-success lh-1 d-inline-block mg-y-25"></i>
+          
+          <h3 class="text-center">Please refer to the number printed on your ticket</h3>
+          <h4 class="text-center">Your number will be caleld shortly, Thank you for waiting</h4>
+          
+          <button type="button" class="btn btn-success pd-x-25 mg-t-25 custom-rounded" data-dismiss="modal">Okay</button>
+        </div><!-- modal-body -->
+      </div><!-- modal-content -->
+    </div>
+  </div>
+  
+  <script src="../app/lib/jquery/js/jquery.js"></script>
+  <script src="../app/lib/popper.js/js/popper.js"></script>
+  <script src="../app/lib/bootstrap/js/bootstrap.js"></script>
+  <script src="../app/lib/jquery.maskedinput/js/jquery.maskedinput.js"></script>
+  <script src="../app/lib/select2/js/select2.full.min.js"></script>
+  <script src="../app/lib/parsleyjs/js/parsley.js"></script>
+  <script src="../app/lib/moment/js/moment.js"></script>
+  <script src="../app/js/slim.js"></script>
+  
+  <script src="assets/js/kiosk.js"></script>
+</body>
+</html>

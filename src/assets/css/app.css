@@ -22,6 +22,10 @@
   line-height: 1.75vw;
 }
 
+.text-wrap {
+  white-space: normal!important;
+}
+
 /*
  * SCREEN SPECIFIC CSS
  */

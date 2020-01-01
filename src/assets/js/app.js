@@ -1,34 +1,43 @@
 "use strict";
 
-var AUDIO = new Audio('./assets/ding_dong.mp3'),
-  MODAL_TIMEOUT = 60000,
-  xCOUNTER_TIMEOUT = 10000,
-  REFRESH_INTERVAL = 5000,
-  MAX = 5,
-  CURR = 0,
-  FULLSCREEN_ENABLED = false,
-  FULLSCREEN_TIMEOUT = null,
-  COUNTERS = null,
-  DEPARTMENTS = null,
-  TICKETS = [],
-  CONFIG = null,
-  QUEUE = [],
-  ANNOUNCED = [],
-  CAROUSEL_PAGE = 1,
-  CAROUSEL_INTERVAL_ID = null;
-
 $(document).ready(function () {
+  var AUDIO = new Audio('./assets/ding_dong.mp3'),
+    TICKET_INTERVAL = null,
+    ANNOUNCEMENT_INTERVAL = null,
+    SLIDE_INTERVAL = null,
+    IMAGE_INTERVAL = null,
+    VIDEO_INTERVAL = null,
+
+    MAX_COUNTERS = 5,
+
+    CURR = 0,
+
+    FULLSCREEN_ENABLED = false,
+    FULLSCREEN_TIMEOUT = null,
+
+    COUNTERS = null,
+    DEPARTMENTS = null,
+    TICKETS = [],
+    CONFIG = null,
+    QUEUE = [],
+    ANNOUNCED = [],
+    CAROUSEL_PAGE = 2,
+    CAROUSEL_INTERVAL_ID = null;
+
   (function () {
-    rideCarousel();
-
-    $('body').click();
-
     $.ajax({
       url: 'config.json',
       success: function success(res) {
         if (res.stat === 'ok' && Object.keys(res.data).length) {
           // FIXME: MOCK API
           CONFIG = res.data.config;
+
+          ANNOUNCEMENT_INTERVAL = parseFloat(CONFIG['load_announcements']) * 1000;
+          TICKET_INTERVAL = parseFloat(CONFIG['load_ticket']) * 1000;
+          SLIDE_INTERVAL = parseFloat(CONFIG['slide_dept']) * 1000;
+          IMAGE_INTERVAL = parseFloat(CONFIG['slide_image']) * 1000;
+          VIDEO_INTERVAL = parseFloat(CONFIG['slide_video']) * 1000;
+
           initializeLayout();
         }
       },
@@ -37,13 +46,7 @@ $(document).ready(function () {
       }
     });
   })();
-
-  setInterval(loadAnnouncements, 5000);
-  setInterval(function () {
-    console.log('ANNS IN QUEUE: ' + QUEUE.length);
-    if (QUEUE.length) announce(QUEUE);else return;
-  }, 3000);
-
+  
   $('body').on('click', '.btn-call', function () {
     var counter_id = $(this).data('counter_id');
     $.ajax({
@@ -65,16 +68,6 @@ $(document).ready(function () {
     }
   });
 
-  $('#clock_toggle').on('click', function () {
-    $(this).toggleClass('active');
-    $('.time').parent().parent().slideToggle();
-  });
-
-  $('#ticker_toggle').on('click', function () {
-    $(this).toggleClass('active');
-    $('.main-content').toggleClass('show-ticker');
-  });
-
   $('[name="fullscreen_enabled"]').on('change', function () {
     // $(this).
   });
@@ -93,33 +86,75 @@ $(document).ready(function () {
   $('#sample_fullscreen').on('click', function () {
     sampleFullScreen();
   });
-
-  function initializeLayout(data) {
-    if (CONFIG['clock']) {
-      var clock = CONFIG['clock'];
-      $('.time').toggle(clock.enabled);
-      var format = '';
-
-      if (clock.date_format.show_dow) {
-        format += clock.date_format.dow == 'short' ? 'ddd, ' : 'dddd, ';
-      }
-
-      format += clock.date_format.month == 'short' ? 'MMM ' : 'MMMM ';
-      format += clock.date_format.day == 'short' ? 'D ' : 'DD ';
-      format += clock.date_format.show_year ? 'Y' : '';
-      format += clock.time_format.hours == 'short' ? ' h:mm' : ' hh:mm';
-      format += clock.time_format.show_seconds ? ':ss ' : '';
-      format += clock.time_format.show_suffix ? 'A' : '';
-      setInterval(function () {
-        $('.time p').text(moment().format(format));
-      }, 500);
-    }
-
-    loadDepartments();
-  }
+  
+  $('#announce-modal').on('hide.bs.modal', function() {
+    (function () {
+      carouselScroll(CAROUSEL_PAGE);
+      rideCarousel();
+    })();
+  });
 
   // FIXME: Remove when live
   var host = 'http://dev.teaconcepts.net/CleverQMS/';
+
+  function initializeLayout(data) {
+    $('.main-content').toggleClass('show-ticker', CONFIG['show_ticker'] === true);
+    
+    if (CONFIG['show_ticker'] === true) {
+      $('#ticker').toggle();
+      $('#ticker').append(`
+        <marquee style="line-height: 10vh; font-size: 7vh;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+          porttitor hendrerit placerat. Donec pretium, felis congue semper fringilla, quam massa egestas arcu, vel rutrum
+          risus ex sed odio</marquee>
+      `);
+    }
+    
+    if (CONFIG['show_logo'] === true || CONFIG['clock'].enabled) {
+      $('#header').show();
+      $('.main-content').addClass('show-header');
+    } else if (CONFIG['show_logo'] === false && CONFIG['clock'].enabled === false) {
+      $('#header').hide();
+      $('.main-content').removeClass('show-header');
+    }
+
+    $('.brand').toggle(CONFIG['show_logo'] === true);
+
+
+    if (CONFIG['clock']) {
+      var clock = CONFIG['clock'];
+      $('.time').toggle(clock.enabled);
+      
+      if (clock.enabled) {
+        var format = '';
+
+        if (clock.date_format.show_dow) {
+          format += clock.date_format.dow == 'short' ? 'ddd, ' : 'dddd, ';
+        }
+
+        format += clock.date_format.month == 'short' ? 'MMM ' : 'MMMM ';
+        format += clock.date_format.day == 'short' ? 'D ' : 'DD ';
+        format += clock.date_format.show_year ? 'Y' : '';
+        format += clock.time_format.hours == 'short' ? ' h:mm' : ' hh:mm';
+        format += clock.time_format.show_seconds ? ':ss ' : '';
+        format += clock.time_format.show_suffix ? 'A' : '';
+        setInterval(function () {
+          $('.time p').text(moment().format(format));
+        }, 500);
+      }
+    }
+
+    loadDepartments();
+
+    (function () {
+      rideCarousel();
+    })();
+
+    setInterval(loadAnnouncements, ANNOUNCEMENT_INTERVAL);
+    setInterval(function () {
+      console.log('ANNS IN QUEUE: ' + QUEUE.length);
+      if (QUEUE.length) announce(QUEUE);else return;
+    }, ANNOUNCEMENT_INTERVAL / 2);
+  }
 
   function loadDepartments() {
     $.ajax({
@@ -136,7 +171,7 @@ $(document).ready(function () {
               <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
                 <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
                   <div class="d-flex flex-column justify-content-center">
-                    <span class="dept-name mg-0 tx-semibold tx-teal text-left text-uppercase">${dept.dept_name}</span>
+                    <span class="dept-name mg-0 tx-semibold tx-teal text-left text-wrap text-uppercase">${dept.dept_name}</span>
                   </div>
 
                   <div class="d-flex flex-column justify-content-center">
@@ -148,7 +183,7 @@ $(document).ready(function () {
           `);
 
             Object.values(dept.counters).forEach(function (counter) {
-              if (CURR < MAX) {
+              if (CURR < MAX_COUNTERS) {
                 CURR++;
               } else {
                 $('#counter_carousel').append(`
@@ -156,7 +191,7 @@ $(document).ready(function () {
                   <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
                     <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
                       <div class="d-flex flex-column justify-content-center">
-                        <span class="dept-name mg-0 tx-semibold tx-teal text-left text-uppercase">${dept.dept_name}</span>
+                        <span class="dept-name mg-0 tx-semibold tx-teal text-left text-wrap text-uppercase">${dept.dept_name}</span>
                       </div>
 
                       <div class="d-flex flex-column justify-content-center">
@@ -196,14 +231,9 @@ $(document).ready(function () {
             });
           });
 
-          // $('#counter_carousel').carousel({
-          //   interval: COUNTER_TIMEOUT,
-          //   ride: 'carousel'
-          // });
-
           setInterval(function () {
             loadTickets();
-          }, 3000);
+          }, TICKET_INTERVAL);
         }
       }
     });
@@ -251,6 +281,7 @@ $(document).ready(function () {
         speak(data.message);
       }, 500);
 
+      clearInterval(CAROUSEL_INTERVAL_ID)
       var slide_dom = $('#counter_carousel [data-counter_id="' + data.counter_no + '"]').closest('.carousel-item');
       CAROUSEL_PAGE = $(slide_dom).index() + 1;
 
@@ -260,14 +291,6 @@ $(document).ready(function () {
 
       setTimeout(function () {
         $('#announce-modal').modal('hide');
-
-        (function () {
-          // Stop sliding for now
-          clearInterval(CAROUSEL_INTERVAL_ID);
-
-          // Start Sliding
-          rideCarousel();
-        })();
         
         setTimeout(function () {
           QUEUE.shift();
@@ -295,28 +318,28 @@ $(document).ready(function () {
       }
     });
   }
-}); // Ready
 
-function carouselScroll(page) {
-  console.log('slide')
-  var max_pages = $('#counter_carousel').children().length;
-  var carousel = $('#counter_carousel').width();
-  var slide = $($('#counter_carousel').children()[page - 1]);
+  function carouselScroll(page) {
+    console.log('slide')
+    var   max_pages = $('#counter_carousel').children().length;
+    var carousel = $('#counter_carousel').width();
+    var slide = $($('#counter_carousel').children()[page - 1]);
 
-  $('#counter_carousel .active').removeClass('active');
-  $(slide).addClass('active');
+    $('#counter_carousel .active').removeClass('active');
+    $(slide).addClass('active');
 
-  document.querySelector('.carousel-item.active').scrollIntoView();
+    document.querySelector('.carousel-item.active').scrollIntoView();
 
-  // Return to first slide
-  if (page === max_pages) {
-    CAROUSEL_PAGE = 1;
+    // Return to first slide
+    if (page === max_pages) {
+      CAROUSEL_PAGE = 1;
+    }
   }
-}
 
-function rideCarousel() {
-  console.log('start carousel')
-  CAROUSEL_INTERVAL_ID = setInterval(function () {
-    carouselScroll(CAROUSEL_PAGE++);
-  }, 5000);
-}
+  function rideCarousel() {
+    console.log('start carousel')
+    CAROUSEL_INTERVAL_ID = setInterval(function () {
+      carouselScroll(CAROUSEL_PAGE++);
+    }, SLIDE_INTERVAL);
+  }
+}); // Ready
