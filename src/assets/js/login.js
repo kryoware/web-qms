@@ -26,7 +26,7 @@ $(document).ready(function () {
   })();
 
   $('body').on('click', '.counter-select', function () {
-    if ($(this).hasClass('bg-danger')) {
+    if ($(this).hasClass('bg-warning')) {
       return;
     } else if ($(this).hasClass('bg-teal')) {
       $(this).removeClass('bg-teal');

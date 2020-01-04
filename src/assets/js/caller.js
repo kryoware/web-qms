@@ -1,38 +1,46 @@
 $(document).ready(function() {
-  $('.profile-pic').on('click', function () {
-    var elem = document.documentElement;
-
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
-      elem.msRequestFullscreen();
-    }
-  })
+  
+  // FIXME: For testing only
+  var COUNTER_ID = window.location.search.slice('counter_id'.length + 2);
+  var TIMER_INTERVAL_ID = null;
+  var TIMER_START = null;
+  var PREV_TICKET = null;
 
   $('#caller_next').on('click', function() {
     callApi('caller_next', {
-
+      counter_id: COUNTER_ID
     }, function (res) {
-      console.log(res)
-
       if (res.stat == 'ok') {
-        console.log('caller_next', res.data)
+        clearInterval(TIMER_INTERVAL_ID);
+
+        PREV_TICKET = res.data.ticket_label;
+        $('#ticket').text(PREV_TICKET);
+        $('#ticket').animate({ opacity: '+=1' }, 500, 'linear');
+
+        TIMER_START = moment();
+        TIMER_INTERVAL_ID = setInterval(function () {
+          $('#time').text(moment(moment().diff(TIMER_START)).format('mm:ss'));
+        }, 500);
       }
     });
   });
 
   $('#caller_recall').on('click', function() {
     callApi('caller_recall', {
-
+      counter_id: COUNTER_ID
     }, function (res) {
-      console.log(res)
-
       if (res.stat == 'ok') {
-        console.log('caller_recall', res.data)
+        clearInterval(TIMER_INTERVAL_ID);
+
+        $('#time').text('00:00');
+        
+        $('#ticket').animate({ opacity: 0 }, 500, 'linear',
+        function () {
+          $('#ticket').text(PREV_TICKET);
+          $('#ticket').animate({
+            opacity: '+=1'
+          }, 500);
+        });
       }
     });
   });

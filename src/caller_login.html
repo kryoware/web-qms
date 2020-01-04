@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Page Title</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <link href="../app/lib/font-awesome/css/font-awesome.css" rel="stylesheet">
+  <link href="../app/lib/Ionicons/css/ionicons.css" rel="stylesheet">
+  <link href="../app/lib/select2/css/select2.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="../app/css/slim.css">
+  <link rel='stylesheet' type='text/css' media='screen' href='assets/css/app.css'>
+
+  <style>
+    .counter-select {
+      height: 7.5rem;
+      transition: all .5s ease-in-out;
+    }
+
+    body {
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .form-control:focus {
+      border-color: #1CAF9A;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container-fluid d-flex wd-100p mg-0 pd-0">
+    <div class="custom-rounded bg-white pd-30 mg-x-30 mg-t-30 wd-100p">
+      <div id="dept_name"></div>
+    </div>
+
+    <div class="row no-gutters d-flex wd-100p mg-0 pd-0">
+  
+      <div class="custom-rounded bg-white pd-30 mg-y-30 mg-l-30 mg-r-15 wd-70p">
+        <div id="counters" class="row">
+  
+          <div class="col col-sm-4">
+            <div class="bg-secondary counter-select custom-rounded tx-white text-uppercase pd-25" data-counter_id="1">
+              
+              <h1 class="wd-100p text-center">Counter 1</h1>
+              <p class="wd-100p text-center">user.name</p>
+  
+            </div>
+          </div>
+  
+          <div class="col col-sm-4">
+            <div class="bg-secondary counter-select custom-rounded" data-counter_id="2">
+  2
+            </div>
+          </div>
+  
+          <div class="col col-sm-4">
+            <div class="bg-warning counter-select custom-rounded" data-counter_id="3">
+  3
+            </div>
+          </div>
+  
+        </div>
+      </div>
+  
+      <div class="d-flex flex-column wd-30p">
+        <div class="custom-rounded bg-white pd-30 mg-y-30 mg-r-30 mg-l-15">
+          <div class="">
+            <form>
+              <input type="hidden" name="counter">
+    
+              <input type="text" name="user" placeholder="Username" class="form-control custom-rounded" />
+              <input type="text" name="pass" placeholder="Password" class="form-control custom-rounded mg-y-25" />
+    
+              <button type="submit" class="btn btn-teal btn-block custom-rounded text-uppercase tx-semibold">Login</button>
+            </form>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+
+
+  <script src="../app/lib/jquery/js/jquery.js"></script>
+  <script src="../app/lib/popper.js/js/popper.js"></script>
+  <script src="../app/lib/bootstrap/js/bootstrap.js"></script>
+  <script src="../app/lib/jquery.maskedinput/js/jquery.maskedinput.js"></script>
+  <script src="../app/lib/select2/js/select2.full.min.js"></script>
+  <script src="../app/lib/parsleyjs/js/parsley.js"></script>
+  <script src="../app/lib/moment/js/moment.js"></script>
+  <script src="../app/js/slim.js"></script>
+
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/login.js"></script>
+</body>
+</html>

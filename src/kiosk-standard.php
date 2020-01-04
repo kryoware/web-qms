@@ -1,111 +1,100 @@
+<?php
+error_reporting("all");
+$dir_level = 1;
+require_once('../_ini.php');
+require("../_template_parts.php");
+require("../_template_parts.php");
+
+$page_title = "";
+$content_title = "$page_title";
+$crumbs_title = "$page_title";
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset='utf-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>Page Title</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
 
-  <link href="../app/lib/font-awesome/css/font-awesome.css" rel="stylesheet">
-  <link href="../app/lib/Ionicons/css/ionicons.css" rel="stylesheet">
-  <link href="../app/lib/select2/css/select2.min.css" rel="stylesheet">
-  
-  <link rel="stylesheet" href="../app/css/slim.css">
-  <link rel='stylesheet' type='text/css' media='screen' href='assets/css/app.css'>
+  <?php echo "$_template_head"; ?>
+  <title><?php echo "$page_title"; ?></title>
+  <link rel="stylesheet" href="assets/css/app.css?v=<?php echo microtime() ?>">
 
   <style>
-    #confirm-modal .modal-dialog {
-      max-width: 65vmin !important;
-    }
-
-    .content {
-      height: 100vh;
-    }
-
-    .btn.custom-rounded {
-      text-transform: uppercase;
-      font-size: 1.75rem;
-    }
-
-    .welcome-wrap {
-      position: absolute;
-      top: 0;
-      width: 100%;
-    }
-
-    .welcome-card {
-      transition: all .5s ease-in-out;
-    }
-
-    #bg_slideshow {
-      height: 100vh;
-      width: 100vw;
-    }
-
-    #bg_slideshow .carousel-item,
-    #bg_slideshow .carousel-inner {
-      height: 100%;
-    }
-
-    #bg_slideshow .img-fluid {
-      height: 100vh;
-      width: 100vw;
-    }
-
-    .branding-wrap .d-flex {
-      width: auto;
-    }
-
-    .time p {
-      line-height: 5vmin;
-      font-size: 4.5vmin;
-    }
-
-    .ticker {
-      line-height: 7.5vmin;
-      font-size: 5vmin;
-    }
-
-    .kiosk-dept-wrap {
-      height: 20vmin;
-    }
-    .kiosk-dept-name {
-      font-size: 3.5vw;
-    }
-
-    @media screen and (orientation: portrait) {
-      #grid-wrap {
-        max-height: 67.5vh;
-      }
-    }
-
-    @media screen and (orientation: landscape) {
-      #grid-wrap {
-        max-height: 50vh;
-      }
-    }
-
+  #confirm-modal .modal-dialog {
+    max-width: 65vmin !important;
+  }
+  .content {
+    height: 100vh;
+  }
+  .btn.custom-rounded {
+    text-transform: uppercase;
+    font-size: 1.75rem;
+  }
+  .welcome-wrap {
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+  .welcome-card {
+    transition: all .5s ease-in-out;
+  }
+  #bg_slideshow {
+    height: 100vh;
+    width: 100vw;
+  }
+  #bg_slideshow .carousel-item, #bg_slideshow .carousel-inner {
+    height: 100%;
+  }
+  #bg_slideshow .img-fluid {
+    height: 100vh;
+    width: 100vw;
+  }
+  .branding-wrap .d-flex {
+    width: auto;
+  }
+  .time p {
+    line-height: 5vmin;
+    font-size: 4.5vmin;
+  }
+  .ticker {
+    line-height: 7.5vmin;
+    font-size: 5vmin;
+  }
+  .kiosk-dept-wrap {
+    height: 20vmin;
+  }
+  .kiosk-dept-name {
+    font-size: 3.5vw;
+  }
+  @media screen and (orientation: portrait) {
     #grid-wrap {
-      overflow-y: scroll;
+      max-height: 67.5vh;
     }
-
-    #departments .btn-icon {
-      width: 15vmin;
-      height: 15vmin;
-      font-size: 1.5rem;
+  }
+  @media screen and (orientation: landscape) {
+    #grid-wrap {
+      max-height: 50vh;
     }
-
-    .welcome-card h1 {
-      font-size: 4rem;
-    }
-
-    .welcome-card h3 {
-      font-size: 2rem;
-    }
-
-    .success-card {
-      height: 30vh;
-    }
+  }
+  #grid-wrap {
+    overflow-y: scroll;
+  }
+  #departments .btn-icon {
+    width: 15vmin;
+    height: 15vmin;
+    font-size: 1.5rem;
+  }
+  .welcome-card h1 {
+    font-size: 4rem;
+  }
+  .welcome-card h3 {
+    font-size: 2rem;
+  }
+  .success-card {
+    height: 30vh;
+  }
   </style>
 </head>
 <body>
@@ -191,15 +180,9 @@
     </div>
   </div>
 
-  <script src="../app/lib/jquery/js/jquery.js"></script>
-  <script src="../app/lib/popper.js/js/popper.js"></script>
-  <script src="../app/lib/bootstrap/js/bootstrap.js"></script>
-  <script src="../app/lib/jquery.maskedinput/js/jquery.maskedinput.js"></script>
-  <script src="../app/lib/select2/js/select2.full.min.js"></script>
-  <script src="../app/lib/parsleyjs/js/parsley.js"></script>
-  <script src="../app/lib/moment/js/moment.js"></script>
-  <script src="../app/js/slim.js"></script>
-  
-  <script src="assets/js/kiosk.js"></script>
+  <?php echo "$_template_footer_inc_1"; ?>
+  <?php echo "$_template_footer_inc_2"; ?>
+
+  <script src="assets/js/kiosk.js?v=<?php echo microtime() ?>"></script>
 </body>
 </html>

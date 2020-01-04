@@ -175,5 +175,8 @@ $crumbs_title = "$page_title";
 
   <?php echo "$_template_footer_inc_1"; ?>
   <?php echo "$_template_footer_inc_2"; ?>
+
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/caller.js"></script>
 </body>
 </html>
