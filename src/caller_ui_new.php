@@ -112,7 +112,7 @@ $crumbs_title = "$page_title";
 
               <div class="d-flex flex-column flex-grow-1 ">
                 <p class="summary-label mg-0 text-center text-uppercase">Serving</p>
-                <p id="ticket" class="mg-0 text-center tx-teal tx-semibold">S-001</p>
+                <p id="ticket" class="mg-0 text-center tx-teal tx-semibold" style="opacity: 0;">S-001</p>
               </div>
 
               <div class="d-flex flex-column justify-content-between">
