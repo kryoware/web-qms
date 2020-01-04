@@ -6,3 +6,5 @@ gulpfile.js
 package-lock.json
 package.json
 bower.json
+desktop.ini
+src.zip
