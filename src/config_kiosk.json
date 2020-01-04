@@ -1,0 +1,45 @@
+{
+  "stat": "ok",
+  "data": {
+    "config": {
+      "slideshow_enabled": false,
+      "slideshow_images": [
+        "assets/media_1.jpg",
+        "assets/media_2.jpg",
+        "assets/media_3.jpg"
+      ],
+      "slide_bg": 5,
+
+      "layout": {
+        "type": "grid",
+        "grid_columns": 1
+      },
+
+      "show_logo": true,
+      "logo_location": "center",
+      "ex_logo_location": "left, right",
+
+      "branding_location": "footer",
+      "ex_branding_location": "footer",
+
+      "show_ticker": true,
+      "ticker_location": "footer",
+      "ex_ticker_location": "header",
+      
+      "clock": {
+        "enabled": true,
+        "date_format": {
+          "show_dow": false,
+          "show_year": false,
+          "dow": "short",
+          "day": "short",
+          "month": "short"
+        },
+        "time_format": {
+          "show_seconds": false,
+          "show_suffix": true
+        }
+      }
+    }
+  }
+}
