@@ -3,7 +3,7 @@
 }
 
 #announce-modal h1 {
-  font-size: 15vw;
+  font-size: 14vw;
 }
 
 #announce-modal h4 {
@@ -17,12 +17,8 @@
   margin: 0;
 }
 
-#large .carousel-item {
-  height: 66.6666vh;
-}
-
-#horizontal {
-  height: 33.3333vh;
+#large {
+  height: 50vh;
 }
 
 .main-content {
@@ -52,4 +48,32 @@
 
 body {
   overflow: hidden !important;
+}
+
+.blink.ticket-no {
+  animation: blinkingticket 1s infinite;
+}
+
+.blink.counter-no {
+  animation: blinkingcounter 1s infinite;
+}
+
+@keyframes blinkingcounter {
+  0%{
+    color: #dc3545;
+  }
+  
+  100%{
+    color: #343a40;
+  }
+}
+
+@keyframes blinkingticket {
+  0%{
+    color: #dc3545;
+  }
+  
+  100%{
+    color: #ffff;
+  }
 }

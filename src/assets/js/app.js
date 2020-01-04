@@ -1,28 +1,28 @@
 "use strict";
+var AUDIO = new Audio('./assets/ding_dong.mp3'),
+  TICKET_INTERVAL = null,
+  ANNOUNCEMENT_INTERVAL = null,
+  SLIDE_INTERVAL = null,
+  IMAGE_INTERVAL = null,
+  VIDEO_INTERVAL = null,
+
+  MAX_COUNTERS = 5,
+
+  CURR = 0,
+
+  FULLSCREEN_ENABLED = false,
+  FULLSCREEN_TIMEOUT = null,
+
+  COUNTERS = null,
+  DEPARTMENTS = null,
+  TICKETS = [],
+  CONFIG = null,
+  QUEUE = [],
+  ANNOUNCED = [],
+  CAROUSEL_PAGE = 2,
+  CAROUSEL_INTERVAL_ID = null;
 
 $(document).ready(function () {
-  var AUDIO = new Audio('./assets/ding_dong.mp3'),
-    TICKET_INTERVAL = null,
-    ANNOUNCEMENT_INTERVAL = null,
-    SLIDE_INTERVAL = null,
-    IMAGE_INTERVAL = null,
-    VIDEO_INTERVAL = null,
-
-    MAX_COUNTERS = 5,
-
-    CURR = 0,
-
-    FULLSCREEN_ENABLED = false,
-    FULLSCREEN_TIMEOUT = null,
-
-    COUNTERS = null,
-    DEPARTMENTS = null,
-    TICKETS = [],
-    CONFIG = null,
-    QUEUE = [],
-    ANNOUNCED = [],
-    CAROUSEL_PAGE = 2,
-    CAROUSEL_INTERVAL_ID = null;
 
   (function () {
     $.ajax({
@@ -136,7 +136,7 @@ $(document).ready(function () {
         format += clock.date_format.show_year ? 'Y' : '';
         format += clock.time_format.hours == 'short' ? ' h:mm' : ' hh:mm';
         format += clock.time_format.show_seconds ? ':ss ' : '';
-        format += clock.time_format.show_suffix ? 'A' : '';
+        format += clock.time_format.show_suffix ? ' A' : '';
         setInterval(function () {
           $('.time p').text(moment().format(format));
         }, 500);
@@ -154,6 +154,13 @@ $(document).ready(function () {
       console.log('ANNS IN QUEUE: ' + QUEUE.length);
       if (QUEUE.length) announce(QUEUE);else return;
     }, ANNOUNCEMENT_INTERVAL / 2);
+  }
+
+  function speak(message) {
+    var msg = new SpeechSynthesisUtterance(message)
+    var voices = window.speechSynthesis.getVoices()
+    msg.voice = voices[0]
+    window.speechSynthesis.speak(msg)
   }
 
   function loadDepartments() {
@@ -203,10 +210,10 @@ $(document).ready(function () {
               `);
                 CURR = 0;
               }
-              $('#horizontal .content').append("\n              <div class=\"col\">\n                <button type=\"button\" data-counter_id=\"".concat(counter.counter_id, "\" class=\"btn btn-outline-success btn-call text-uppercase\">").concat(counter.counter_id, " call next</button>\n              </div>\n            "));
+
               var containers = $('#counter_carousel').find("[data-dept_id=\"".concat(counter.dept_id, "\"]"));
               $(containers[containers.length - 1]).append(`
-              <div class="custom-rounded bg-white mg-b-10" data-counter_id="${counter.counter_id}">
+              <div class="custom-rounded bg-white mg-b-10" data-counter_id="${counter.counter_id}" data-counter_no="${counter.counter_no}">
                 <div class="tx-dark">
                   <div class="row no-gutters">
 
@@ -282,7 +289,17 @@ $(document).ready(function () {
       }, 500);
 
       clearInterval(CAROUSEL_INTERVAL_ID)
-      var slide_dom = $('#counter_carousel [data-counter_id="' + data.counter_no + '"]').closest('.carousel-item');
+      var slide_dom = $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').closest('.carousel-item');
+      
+      // Add blinking effect
+      $(slide_dom).find('.ticket-no').addClass('blink')
+      $(slide_dom).find('.counter-no').addClass('blink')
+
+      setTimeout(function () {
+        $(slide_dom).find('.ticket-no').removeClass('blink')
+        $(slide_dom).find('.counter-no').removeClass('blink')
+      }, 13000)
+
       CAROUSEL_PAGE = $(slide_dom).index() + 1;
 
       $('#ticket').text(data.ticket_label);
@@ -320,8 +337,7 @@ $(document).ready(function () {
   }
 
   function carouselScroll(page) {
-    console.log('slide')
-    var   max_pages = $('#counter_carousel').children().length;
+    var  max_pages = $('#counter_carousel').children().length;
     var carousel = $('#counter_carousel').width();
     var slide = $($('#counter_carousel').children()[page - 1]);
 
