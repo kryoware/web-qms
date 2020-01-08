@@ -2,7 +2,7 @@
   "stat": "ok",
   "data": {
     "config": {
-      "slideshow_enabled": false,
+      "slideshow_enabled": true,
       "slideshow_images": [
         "assets/media_1.jpg",
         "assets/media_2.jpg",
@@ -16,6 +16,7 @@
       },
 
       "show_logo": true,
+      "show_company_name": true,
       "logo_location": "center",
       "ex_logo_location": "left, right",
 

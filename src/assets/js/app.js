@@ -117,8 +117,13 @@ $(document).ready(function () {
       $('.main-content').removeClass('show-header');
     }
 
-    $('.brand').toggle(CONFIG['show_logo'] === true);
+    if (CONFIG.show_logo === true) {
+      $('.brand-wrap').removeClass('d-none').addClass('d-flex');
+    }
 
+    if (CONFIG.show_company_name === true) {
+      $('.company-name-wrap').removeClass('d-none').addClass('d-flex');
+    }
 
     if (CONFIG['clock']) {
       var clock = CONFIG['clock'];

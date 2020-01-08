@@ -12,6 +12,7 @@
 
       "show_ticker": true,
       "show_logo": true,
+      "show_company_name": true,
       
       "clock": {
         "enabled": true,

@@ -24,18 +24,27 @@ $crumbs_title = "$page_title";
 </head>
 <body>
   <div class="container-fluid pd-0">
-    <div id="header" class="row no-gutters" style="height: 10vh;">
+    <div id="header" class="row no-gutters bg-white" style="height: 10vh;">
       <div class="d-flex wd-100p">
         
         <div class="d-flex flex-column justify-content-center pd-l-10">
-          <div class="brand slim-logo">
-            <img src="http://dev.teaconcepts.net/CleverQMS/assets/header_logo.jpg" class="img-fluid">
+          <div class="d-flex ht-100p">
+
+            <div class="d-none flex-column justify-content-center brand-wrap">
+              <div class="slim-logo mg-0">
+                <img src="http://dev.teaconcepts.net/CleverQMS/assets/header_logo.jpg"  style="height: 10vh; width: auto;" class="pd-y-10">
+              </div>
+            </div>
+  
+            <div class="d-none flex-column justify-content-center ht-100p company-name-wrap">
+              <p class="mg-0 mg-l-10 company-name tx-dark tx-semibold">Company Name</p>
+            </div>
           </div>
         </div>
         
         <div class="ml-auto time ht-100p" style="display: none;">
           <div class="d-flex flex-column justify-content-center tx-dark tx-semibold ht-100p pd-10">
-            <p class="mg-0" style="line-height: 7vh; font-size: 5vh;"></p>
+            <p class="mg-0"></p>
           </div>
         </div>
       </div>
@@ -54,38 +63,65 @@ $crumbs_title = "$page_title";
   
       <div class="d-flex flex-column wd-60p">
   
-        <div id="large" class="row no-gutters">
+        <div id="large" class="row no-gutters" style="overflow: hidden;">
   
-          <div class="col ht-100p">
-            <div id="media" class="carousel slide" data-ride="carousel">
+          <div class="col ht-100p d-flex">
+            <div id="media" class="carousel slide my-auto" data-ride="carousel">
               <div class="carousel-inner" role="listbox">
                 <div class="carousel-item" data-interval="10000">
-                  <div class="ht-100p d-flex align-items-center">
-  
+                  <div >
                     <img class="img-fluid" src="./assets/media_1.jpg">
-  
-                  </div><!-- d-flex -->
+                  </div>
                 </div>
                 <div class="carousel-item" data-interval="10000">
-                  <div class="ht-100p d-flex align-items-center">
-  
+                  <div >
                     <img class="img-fluid" src="./assets/media_2.jpg">
-  
-                  </div><!-- d-flex -->
+                  </div>
                 </div>
                 <div class="carousel-item active" data-interval="10000">
-                  <div class="ht-100p d-flex align-items-center">
-  
+                  <div >
                     <img class="img-fluid" src="./assets/media_3.jpg">
-  
-                  </div><!-- d-flex -->
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
   
-        <div id="horizontal_" class="row no-gutters">
+        <div id="horizontal_" class="row pd-x-15" style="font-size: 36px;">
+          <!-- <div class="col text-center">
+            <div class="d-flex flex-column ht-100p">
+              <div class="flex-grow-1 d-flex flex-column justify-content-center">
+                <p class="mg-0 tx-dark tx-semibold pd-y-10">SALES</p>
+              </div>
+
+              <p class="bg-white custom-rounded pd-10">S-123</p>
+              <p class="bg-white custom-rounded pd-10">S-456</p>
+              
+            </div>
+          </div>
+          <div class="col text-center">
+            <div class="d-flex flex-column ht-100p">
+              <div class="flex-grow-1 d-flex flex-column justify-content-center">
+                <p class="mg-0 tx-dark tx-semibold pd-y-10">BILLING</p>
+              </div>
+
+              <p class="bg-white custom-rounded pd-10">B-123</p>
+              <p class="bg-white custom-rounded pd-10">B-456</p>
+              
+            </div>
+          </div>
+          <div class="col text-center">
+            <div class="d-flex flex-column ht-100p">
+              <div class="flex-grow-1 d-flex flex-column justify-content-center">
+                <p class="mg-0 tx-dark tx-semibold pd-y-10">CUSTOMER SUPPORT</p>
+              </div>
+
+              <p class="bg-white custom-rounded pd-10">CS-123</p>
+              <p class="bg-white custom-rounded pd-10">CS-456</p>
+              
+            </div>
+          </div> -->
         </div>
       </div>
   

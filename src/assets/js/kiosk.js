@@ -78,19 +78,24 @@ $(document).ready(function () {
         var css = '';
         if (CONFIG.layout.grid_columns) {
           css = 'col-'.concat(12 / CONFIG.layout.grid_columns);
-
+          
           if (DEPARTMENTS.length > CONFIG.layout.grid_columns) {
-            css += ' mg-y-15';
+            css += ' mg-b-25';
           }
         } else {
-          css = 'col'; // auto
+          if (DEPARTMENTS.length <= 3) {
+            css = 'col-12'
+          } else if (DEPARTMENTS.length <= 6) {
+            css = 'col-6'
+          } else {
+            css = 'col-4'
+          }
         }
-        css += ' mg-y-15';
 
         DEPARTMENTS.forEach(function (dept, key) {
           $('#grid-wrap').append(`
             <div class="${css}">
-              <div class="kiosk-dept-wrap custom-rounded bg-teal tx-white" data-dept_id="${dept.dept_id}">
+              <div class="kiosk-dept-wrap ht-100p custom-rounded bg-teal tx-white" data-dept_id="${dept.dept_id}">
                 <div class="d-flex flex-column justify-content-center ht-100p">
                   <p class="text-center mg-0 text-uppercase kiosk-dept-name">${dept.dept_name}</p>
                 </div>
@@ -126,6 +131,10 @@ $(document).ready(function () {
       }
     }
 
+    if (CONFIG.show_company_name === true) {
+      $('.company-name-wrap').removeClass('d-none').addClass('d-flex');
+    }
+
     if (CONFIG.slideshow_enabled === true) {
       $('#bg_slideshow').fadeIn(function() {
         CONFIG.slideshow_images.forEach(function (image, key) {
@@ -156,14 +165,13 @@ $(document).ready(function () {
     }
     
     $('.branding-wrap').addClass(CONFIG.branding_location === 'header' ? 'order-0' : 'order-12' );
-    $('.welcome-card').toggleClass('mg-t-20',CONFIG.branding_location === 'footer');
+    $('.welcome-card').toggleClass('mg-t-20', CONFIG.branding_location === 'footer');
+    $('.welcome-card').toggleClass('mg-b-20', CONFIG.branding_location === 'header');
 
     if (CONFIG.show_logo === true) {
       $('.branding').fadeIn();
 
       if (CONFIG.clock.enabled === true) {
-
-
       } else {
         var css = ''
 

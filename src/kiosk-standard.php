@@ -20,152 +20,123 @@ $crumbs_title = "$page_title";
   <?php echo "$_template_head"; ?>
   <title><?php echo "$page_title"; ?></title>
   <link rel="stylesheet" href="assets/css/app.css?v=<?php echo microtime() ?>">
-
   <style>
-  #confirm-modal .modal-dialog {
-    max-width: 65vmin !important;
-  }
-  .content {
-    height: 100vh;
-  }
-  .btn.custom-rounded {
-    text-transform: uppercase;
-    font-size: 1.75rem;
-  }
-  .welcome-wrap {
-    position: absolute;
-    top: 0;
-    width: 100%;
-  }
-  .welcome-card {
-    transition: all .5s ease-in-out;
-  }
-  #bg_slideshow {
-    height: 100vh;
-    width: 100vw;
-  }
-  #bg_slideshow .carousel-item, #bg_slideshow .carousel-inner {
-    height: 100%;
-  }
-  #bg_slideshow .img-fluid {
-    height: 100vh;
-    width: 100vw;
-  }
-  .branding-wrap .d-flex {
-    width: auto;
-  }
-  .time p {
-    line-height: 5vmin;
-    font-size: 4.5vmin;
-  }
-  .ticker {
-    line-height: 7.5vmin;
-    font-size: 5vmin;
-  }
-  .kiosk-dept-wrap {
-    height: 20vmin;
-  }
-  .kiosk-dept-name {
-    font-size: 3.5vw;
-  }
-  @media screen and (orientation: portrait) {
-    #grid-wrap {
-      max-height: 67.5vh;
+    .kiosk-dept-name {
+      font-size: 36px;
+      padding: 10px;
     }
-  }
-  @media screen and (orientation: landscape) {
-    #grid-wrap {
-      max-height: 50vh;
+    #grid-wrap [class*="col"] {
+      min-height: 15vh;
+      max-height: 15vh;
     }
-  }
-  #grid-wrap {
-    overflow-y: scroll;
-  }
-  #departments .btn-icon {
-    width: 15vmin;
-    height: 15vmin;
-    font-size: 1.5rem;
-  }
-  .welcome-card h1 {
-    font-size: 4rem;
-  }
-  .welcome-card h3 {
-    font-size: 2rem;
-  }
-  .success-card {
-    height: 30vh;
-  }
+
+    #confirm-modal .modal-dialog {
+      max-width: 65vmin !important;
+    }
+
+    .welcome-wrap {
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+    .container {
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .welcome-card {
+      transition: all .5s ease-in-out;
+    }
+
+    #bg_slideshow {
+      height: 100vh;
+      width: 100vw;
+    }
+
+    #bg_slideshow .carousel-item,
+    #bg_slideshow .carousel-inner {
+      height: 100%;
+    }
+
+    .branding-wrap .d-flex {
+      width: auto;
+    }
+
+    .company-subtitle {
+      line-height: 3vmin;
+      font-size: 2.5vmin;
+    }
+
+    .ticker {
+      line-height: 7.5vmin;
+      font-size: 5vmin;
+    }
+
   </style>
 </head>
 <body>
-  <div class="content container-fluid mg-0 pd-0 bg-teal">
-    <div class="carousel slide bg-white" id="bg_slideshow" style="display: none;">
+  <div class="container-fluid mg-0 pd-0">
+    <div class="carousel fade slide bg-white" id="bg_slideshow" style="display: none;">
       <div class="carousel-inner"></div>
     </div>
 
+    <!-- Welcome Wrapper -->
     <div class="welcome-wrap ht-100p">
-      <div class="wd-100p d-flex flex-column justify-content-center m-auto ht-100p">
+      <div class="d-flex flex-column ht-100p">
+        <!-- Branding/Clock Container -->
+        <div class="branding-wrap mg-20 bg-white custom-rounded pd-x-25 pd-b-25">
+          <div class="d-flex flex-wrap justify-content-between">
 
-        <div class="row no-gutters bg-teal tx-white" id="ticker" style="display: none;"></div>
-
-        <div class="branding-wrap bg-white custom-rounded mg-20 pd-25">
-          <div class="d-flex justify-content-between">
-
-            <div class="branding" style="display: none;">
-              <div class="d-flex flex-column justify-content-center ht-100p">
-                <img class="img-fluid" src="http://dev.teaconcepts.net/CleverQMS/assets/header_logo.jpg">
+            <div class="branding pd-t-25 flex-grow-1 tx-dark tx-semibold" style="display: none;">
+              <div class="d-flex ht-100p">
+                <div class="d-flex flex-column justify-content-center ht-100p">
+                  <img class="img-fluid" src="http://dev.teaconcepts.net/CleverQMS/assets/header_logo.jpg">
+                </div>
+                <div class="d-none flex-column justify-content-center ht-100p company-name-wrap">
+                  <p class="mg-0 mg-l-15 company-name">Company Name</p>
+                  <p class="mg-0 mg-l-15 mg-t-15 company-subtitle" style="display: none;">Optional Text</p>
+                </div>
               </div>
             </div>
 
-            <div class="time" style="display: none;">
+            <div class="time pd-t-25 flex-grow-1" style="display: none;">
               <div class="d-flex flex-column justify-content-center tx-dark tx-semibold ht-100p">
-                <p class="mg-0"></p>
+                <p class="text-right mg-0"></p>
               </div>
             </div>
 
           </div>
         </div>
+        <!-- Branding/Clock Container -->
 
-        <div class="steps-wrap flex-grow-1 d-flex">
-          <div class="custom-card-wrap wd-100p">
-            <div class="welcome-card mg-x-20 mg-b-20 bg-white custom-rounded pd-25 flex-grow-1">
-              <div class="d-flex flex-column justify-content-between ht-100p">
+        <!-- Welcome Card -->
+        <div class="welcome-card custom-rounded bg-white mg-x-20 pd-x-25 pd-t-25 flex-grow-1 d-flex flex-column">
 
-                <div class="d-flex flex-column justify-content-between flex-grow-1 mg-b-20">
-                  <h1 class="text-center text-uppercase tx-semibold tx-dark mg-0">Welcome</h1>
-                  <h3 class="text-center tx-semibold tx-dark mg-0">Please choose a department</h3>
-                </div>
+          <div class="">
+            <h1 class="text-center text-uppercase tx-bold tx-dark mg-0" style="font-size: 6vmin;">Welcome</h1>
+            <h3 class="text-center tx-dark mg-0 mg-t-15 mg-b-20" style="font-size: 4.5vmin;">Please choose a department</h3>
+          </div>
 
-                <div id="departments">
+          <div id="departments" class="flex-grow-1">
 
-                  <div id="grid-wrap" class="row"></div>
+            <div id="grid-wrap" class="row d-flex flex-wrap"></div>
 
-                  <div id="carousel-wrap" class="d-none ht-100p justify-content-between">
-                    <div class="d-flex flex-column justify-content-center">
-                      <button type="button" class="btn btn-teal btn-icon rounded-circle btn-prev">
-                        <i class="fa fa-chevron-left"></i>
-                      </button>
-                    </div>
+            <div id="carousel-wrap" class="d-none ht-100p justify-content-between"></div>
 
-                    <div class="flex-grow-1 d-flex justify-content-center"></div>
-
-                    <div class="d-flex flex-column justify-content-center">
-                      <button type="button" class="btn btn-teal btn-icon rounded-circle btn-next">
-                        <i class="fa fa-chevron-right"></i>
-                      </button>
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-            </div>
           </div>
         </div>
+        <!-- Welcome Card -->
 
+        <!-- Ticker Container -->
+        <div class="row no-gutters bg-teal tx-white" id="ticker" style="display: none;"></div>
+        <!-- Ticker Container -->
       </div>
     </div>
+    <!-- Welcome Wrapper -->
+
   </div>
+  <!-- Container -->
 
   <div id="confirm-modal" class="modal show fade effect-slide-in-bottom" data-backdrop="static">
     <div class="modal-dialog" role="document">

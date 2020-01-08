@@ -1,4 +1,5 @@
 <?php
+$_lib_theme_url = '../app/';
 $_template_meta_site = "@teaconcepts";
 $_template_meta_creator = "@teaconcepts";
 $_template_meta_card= "summary_large_image";

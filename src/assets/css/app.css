@@ -26,6 +26,12 @@
   white-space: normal!important;
 }
 
+.time p,
+.company-name {
+  line-height: 5vmin;
+  font-size: 4.5vmin;
+}
+
 /*
  * SCREEN SPECIFIC CSS
  */

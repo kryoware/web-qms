@@ -1,16 +1,29 @@
 $(document).ready(function() {
+  /* NOTES
+    caller_next 
+    caller_cancel
+    caller_recall
+    caller_done (meaning close na current ticket but dont call nxt ticket )
+  */
   
   // FIXME: For testing only
   var COUNTER_ID = window.location.search.slice('counter_id'.length + 2);
   var TIMER_INTERVAL_ID = null;
   var TIMER_START = null;
   var PREV_TICKET = null;
+  console.log(COUNTER_ID)
+
+  if (COUNTER_ID) $('#counter_label').text(COUNTER_ID)
 
   $('#caller_next').on('click', function() {
     callApi('caller_next', {
       counter_id: COUNTER_ID
     }, function (res) {
       if (res.stat == 'ok') {
+        // FIXME:
+        var served = parseInt($('#served').text())
+        $('#served').text(served++)
+
         clearInterval(TIMER_INTERVAL_ID);
 
         PREV_TICKET = res.data.ticket_label;
@@ -48,8 +61,12 @@ $(document).ready(function() {
   $('#caller_done').on('click', function() {
     callApi('caller_done', {
 
-    }, function (res) {
-      console.log(res)
+    }, function (res) {      
+      // FIXME
+      clearInterval(TIMER_INTERVAL_ID);
+      $('#time').text('00:00');
+      $('#ticket').animate({ opacity: 0 }, 500, 'linear');
+      // FIXME
 
       if (res.stat == 'ok') {
         console.log('caller_done', res.data)
