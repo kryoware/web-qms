@@ -9,3 +9,6 @@ bower.json
 desktop.ini
 src.zip
 src/NOTES.txt
+_template_parts.php
+_template_nav.php
+_ini.php
