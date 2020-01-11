@@ -21,6 +21,28 @@
   height: 100%;
 }
 
+#header, #ticker {
+  height: 10vh;
+}
+
+#ticker {
+
+}
+
+#vertical,
+#large,
+#horizontal {
+  overflow: hidden;
+}
+
+
+
+.slim-logo img {
+  height: 10vh;
+  width: auto;
+}
+
+
 .main-content {
   transition: all .3s ease-in-out;
 }
@@ -58,11 +80,15 @@ body {
   animation: blinkingcounter 1s infinite;
 }
 
+.carousel-wrap {
+  background-image: url("../background.jpg");
+}
+
 @keyframes blinkingcounter {
   0%{
     color: #dc3545;
   }
-  
+    
   100%{
     color: #343a40;
   }

@@ -1,3 +1,15 @@
+/* COLOR THEME */
+.bg-custom {
+  background-color: pink;
+}
+.tx-custom {
+  color: pink;
+}
+
+.btn-custom {
+  background-color: pink;
+}
+
 .custom-rounded {
   border-radius: 1rem !important;
 }
@@ -28,17 +40,17 @@
 
 .time p,
 .company-name {
-  line-height: 5vmin;
-  font-size: 4.5vmin;
+  line-height: 4vmin;
+  font-size: 4vmin;
 }
 
 /*
  * SCREEN SPECIFIC CSS
  */
-
+ 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
-  
+
 }
 
 /* Medium devices (tablets, 768px and up) */
@@ -72,4 +84,19 @@
 /* Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
 
+}
+
+@media screen and (orientation: portrait) {
+  #grid-wrap [class*="col"] {
+    min-height: 11vh;
+    max-height: 11vh;
+  }
+}
+
+
+@media screen and (orientation: landscape) {
+  #grid-wrap [class*="col"] {
+    min-height: 8.5vh;
+    max-height: 8.5vh;
+  }
 }

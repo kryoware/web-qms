@@ -183,7 +183,7 @@ $(document).ready(function () {
               <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
                 <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
                   <div class="d-flex flex-column justify-content-center">
-                    <span class="dept-name mg-0 tx-semibold tx-teal text-left text-wrap text-uppercase">${dept.dept_name}</span>
+                    <span class="dept-name mg-0 tx-semibold tx-custom text-left text-wrap text-uppercase">${dept.dept_name}</span>
                   </div>
 
                   <div class="d-flex flex-column justify-content-center">
@@ -203,7 +203,7 @@ $(document).ready(function () {
                   <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
                     <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
                       <div class="d-flex flex-column justify-content-center">
-                        <span class="dept-name mg-0 tx-semibold tx-teal text-left text-wrap text-uppercase">${dept.dept_name}</span>
+                        <span class="dept-name mg-0 tx-semibold tx-custom text-left text-wrap text-uppercase">${dept.dept_name}</span>
                       </div>
 
                       <div class="d-flex flex-column justify-content-center">
@@ -230,7 +230,7 @@ $(document).ready(function () {
 
                     <div class="col-5 text-right">
                       <div class="d-flex justify-content-end ht-100p">
-                        <span class="custom-rounded bg-teal ticket-no tx-semibold pd-10 mg-y-10 mg-r-10 tx-white">
+                        <span class="custom-rounded bg-custom ticket-no tx-semibold pd-10 mg-y-10 mg-r-10 tx-white">
                           <span style="opacity: 0">S-001</span>
                         </span>
                       </div>

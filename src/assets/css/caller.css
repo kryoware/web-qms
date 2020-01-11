@@ -1,20 +1,55 @@
-.custom-container {
-  height: calc(100vh - 2rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
 
-.custom-signin {
-  border-radius: 0.5rem;
-  background-color: #fff;
-}
+    .logged-user img{
+      width: 32px;
+      height: 32px;
+    }
+    .slim-header {
+      height: unset;
+    }
+    
+    .main-content{
+      height: calc(100vh - 62px) !important;
+    }
 
-.custom-signin-bg {
-  background-image: url('assets/placeholder.jpg');
-  background-attachment: fixed;
-  background-size: contain;
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
-}
+    @media screen and (orientation: portrait) {
+      .panel-wrap {
+        flex-direction: column !important;
+      }
+
+      .summary-panel {
+        width: 100vw;
+      }
+      
+      .actions-panel {
+        width: 100vw;
+      }
+    }
+
+    @media screen and (orientation: landscape) {
+      .summary-panel {
+        width: 40vw;
+      }
+      
+      .actions-panel {
+        width: 60vw;
+      }
+    }
+
+    .summary-label {
+      font-size: 1.25rem;
+    }
+    #ticket,
+    #time {
+      font-size: 3rem;
+    }
+    .profile-pic img {
+      border: 1px solid #1CAF9A;
+      border-radius: 100%;
+      padding: 2px;
+      width: 32px;
+      height: 32px;
+    }
+
+    .custom-oblong {
+      border-radius: 1rem;
+    }

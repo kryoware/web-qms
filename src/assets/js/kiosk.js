@@ -6,19 +6,20 @@ var IS_FULLSCREEN = false;
 var NEW_TICKET = false;
 
 $(document).ready(function () {
-  
+
   (function () {
     $.ajax({
       url: 'config_kiosk.json',
       success: function (res) {
         if (res.stat === 'ok' && res.data) {
           CONFIG = res.data.config;
-    
+
           $.ajax({
             url: host + 'engine/api.php?act=load_departments&stat=open&details=full',
             success: function (res) {
               if (res.stat === 'ok' && res.data) {
                 DEPARTMENTS = Object.values(res.data);
+                DEPARTMENTS = DEPARTMENTS.concat(DEPARTMENTS);
 
                 initializeLayout();
               }
@@ -28,7 +29,7 @@ $(document).ready(function () {
       }
     });
   })();
-  
+
   $('#departments .btn-prev').on('click', function () {
     $('#dept_slides').carousel('prev');
   });
@@ -47,30 +48,75 @@ $(document).ready(function () {
     $.ajax({
       url: host + 'engine/api.php?act=issue_ticket&dept_id=' + SELECTED_DEPT,
       success: function(res) {
-        // Load Tickets
-        $.ajax({
-          url: host + 'engine/api.php?act=load_tickets&ds=active&dept_id=' + SELECTED_DEPT,
-          success: function(res) {
-            NEW_TICKET = res.data.ticket_no;
 
-            var t = Object.values(res.data).filter(function(ticket) {
-              return parseInt(ticket.ticket_no) === parseInt(NEW_TICKET);
-            });
+        if (res.stat === 'ok' && res.data) {
+          NEW_TICKET = res.data.ticket_no;
 
-            console.log(t)
+          // Load Tickets
+          $.ajax({
+            url: host + 'engine/api.php?act=load_tickets&ds=active&dept_id=' + SELECTED_DEPT,
+            success: function(res) {
+              var TICKET_OBJECT = Object.values(res.data).filter(function(ticket) {
+                return parseInt(ticket.ticket_no) === parseInt(NEW_TICKET);
+              });
 
-            $('#confirm-modal').find('').text(t.ticket_label)
+              var TICKET_SERVED = Object.values(res.data).filter(function(ticket) {
+                return parseInt(ticket.counter_id) != 0;
+              }).sort(function (a,b) {
+                return parseInt(a.ticket_id) - parseInt(b.ticket_id)
+              });
 
-            $('#confirm-modal').modal('show');
-            
-            setTimeout(function () {
-              $('#confirm-modal').modal('hide');
-            }, 3000)
-          }
-        })
+              TICKET_SERVED = TICKET_SERVED[TICKET_SERVED.length - 1];
+
+              if (TICKET_OBJECT.length > 0) {
+                TICKET_OBJECT = TICKET_OBJECT[0];
+
+                var date = moment(TICKET_OBJECT.dt_added.split(' ')[0], 'Y-MM-DD');
+                var time = moment(TICKET_OBJECT.dt_added.split(' ')[0], 'H:mm:ss');
+
+                date = date.format('DD-MM-Y');
+                time = time.format('hh:mm:ss A');
+
+                $('#confirm-modal .ticket').text(TICKET_OBJECT.ticket_label);
+
+                var logo = $('.branding .img-fluid').clone();
+                $(logo).addClass('wd-300')
+
+                $('#ticket_logo').append(logo); 
+                $('#ticket_no').text(TICKET_OBJECT.ticket_label);
+                $('#ticket_date').text(date);
+                $('#ticket_time').text(time);
+                $('#ticket_serving').text(TICKET_SERVED.ticket_label);
+                $('#ticket_customers').text(Object.values(res.data).length - 1);
+
+                // TODO: COMPANY NAME
+                // $('#ticket_company_name').text();
+
+                printTicket();
+              } else {
+                console.error('TICKET NOT FOUND');
+              }
+            }
+          })
+        }
       }
     });
   });
+
+  window.onafterprint = function (event) {
+    console.log(event);
+    
+    $('#confirm-modal').modal('show');
+
+    setTimeout(function () {
+      $('#confirm-modal').modal('hide');
+    }, 4000);
+  };
+
+  function printTicket() {
+    window.print();
+    return false;
+  }
 
   function initializeLayout() {
     if (CONFIG.layout) {
@@ -78,9 +124,9 @@ $(document).ready(function () {
         var css = '';
         if (CONFIG.layout.grid_columns) {
           css = 'col-'.concat(12 / CONFIG.layout.grid_columns);
-          
+
           if (DEPARTMENTS.length > CONFIG.layout.grid_columns) {
-            css += ' mg-b-25';
+            css += ' mg-b-25';  
           }
         } else {
           if (DEPARTMENTS.length <= 3) {
@@ -95,7 +141,7 @@ $(document).ready(function () {
         DEPARTMENTS.forEach(function (dept, key) {
           $('#grid-wrap').append(`
             <div class="${css}">
-              <div class="kiosk-dept-wrap ht-100p custom-rounded bg-teal tx-white" data-dept_id="${dept.dept_id}">
+              <div class="kiosk-dept-wrap custom-rounded bg-custom tx-white" data-dept_id="${dept.dept_id}">
                 <div class="d-flex flex-column justify-content-center ht-100p">
                   <p class="text-center mg-0 text-uppercase kiosk-dept-name">${dept.dept_name}</p>
                 </div>
@@ -118,7 +164,7 @@ $(document).ready(function () {
           $('#dept_slides .carousel-inner').append(`
             <div class="carousel-item ${key === 0 ? 'active' : ''}">
               <div class="kiosk-dept-wrap custom-rounded
- bg-teal tx-white mg-x-25">
+ bg-custom tx-white mg-x-25">
                 <div class="d-flex flex-column justify-content-center ht-100p">
                   <p class="text-center mg-0 text-uppercase kiosk-dept-name">${dept.dept_name}</p>
                 </div>
@@ -153,17 +199,17 @@ $(document).ready(function () {
       });
     }
 
-    
+
     if (CONFIG['show_ticker'] === true) {
       $('#ticker').addClass(CONFIG.ticker_location === 'header' ? 'order-0' : 'order-12' );
       $('#ticker').toggle();
       $('#ticker').append(`
-        <marquee class="ticker">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+        <marquee class="ticker bg-custom">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
           porttitor hendrerit placerat. Donec pretium, felis congue semper fringilla, quam massa egestas arcu, vel rutrum
           risus ex sed odio</marquee>
       `);
     }
-    
+
     $('.branding-wrap').addClass(CONFIG.branding_location === 'header' ? 'order-0' : 'order-12' );
     $('.welcome-card').toggleClass('mg-t-20', CONFIG.branding_location === 'footer');
     $('.welcome-card').toggleClass('mg-b-20', CONFIG.branding_location === 'header');
@@ -197,11 +243,11 @@ $(document).ready(function () {
       }
     }
 
-    
+
     if (CONFIG.clock) {
       var clock = CONFIG.clock;
       $('.time').fadeIn();
-      
+
       if (clock.enabled) {
         if (CONFIG.show_logo === false) {
           $('.branding-wrap').addClass('ml-auto');
@@ -226,20 +272,20 @@ $(document).ready(function () {
       }
     }
   }
-  
+
   $('body').on('click', '.btn-dept', function () {
     $('#departments .active').removeClass('active');
     $(this).addClass('active');
-    
+
     var dept = $(this).html();
     SELECTED_DEPT = $(this).data('dept_id');
-    
+
     $('.welcome-card').css('height', '40vh');
-    
+
     $('h1').fadeOut(function () {
       $('h1').text('In Queue: ' + dept);
     })
-    
+
     $('h3').fadeOut(function () {
       $('h3').text('');
     });
@@ -250,19 +296,19 @@ $(document).ready(function () {
       $('#actions').fadeIn();
     });
   });
-  
-  
+
+
   $('body').on('click', '.btn-back', function () {
     $('.welcome-card').css('height', '50vh');
-    
+
     $('h1').fadeOut(function () {
       $('h1').text('Welcome');
     })
-    
+
     $('h3').fadeOut(function () {
       $('h3').text('What can we help you with today?');
     });
-    
+
     $('#actions').fadeOut(function () {
       $('h1').fadeIn();
       $('h3').fadeIn();
@@ -272,7 +318,7 @@ $(document).ready(function () {
 
   $('body').on('click', '.btn-print', function () {
   });
-  
+
   $('#confirm-modal').on('show.bs.modal', function () {
     setTimeout(function () {
       $('#confirm-modal .modal-body').fadeIn();

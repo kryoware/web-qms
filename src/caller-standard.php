@@ -21,63 +21,7 @@ $crumbs_title = "$page_title";
   <?php echo "$_template_head"; ?>
   <title><?php echo "$page_title"; ?></title>
   <link rel="stylesheet" href="assets/css/app.css">
-  
-  <style>
-    .logged-user img{
-      width: 32px;
-      height: 32px;
-    }
-    .slim-header {
-      height: unset;
-    }
-    
-    .main-content{
-      height: calc(100vh - 62px) !important;
-    }
-
-    @media screen and (orientation: portrait) {
-      .panel-wrap {
-        flex-direction: column !important;
-      }
-
-      .summary-panel {
-        width: 100vw;
-      }
-      
-      .actions-panel {
-        width: 100vw;
-      }
-    }
-
-    @media screen and (orientation: landscape) {
-      .summary-panel {
-        width: 40vw;
-      }
-      
-      .actions-panel {
-        width: 60vw;
-      }
-    }
-
-    .summary-label {
-      font-size: 1.25rem;
-    }
-    #ticket,
-    #time {
-      font-size: 3rem;
-    }
-    .profile-pic img {
-      border: 1px solid #1CAF9A;
-      border-radius: 100%;
-      padding: 2px;
-      width: 32px;
-      height: 32px;
-    }
-
-    .custom-oblong {
-      border-radius: 1rem;
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/caller.css">
 </head>
 <body>
   <div class="d-flex flex-column">
@@ -102,7 +46,7 @@ $crumbs_title = "$page_title";
   
     <div class="main-content container-fluid pd-0 mg-0 flex-grow-1">
       <div class="panel-wrap d-flex ht-100p">
-        <div class="summary-panel bg-teal">
+        <div class="summary-panel bg-custom">
           <div class="d-flex flex-column justify-content-between pd-10 ht-100p">
 
             <!-- SUMMARY -->
@@ -110,12 +54,12 @@ $crumbs_title = "$page_title";
 
               <div class="d-flex flex-column flex-grow-1 ">
                 <p class="summary-label mg-0 text-center text-uppercase">Serving</p>
-                <p id="ticket" class="mg-0 text-center tx-teal tx-semibold" style="opacity: 0;">S-001</p>
+                <p id="ticket" class="mg-0 text-center tx-custom tx-semibold" style="opacity: 0;">S-001</p>
               </div>
 
               <div class="d-flex flex-column justify-content-between">
                 <p class="summary-label mg-0 text-center text-uppercase">Time Elapsed</p>
-                <p class="wd-75p mx-auto custom-oblong pd-10 bg-teal tx-white mg-0 text-center" id="time">00:00</p>
+                <p class="wd-75p mx-auto custom-oblong pd-10 bg-custom tx-white mg-0 text-center" id="time">00:00</p>
               </div>
 
             </div>
@@ -124,7 +68,7 @@ $crumbs_title = "$page_title";
 
             <!-- STATISTICS-->
             <div class="custom-oblong d-flex flex-column pd-x-25 pd-y-10 bg-white" style="font-size: 2.5vmax">
-              <p class="text-center text-uppercase tx-semibold tx-teal mg-0 mg-b-10">Statistics</p>
+              <p class="text-center text-uppercase tx-semibold tx-custom mg-0 mg-b-10">Statistics</p>
 
               <div class="d-flex justify-content-between">
 
@@ -153,7 +97,7 @@ $crumbs_title = "$page_title";
 
         <div class="actions-panel flex-grow-1">
           <div class="d-flex flex-column pd-10 ht-100p">
-            <button class="tx-semibold tx-uppercase custom-oblong btn btn-teal btn-block flex-grow-1 mg-b-5" id="caller_next">Next</button>
+            <button class="tx-semibold tx-uppercase custom-oblong btn btn-custom btn-block flex-grow-1 mg-b-5" id="caller_next">Next</button>
 
             <div class="d-flex justify-content-between flex-grow-1 mg-y-5">
               <button class="tx-semibold tx-uppercase custom-oblong btn btn-warning wd-50p mg-r-5" id="caller_recall">Recall</button>

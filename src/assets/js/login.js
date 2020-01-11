@@ -48,15 +48,15 @@ $(document).ready(function () {
   $('body').on('click', '.department-card', function () {
     if ($(this).hasClass('bg-warning')) {
       return;
-    } else if ($(this).hasClass('bg-teal')) {
-      $(this).removeClass('bg-teal');
+    } else if ($(this).hasClass('bg-custom')) {
+      $(this).removeClass('bg-custom');
       $(this).addClass('bg-secondary');
       $('.btn-continue').parent().slideUp(300);
       return;
     } else {
       $(this).removeClass('bg-secondary');
-      $('#counters .bg-teal').removeClass('bg-teal').addClass('bg-secondary');
-      $(this).addClass('bg-teal');
+      $('#counters .bg-custom').removeClass('bg-custom').addClass('bg-secondary');
+      $(this).addClass('bg-custom');
 
       $('[name="counter"]').val($(this).data('counter_id'));
       $('.btn-continue').parent().slideDown(300);

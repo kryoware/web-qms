@@ -130,14 +130,14 @@ $crumbs_title = "$page_title";
             <div class="d-flex justify-content-center wd-100p">
               <input type="hidden" name="counter">
               <input type="tel" name="pin" class="form-control flex-grow-1 custom-rounded" placeholder="Enter PIN">
-              <button type="submit" class="btn custom-rounded btn-teal wd-50p mg-l-20">
+              <button type="submit" class="btn custom-rounded btn-custom wd-50p mg-l-20">
                 <span>Login</span>
                 <i class="fa fa-spin fa-circle-o" style="display: none;"></i>
               </button>
             </div>
             <div class="d-flex wd-100p">
             <p class="error mg-0 mg-t-5 wd-100p flex-grow-1 text-center tx-danger" style="opacity: 0;"></p>
-              <button type="button" class="btn custom-rounded btn-teal text-uppercase wd-50p mg-l-20" style="opacity: 0; height: 1px;">
+              <button type="button" class="btn custom-rounded btn-custom text-uppercase wd-50p mg-l-20" style="opacity: 0; height: 1px;">
                 <span>Login</span>
               </button>
             </div>
