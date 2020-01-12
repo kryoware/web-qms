@@ -1,14 +1,25 @@
+:root {
+  --theme-primary: #1CAF9A;
+  /* --theme-primary: rgb(5,8,211); */
+  --theme-accent: rgb(231, 0, 14);
+}
+
 /* COLOR THEME */
 .bg-custom {
-  background-color: pink;
+  background-color: var(--theme-primary);
 }
 .tx-custom {
-  color: pink;
+  color: var(--theme-primary);
 }
 
 .btn-custom {
-  background-color: pink;
+  background-color: var(--theme-primary);
 }
+
+.bd-custom {
+  border-color: var(--theme-primary);
+}
+/* COLOR THEME */
 
 .custom-rounded {
   border-radius: 1rem !important;

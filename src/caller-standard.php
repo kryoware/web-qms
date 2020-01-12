@@ -24,17 +24,17 @@ $crumbs_title = "$page_title";
   <link rel="stylesheet" href="assets/css/caller.css">
 </head>
 <body>
-  <div class="d-flex flex-column">
+  <div class="d-flex flex-column" id="caller_content">
     <div class="custom-header container-fluid pd-y-10 justify-content-between d-flex bg-white">
       <div class="d-flex flex-column tx-semibold">
-        <p class="mg-0" id="counter_no">Counter <span id="counter_label"></span></p>
-        <p class="mg-0" id="dept_name">Department <span id="dept_label"></span></p>
+        <p class="mg-0" id="counter_no">Counter: <span id="counter_label"></span></p>
+        <p class="mg-0" id="dept_name">Department: <span id="dept_label"></span></p>
       </div>
       
       <div class="d-flex">
         <div class="d-flex flex-column justify-content-center ht-100p">
           <div class="profile-pic">
-            <img alt="" src="assets/placeholder.jpg" class="img-fluid" id="image">
+            <img alt="" src="assets/placeholder.jpg" class="img-fluid bd-custom" id="image">
           </div>
         </div>
         
@@ -73,7 +73,7 @@ $crumbs_title = "$page_title";
               <div class="d-flex justify-content-between">
 
                 <div class="d-flex flex-column">
-                  <p class="mg-0 text-center tx-semibold" id="served">0</p>
+                  <p class="mg-0 text-center tx-semibold" id="done">0</p>
                   <p class="mg-0 text-center">Served</p>
                 </div>
 
@@ -83,7 +83,7 @@ $crumbs_title = "$page_title";
                 </div>
 
                 <div class="d-flex flex-column">
-                  <p class="mg-0 text-center tx-semibold" id="queue">0</p>
+                  <p class="mg-0 text-center tx-semibold" id="pending">0</p>
                   <p class="mg-0 text-center">Queue</p>
                 </div>
 
@@ -97,7 +97,7 @@ $crumbs_title = "$page_title";
 
         <div class="actions-panel flex-grow-1">
           <div class="d-flex flex-column pd-10 ht-100p">
-            <button class="tx-semibold tx-uppercase custom-oblong btn btn-custom btn-block flex-grow-1 mg-b-5" id="caller_next">Next</button>
+            <button class="tx-white tx-semibold tx-uppercase custom-oblong btn btn-custom btn-block flex-grow-1 mg-b-5" id="caller_next">Next</button>
 
             <div class="d-flex justify-content-between flex-grow-1 mg-y-5">
               <button class="tx-semibold tx-uppercase custom-oblong btn btn-warning wd-50p mg-r-5" id="caller_recall">Recall</button>

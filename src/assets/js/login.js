@@ -1,11 +1,6 @@
 "use strict";
 
-// FIXME: Move this block below .ready()
-var DEPT_ID = null;
-var DEPARTMENTS = null;
-
 $(document).ready(function () {
-
   (function () {
     callApi('load_departments', { details: 'full' } , function (res) {
       if (res.stat === 'ok' && res.data) {
@@ -31,7 +26,7 @@ $(document).ready(function () {
               <div class="department-select col-6">
                 <div class="department-card custom-rounded ht-100p bg-secondary pd-20" data-counter_id=${counter.counter_id}>
                   <p class="text-center text-uppercase wd-100p tx-white tx-semibold mg-0" style="font-size: 4vmin;">Counter #${counter.counter_no}</p>
-                  <p class="text-center text-uppercase wd-100p tx-white mg-0" style="font-size: 3vmin;" style="display: none">[ {USER} ]</p>
+                  <p class="text-center text-uppercase wd-100p tx-white mg-0" style="font-size: 3vmin; opacity: 0;">[ {USER} ]</p>
                 </div>
               </div>
             `);
@@ -78,29 +73,34 @@ $(document).ready(function () {
     if (e.isDefaultPrevented() && e.isImmediatePropagationStopped()) {
       appendSpinner($('[type="submit"]'));
 
+      var dept_name = $('.nav-link.active').text().trim()
+
       var payload = {};
       $(this).serializeArray().forEach(function (input) {
         payload[input.name] = input.value;
       });
 
-      // FIXME: Simulate API call
-      setTimeout(function () {
+      callApi('caller_login', {
+        caller_pin: '1234' // FIXME: For DEMO
+      }, function (res) {
         removeSpinner($('[type="submit"]'));
 
-        // FIXME: Simulate SUCCESS
-        if (payload.pin === '1234') {
-          // FIXME: Redirect / Handle session
-          window.location = 'caller-standard.php?counter_id=' + payload.counter;
+        if (res.stat === 'ok') {
+          var user = {};
+
+          user.fname = res.data.fname;
+          user.lname = res.data.lname;
+          user.session_key = res.data.session_key;
+          user.dept_name = dept_name;
+
+          window.localStorage.setItem('user', JSON.stringify(user));
+          window.location.href = 'caller-standard.php?counter_id=' + payload.counter;
         } else {
           $('form .form-control').addClass('parsley-error');
           $('form .error').text('Invalid PIN');
-          $('form .error').animate({
-            opacity: 1
-          }, 300);
-
+          $('form .error').animate({ opacity: 1 }, 300);
         }
-      }, 2000);
+      });
     }
   });
-
 });

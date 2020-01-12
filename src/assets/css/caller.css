@@ -1,55 +1,69 @@
+body {
+  overflow: hidden;
+}
 
-    .logged-user img{
-      width: 32px;
-      height: 32px;
-    }
-    .slim-header {
-      height: unset;
-    }
-    
-    .main-content{
-      height: calc(100vh - 62px) !important;
-    }
+.logged-user img{
+  width: 32px;
+  height: 32px;
+}
+.slim-header {
+  height: unset;
+}
 
-    @media screen and (orientation: portrait) {
-      .panel-wrap {
-        flex-direction: column !important;
-      }
+.main-content{
+  height: calc(100vh - 62px) !important;
+}
 
-      .summary-panel {
-        width: 100vw;
-      }
-      
-      .actions-panel {
-        width: 100vw;
-      }
-    }
+@media screen and (orientation: portrait) {
+  .panel-wrap {
+    flex-direction: column !important;
+  }
+  
+  .summary-panel {
+    width: 100vw;
+  }
+  
+  .actions-panel {
+    width: 100vw;
+  }
 
-    @media screen and (orientation: landscape) {
-      .summary-panel {
-        width: 40vw;
-      }
-      
-      .actions-panel {
-        width: 60vw;
-      }
-    }
+  #ticket,
+  #time {
+    font-size: 3rem;
+  }
 
-    .summary-label {
-      font-size: 1.25rem;
-    }
-    #ticket,
-    #time {
-      font-size: 3rem;
-    }
-    .profile-pic img {
-      border: 1px solid #1CAF9A;
-      border-radius: 100%;
-      padding: 2px;
-      width: 32px;
-      height: 32px;
-    }
+  .summary-label {
+    font-size: 1.25rem;
+  }
+}
 
-    .custom-oblong {
-      border-radius: 1rem;
-    }
+@media screen and (orientation: landscape) {
+  .summary-panel {
+    width: 40vw;
+  }
+  
+  .actions-panel {
+    width: 60vw;
+  }
+
+  #ticket,
+  #time {
+    font-size: 1.5rem;
+  }
+
+  .summary-label {
+    font-size: 1rem;
+  }
+}
+.profile-pic img {
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 100%;
+  padding: 2px;
+  width: 32px;
+  height: 32px;
+}
+
+.custom-oblong {
+  border-radius: 1rem;
+}

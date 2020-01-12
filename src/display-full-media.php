@@ -29,10 +29,10 @@ $crumbs_title = "$page_title";
         <div class="d-flex flex-column justify-content-center pd-l-10">
           <div class="d-flex ht-100p">
             <div class="d-none flex-column justify-content-center brand-wrap">
-              <div class="slim-logo mg-0"><img class="pd-y-10" src="http://dev.teaconcepts.net/CleverQMS/assets/header_logo.jpg"></div>
+              <div class="slim-logo mg-0"><img class="pd-y-10" src="http://dev.teaconcepts.net/CleverQMS/assets/company_logo.jpg"></div>
             </div>
             <div class="d-none flex-column justify-content-center ht-100p company-name-wrap">
-              <p class="mg-0 mg-l-10 company-name tx-dark tx-semibold">Company Name</p>
+              <p class="mg-0 mg-l-10 company-name tx-dark tx-semibold"></p>
             </div>
           </div>
         </div>

@@ -1,3 +1,5 @@
+'use strict';
+
 function appendSpinner(dom) {
   $(dom).find('span').fadeOut(function() {
     $(dom).find('i').fadeIn();
@@ -10,7 +12,7 @@ function removeSpinner(dom) {
   });
 }
 
-function callApi(action, params, callback) {
+function callApi(action, params, callback, error_callback) {
   var host = 'http://dev.teaconcepts.net/CleverQMS/';
   var query = '';
 
@@ -29,6 +31,12 @@ function callApi(action, params, callback) {
     success: function(res) {
       if (typeof callback === 'function') {
         callback(res);
+      }
+    },
+    error: function(err) {
+      console.error(err);
+      if (typeof error_callback === 'function') {
+        error_callback(res);
       }
     }
   });

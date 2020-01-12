@@ -25,25 +25,18 @@
   height: 10vh;
 }
 
-#ticker {
-
-}
-
 #vertical,
 #large,
 #horizontal {
   overflow: hidden;
 }
 
-
-
 .slim-logo img {
   height: 10vh;
   width: auto;
 }
 
-
-.main-content {
+.main-content { 
   transition: all .3s ease-in-out;
 }
 

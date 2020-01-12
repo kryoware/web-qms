@@ -22,74 +22,7 @@ $crumbs_title = "$page_title";
   <?php echo "$_template_head"; ?>
   <title><?php echo "$page_title"; ?></title>
   <link rel="stylesheet" href="assets/css/app.css">
-  <style>
-    .counter-card,
-    .department-card {
-      transition: all .3s ease-in-out;
-    }
-
-    .department-select,
-    .counter-select {
-      padding-bottom: 20px;
-      flex-grow: 1;
-    }
-
-    .form-control:focus {
-      border-color: #1CAF9A;
-    }
-
-    .header-wrap {
-      border-bottom-left-radius: 1rem;
-      border-bottom-right-radius: 1rem;
-    }
-
-    .footer-wrap {
-      border-top-left-radius: 1rem;
-      border-top-right-radius: 1rem;
-    }
-
-    body {
-      height: 100vh;
-      width: 100vw;
-    }
-
-    .nav-link.active {
-      background-color: #1CAF9A !important;
-    }
-    .nav-link {
-      border-radius: .5rem !important;
-    }
-
-    #counters .row {
-      margin-left: -10px !important;
-      margin-right: -10px !important;
-    }
-
-    #counters .col,
-    #counters .col-6,
-    #counters .col-4 {
-      padding-left: 10px !important;
-      padding-right: 10px !important;
-    }
-
-    #login-modal .modal-dialog {
-      width: 90vw;
-    }
-    #login-modal .modal-footer {
-      background-color: #ffffff !important;
-      padding: 0px 20px 20px 20px !important;
-      border: none !important;
-
-    }
-    #login-modal .modal-header {
-      background-color: #1CAF9A !important;
-      padding: 20px 20px 0px 20px !important;
-      border: none !important;
-    }
-    html {
-      scroll-behavior: smooth;
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/login.css">
 </head>
 <body>
   <div class="container-fluid mg-0 pd-0 ht-100p">
@@ -98,7 +31,7 @@ $crumbs_title = "$page_title";
       <!-- Department Tabs -->
       <div class="header-wrap bg-white pd-20">
         <p class="text-center wd-100p tx-dark tx-semibold" style="font-size: 5vmin;">Select Department</p>
-        <ul id="departments" class="nav nav-pills nav-justified"></ul>
+        <ul id="departments" class="nav nav-pills nav-fill"></ul>
       </div>
       <!-- Department Tabs -->
 
@@ -130,7 +63,7 @@ $crumbs_title = "$page_title";
             <div class="d-flex justify-content-center wd-100p">
               <input type="hidden" name="counter">
               <input type="tel" name="pin" class="form-control flex-grow-1 custom-rounded" placeholder="Enter PIN">
-              <button type="submit" class="btn custom-rounded btn-custom wd-50p mg-l-20">
+              <button type="submit" class="btn custom-rounded btn-custom tx-white wd-50p mg-l-20">
                 <span>Login</span>
                 <i class="fa fa-spin fa-circle-o" style="display: none;"></i>
               </button>

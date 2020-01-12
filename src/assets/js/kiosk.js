@@ -1,27 +1,65 @@
-var host = 'http://dev.teaconcepts.net/CleverQMS/';
-var CONFIG = null;
-var DEPARTMENTS = null;
-var SELECTED_DEPT = null;
-var IS_FULLSCREEN = false;
-var NEW_TICKET = false;
+'use strict';
 
 $(document).ready(function () {
+  var host = 'http://dev.teaconcepts.net/CleverQMS/',
+    CONFIG = null,
+    DEPARTMENTS = null,
+    SELECTED_DEPT = null,
+    NEW_TICKET = false,
+    ticker_msg = null;
 
   (function () {
     $.ajax({
-      url: 'config_kiosk.json',
+      url: host + 'engine/api.php?act=load_settings',
       success: function (res) {
         if (res.stat === 'ok' && res.data) {
-          CONFIG = res.data.config;
+          Object.keys(res.data).forEach(function (key) {
+            var data = res.data[key];
+
+            switch (key) {
+              case 'company':
+                $('.company-name').text(data);
+                $('#ticket_company_name').text(data);
+                break;
+
+              case 'kiosk_welcome_msg':
+                var strings = data.split('. ');
+
+                // Removed period
+                $('.welcome-msg').text(strings[0]);
+                // Slice to remove period
+                $('.instruction-msg').text(strings[1].slice(0, -1));
+                break;
+
+              case 'kiosk_ticket_msg':
+                $('.ticket-msg').text(data);
+                break;
+
+              case 'ticker_msg':
+                ticker_msg = data;
+                break;
+
+              case 'ticker_color':
+                break;
+            }
+          });
 
           $.ajax({
-            url: host + 'engine/api.php?act=load_departments&stat=open&details=full',
+            url: 'config_kiosk.json',
             success: function (res) {
               if (res.stat === 'ok' && res.data) {
-                DEPARTMENTS = Object.values(res.data);
-                DEPARTMENTS = DEPARTMENTS.concat(DEPARTMENTS);
+                CONFIG = res.data.config;
 
-                initializeLayout();
+                $.ajax({
+                  url: host + 'engine/api.php?act=load_departments&stat=open&details=full',
+                  success: function (res) {
+                    if (res.stat === 'ok' && res.data) {
+                      DEPARTMENTS = Object.values(res.data);
+
+                      initializeLayout();
+                    }
+                  }
+                });
               }
             }
           });
@@ -29,6 +67,8 @@ $(document).ready(function () {
       }
     });
   })();
+
+  setInterval(function () { $('#kiosk_content').css({ height: window.innerHeight }); }, 500);
 
   $('#departments .btn-prev').on('click', function () {
     $('#dept_slides').carousel('prev');
@@ -40,9 +80,6 @@ $(document).ready(function () {
 
   $('body').on('click', '.kiosk-dept-wrap', function () {
     SELECTED_DEPT = $(this).data('dept_id')
-    // var dept = DEPARTMENTS.filter(function (dept) {
-    //   return parseInt(dept.dept_id) == parseInt(SELECTED_DEPT);
-    // })[0];
 
     // Create Ticket
     $.ajax({
@@ -71,18 +108,18 @@ $(document).ready(function () {
               if (TICKET_OBJECT.length > 0) {
                 TICKET_OBJECT = TICKET_OBJECT[0];
 
-                var date = moment(TICKET_OBJECT.dt_added.split(' ')[0], 'Y-MM-DD');
-                var time = moment(TICKET_OBJECT.dt_added.split(' ')[0], 'H:mm:ss');
+                // var date = moment(TICKET_OBJECT.dt_added.split(' ')[0], 'Y-MM-DD');
+                // var time = moment(TICKET_OBJECT.dt_added.split(' ')[0], 'H:mm:ss');
 
-                date = date.format('DD-MM-Y');
-                time = time.format('hh:mm:ss A');
+                var date = moment().format('DD-MM-Y');
+                var time = moment().format('hh:mm:ss A');
 
                 $('#confirm-modal .ticket').text(TICKET_OBJECT.ticket_label);
 
                 var logo = $('.branding .img-fluid').clone();
-                $(logo).addClass('wd-300')
+                $(logo).addClass('wd-300');
 
-                $('#ticket_logo').append(logo); 
+                $('#ticket_logo').append(logo);
                 $('#ticket_no').text(TICKET_OBJECT.ticket_label);
                 $('#ticket_date').text(date);
                 $('#ticket_time').text(time);
@@ -92,7 +129,13 @@ $(document).ready(function () {
                 // TODO: COMPANY NAME
                 // $('#ticket_company_name').text();
 
-                printTicket();
+                $('#confirm-modal').modal('show');
+
+                setTimeout(printTicket, 1000);
+
+                setTimeout(function () {
+                  $('#confirm-modal').modal('hide');
+                }, 4000);
               } else {
                 console.error('TICKET NOT FOUND');
               }
@@ -103,15 +146,15 @@ $(document).ready(function () {
     });
   });
 
-  window.onafterprint = function (event) {
-    console.log(event);
-    
-    $('#confirm-modal').modal('show');
-
+  $('#confirm-modal').on('show.bs.modal', function () {
     setTimeout(function () {
-      $('#confirm-modal').modal('hide');
-    }, 4000);
-  };
+      $('#confirm-modal .modal-body').fadeIn();
+    }, 500);
+  });
+
+  $('#confirm-modal').on('hide.bs.modal', function () {
+    $('#confirm-modal .modal-body').hide();
+  });
 
   function printTicket() {
     window.print();
@@ -126,15 +169,15 @@ $(document).ready(function () {
           css = 'col-'.concat(12 / CONFIG.layout.grid_columns);
 
           if (DEPARTMENTS.length > CONFIG.layout.grid_columns) {
-            css += ' mg-b-25';  
+            css += ' mg-b-25';
           }
         } else {
           if (DEPARTMENTS.length <= 3) {
-            css = 'col-12'
+            css = 'col-12';
           } else if (DEPARTMENTS.length <= 6) {
-            css = 'col-6'
+            css = 'col-6';
           } else {
-            css = 'col-4'
+            css = 'col-4';
           }
         }
 
@@ -163,8 +206,7 @@ $(document).ready(function () {
         DEPARTMENTS.forEach(function (dept, key) {
           $('#dept_slides .carousel-inner').append(`
             <div class="carousel-item ${key === 0 ? 'active' : ''}">
-              <div class="kiosk-dept-wrap custom-rounded
- bg-custom tx-white mg-x-25">
+              <div class="kiosk-dept-wrap custom-rounded bg-custom tx-white mg-x-25">
                 <div class="d-flex flex-column justify-content-center ht-100p">
                   <p class="text-center mg-0 text-uppercase kiosk-dept-name">${dept.dept_name}</p>
                 </div>
@@ -199,15 +241,10 @@ $(document).ready(function () {
       });
     }
 
-
     if (CONFIG['show_ticker'] === true) {
       $('#ticker').addClass(CONFIG.ticker_location === 'header' ? 'order-0' : 'order-12' );
       $('#ticker').toggle();
-      $('#ticker').append(`
-        <marquee class="ticker bg-custom">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-          porttitor hendrerit placerat. Donec pretium, felis congue semper fringilla, quam massa egestas arcu, vel rutrum
-          risus ex sed odio</marquee>
-      `);
+      $('#ticker').append(`<marquee class="ticker bg-custom">${ticker_msg}</marquee>`);
     }
 
     $('.branding-wrap').addClass(CONFIG.branding_location === 'header' ? 'order-0' : 'order-12' );
@@ -219,7 +256,7 @@ $(document).ready(function () {
 
       if (CONFIG.clock.enabled === true) {
       } else {
-        var css = ''
+        var css = '';
 
         switch (CONFIG.logo_location) {
           case 'center':
@@ -233,7 +270,7 @@ $(document).ready(function () {
             break;
         }
 
-        $('.branding').addClass(css)
+        $('.branding').addClass(css);
         $('.branding-wrap').removeClass('custom-rounded');
         $('.branding-wrap').css({
           'margin-top': '0px',
@@ -242,7 +279,6 @@ $(document).ready(function () {
         });
       }
     }
-
 
     if (CONFIG.clock) {
       var clock = CONFIG.clock;
@@ -272,60 +308,4 @@ $(document).ready(function () {
       }
     }
   }
-
-  $('body').on('click', '.btn-dept', function () {
-    $('#departments .active').removeClass('active');
-    $(this).addClass('active');
-
-    var dept = $(this).html();
-    SELECTED_DEPT = $(this).data('dept_id');
-
-    $('.welcome-card').css('height', '40vh');
-
-    $('h1').fadeOut(function () {
-      $('h1').text('In Queue: ' + dept);
-    })
-
-    $('h3').fadeOut(function () {
-      $('h3').text('');
-    });
-
-    $('#departments').fadeOut(function () {
-      $('h1').fadeIn();
-      $('h3').fadeIn();
-      $('#actions').fadeIn();
-    });
-  });
-
-
-  $('body').on('click', '.btn-back', function () {
-    $('.welcome-card').css('height', '50vh');
-
-    $('h1').fadeOut(function () {
-      $('h1').text('Welcome');
-    })
-
-    $('h3').fadeOut(function () {
-      $('h3').text('What can we help you with today?');
-    });
-
-    $('#actions').fadeOut(function () {
-      $('h1').fadeIn();
-      $('h3').fadeIn();
-      $('#departments').fadeIn();
-    });
-  });
-
-  $('body').on('click', '.btn-print', function () {
-  });
-
-  $('#confirm-modal').on('show.bs.modal', function () {
-    setTimeout(function () {
-      $('#confirm-modal .modal-body').fadeIn();
-    }, 500);
-  });
-
-  $('#confirm-modal').on('hide.bs.modal', function () {
-    $('#confirm-modal .modal-body').hide();
-  });
 }); // READY

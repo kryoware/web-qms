@@ -1,3 +1,6 @@
+.branding img {
+  height: 10vh;
+}
 
 .kiosk-dept-name {
   font-size: 36px;
@@ -55,7 +58,7 @@
 @media print {
   #confirm-modal,
   .container-fluid {
-    display: none;
+    display: none !important;
   }
   
   #ticket {

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 $(document).ready(function () {
   var AUDIO = new Audio('./assets/ding_dong.mp3'),
@@ -7,14 +7,10 @@ $(document).ready(function () {
   SLIDE_INTERVAL = null,
   IMAGE_INTERVAL = null,
   VIDEO_INTERVAL = null,
-
   MAX_COUNTERS = 5,
-
   CURR = 0,
-
   FULLSCREEN_ENABLED = false,
   FULLSCREEN_TIMEOUT = null,
-
   COUNTERS = null,
   DEPARTMENTS = null,
   TICKETS = [],
@@ -22,31 +18,51 @@ $(document).ready(function () {
   QUEUE = [],
   ANNOUNCED = [],
   CAROUSEL_PAGE = 2,
-  CAROUSEL_INTERVAL_ID = null;
+  CAROUSEL_INTERVAL_ID = null,
+  ticker_msg = null;
 
   (function () {
-    $.ajax({
-      url: 'config.json',
-      success: function success(res) {
-        if (res.stat === 'ok' && Object.keys(res.data).length) {
-          // FIXME: MOCK API
-          CONFIG = res.data.config;
 
-          ANNOUNCEMENT_INTERVAL = parseFloat(CONFIG['load_announcements']) * 1000;
-          TICKET_INTERVAL = parseFloat(CONFIG['load_ticket']) * 1000;
-          SLIDE_INTERVAL = parseFloat(CONFIG['slide_dept']) * 1000;
-          IMAGE_INTERVAL = parseFloat(CONFIG['slide_image']) * 1000;
-          VIDEO_INTERVAL = parseFloat(CONFIG['slide_video']) * 1000;
+    callApi('load_settings', {}, function (res) {
+      if (res.stat === 'ok' && res.data) {
+        Object.keys(res.data).forEach(function (key) {
+          var data = res.data[key];
 
-          initializeLayout();
-        }
-      },
-      error: function error(err) {
-        console.error(err);
+          switch (key) {
+            case 'company':
+              $('.company-name').text(data);
+              break;
+
+            case 'ticker_msg':
+              ticker_msg = data;
+              break;
+          }
+        });
+
+        $.ajax({
+          url: 'config.json',
+          success: function success(res) {
+            if (res.stat === 'ok' && Object.keys(res.data).length) {
+              // FIXME: MOCK API
+              CONFIG = res.data.config;
+    
+              ANNOUNCEMENT_INTERVAL = parseFloat(CONFIG['load_announcements']) * 1000;
+              TICKET_INTERVAL = parseFloat(CONFIG['load_ticket']) * 1000;
+              SLIDE_INTERVAL = parseFloat(CONFIG['slide_dept']) * 1000;
+              IMAGE_INTERVAL = parseFloat(CONFIG['slide_image']) * 1000;
+              VIDEO_INTERVAL = parseFloat(CONFIG['slide_video']) * 1000;
+    
+              initializeLayout();
+            }
+          },
+          error: function error(err) {
+            console.error(err);
+          }
+        });
       }
     });
   })();
-  
+
   $('body').on('click', '.btn-call', function () {
     var counter_id = $(this).data('counter_id');
     $.ajax({
@@ -86,7 +102,7 @@ $(document).ready(function () {
   $('#sample_fullscreen').on('click', function () {
     sampleFullScreen();
   });
-  
+
   $('#announce-modal').on('hide.bs.modal', function() {
     (function () {
       carouselScroll(CAROUSEL_PAGE);
@@ -99,16 +115,12 @@ $(document).ready(function () {
 
   function initializeLayout(data) {
     $('.main-content').toggleClass('show-ticker', CONFIG['show_ticker'] === true);
-    
+
     if (CONFIG['show_ticker'] === true) {
       $('#ticker').toggle();
-      $('#ticker').append(`
-        <marquee style="line-height: 10vh; font-size: 7vh;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-          porttitor hendrerit placerat. Donec pretium, felis congue semper fringilla, quam massa egestas arcu, vel rutrum
-          risus ex sed odio</marquee>
-      `);
+      $('#ticker').append(`<marquee style="line-height: 10vh; font-size: 7vh;">${ticker_msg}</marquee>`);
     }
-    
+
     if (CONFIG['show_logo'] === true || CONFIG['clock'].enabled) {
       $('#header').show();
       $('.main-content').addClass('show-header');
@@ -128,7 +140,7 @@ $(document).ready(function () {
     if (CONFIG['clock']) {
       var clock = CONFIG['clock'];
       $('.time').toggle(clock.enabled);
-      
+
       if (clock.enabled) {
         var format = '';
 
@@ -295,7 +307,7 @@ $(document).ready(function () {
 
       clearInterval(CAROUSEL_INTERVAL_ID)
       var slide_dom = $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').closest('.carousel-item');
-      
+
       // Add blinking effect
       $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').find('.ticket-no').addClass('blink')
       $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').find('.counter-no').addClass('blink')
@@ -313,7 +325,7 @@ $(document).ready(function () {
 
       setTimeout(function () {
         $('#announce-modal').modal('hide');
-        
+
         setTimeout(function () {
           QUEUE.shift();
           announce(QUEUE);
