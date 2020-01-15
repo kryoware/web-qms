@@ -23,7 +23,7 @@ $crumbs_title = "$page_title";
   <link rel="stylesheet" href="assets/css/kiosk.css">
 </head>
 <body>
-  <div class="d-flex flex-column" id="kiosk_content">
+  <div class="d-flex flex-column ht-100p" id="kiosk_content">
     <div class="container-fluid mg-0 pd-0">
       <div class="carousel fade slide bg-white" id="bg_slideshow" style="display: none;">
         <div class="carousel-inner"></div>

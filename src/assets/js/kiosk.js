@@ -68,8 +68,6 @@ $(document).ready(function () {
     });
   })();
 
-  setInterval(function () { $('#kiosk_content').css({ height: window.innerHeight }); }, 500);
-
   $('#departments .btn-prev').on('click', function () {
     $('#dept_slides').carousel('prev');
   });
@@ -98,12 +96,8 @@ $(document).ready(function () {
               });
 
               var TICKET_SERVED = Object.values(res.data).filter(function(ticket) {
-                return parseInt(ticket.counter_id) != 0;
-              }).sort(function (a,b) {
-                return parseInt(a.ticket_id) - parseInt(b.ticket_id)
-              });
-
-              TICKET_SERVED = TICKET_SERVED[TICKET_SERVED.length - 1];
+                return parseInt(ticket.ticket_no) != NEW_TICKET;
+              })
 
               if (TICKET_OBJECT.length > 0) {
                 TICKET_OBJECT = TICKET_OBJECT[0];
@@ -119,6 +113,8 @@ $(document).ready(function () {
                 var logo = $('.branding .img-fluid').clone();
                 $(logo).addClass('wd-300');
 
+
+                $('#ticket_logo').html('');
                 $('#ticket_logo').append(logo);
                 $('#ticket_no').text(TICKET_OBJECT.ticket_label);
                 $('#ticket_date').text(date);

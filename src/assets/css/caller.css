@@ -1,6 +1,6 @@
-body {
+/* body {
   overflow: hidden;
-}
+} */
 
 .logged-user img{
   width: 32px;
@@ -11,7 +11,6 @@ body {
 }
 
 .main-content{
-  height: calc(100vh - 62px) !important;
 }
 
 @media screen and (orientation: portrait) {
@@ -38,12 +37,19 @@ body {
 }
 
 @media screen and (orientation: landscape) {
+  .panel-wrap {
+    /* height: 100% !important; */
+  }
+
   .summary-panel {
     width: 40vw;
+    flex-grow: 1;
+    height: 100%;
   }
   
   .actions-panel {
     width: 60vw;
+    flex-grow: 1;
   }
 
   #ticket,
@@ -66,4 +72,29 @@ body {
 
 .custom-oblong {
   border-radius: 1rem;
+}
+
+#feedback-modal .modal-dialog {
+  max-width: unset !important;
+}
+
+#api_message.show{
+  height: 15vh;
+  width: 75vw;
+  opacity: 1;
+}
+
+#api_message {
+  height: 0;
+  width: 0;
+  opacity: 0;
+  transition: all .3s ease-in-out;
+}
+
+#api_message p {
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+}
+.actions-panel button {
+  font-size: 3.5vmin;
 }

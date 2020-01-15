@@ -1,0 +1,18 @@
+.counter-card {
+    margin-bottom: 15px;
+    height: calc((80vh - 90px) / 5);
+}
+
+.counter-no {
+    font-size: 2.25vw;
+    line-height: 2.25vw;
+}
+
+.ticket-no {
+    font-size: 3vw;
+    line-height: 3vw;
+}
+
+.main-content {
+    height: 80vh;
+}

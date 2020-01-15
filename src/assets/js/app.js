@@ -63,53 +63,6 @@ $(document).ready(function () {
     });
   })();
 
-  $('body').on('click', '.btn-call', function () {
-    var counter_id = $(this).data('counter_id');
-    $.ajax({
-      url: host + 'engine/api.php?act=caller_next&counter_id=' + counter_id
-    });
-  });
-
-  $('#generate_ticket').on('click', function () {
-    var select = $(this).parent().find('select');
-    console.log(select.val());
-
-    if (select.val()) {
-      var dept_id = select.val();
-      $.ajax({
-        url: host + 'engine/api.php?act=issue_ticket&dept_id=' + dept_id
-      });
-    } else {
-
-    }
-  });
-
-  $('[name="fullscreen_enabled"]').on('change', function () {
-    // $(this).
-  });
-
-  $('#layout_config').on('submit', function (e) {
-    e.preventDefault();
-    $(this).serializeArray().forEach(function (x) {
-      console.log(x);
-    });
-  });
-
-  $('#sample_fullscreen_duration').on('change', function () {
-    MODAL_TIMEOUT = parseInt($(this).val()) * 1000;
-  });
-
-  $('#sample_fullscreen').on('click', function () {
-    sampleFullScreen();
-  });
-
-  $('#announce-modal').on('hide.bs.modal', function() {
-    (function () {
-      carouselScroll(CAROUSEL_PAGE);
-      rideCarousel();
-    })();
-  });
-
   // FIXME: Remove when live
   var host = 'http://dev.teaconcepts.net/CleverQMS/';
 
@@ -159,10 +112,9 @@ $(document).ready(function () {
         }, 500);
       }
     }
-
-    loadDepartments();
-
+  
     (function () {
+      loadDepartments();
       rideCarousel();
     })();
 
@@ -174,10 +126,10 @@ $(document).ready(function () {
   }
 
   function speak(message) {
-    var msg = new SpeechSynthesisUtterance(message)
-    var voices = window.speechSynthesis.getVoices()
-    msg.voice = voices[0]
-    window.speechSynthesis.speak(msg)
+    var msg = new SpeechSynthesisUtterance(message);
+    var voices = window.speechSynthesis.getVoices();
+    msg.voice = voices[0];
+    window.speechSynthesis.speak(msg);
   }
 
   function loadDepartments() {
@@ -330,7 +282,7 @@ $(document).ready(function () {
           QUEUE.shift();
           announce(QUEUE);
         }, 500);
-      }, 5000);
+      }, 10000);
     }
   }
 

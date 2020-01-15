@@ -108,6 +108,7 @@ $crumbs_title = "$page_title";
     </div>
     <div class="row no-gutters bg-custom tx-white" id="ticker" style="display: none;"></div>
   </div>
+  
   <div aria-hidden="true" aria-labelledby="announceModalLabel" class="modal fade effect-scale" data-backdrop="static" id="announce-modal" role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
