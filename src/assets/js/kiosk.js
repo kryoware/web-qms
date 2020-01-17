@@ -96,8 +96,10 @@ $(document).ready(function () {
               });
 
               var TICKET_SERVED = Object.values(res.data).filter(function(ticket) {
-                return parseInt(ticket.ticket_no) != NEW_TICKET;
+                return parseInt(ticket.ticket_no) != NEW_TICKET && parseInt(ticket.counter_id) != 0;
               })
+
+              console.log({ TICKET_SERVED })
 
               if (TICKET_OBJECT.length > 0) {
                 TICKET_OBJECT = TICKET_OBJECT[0];
@@ -114,7 +116,16 @@ $(document).ready(function () {
                 $('#ticket_no').text(TICKET_OBJECT.ticket_label);
                 $('#ticket_date').text(date);
                 $('#ticket_time').text(time);
-                $('#ticket_serving').text(TICKET_SERVED.ticket_label);
+
+                $('#ticket_serving').parent().hide();
+
+                if (TICKET_SERVED.length) {
+                  $('#ticket_serving').parent().show();
+                  $('#ticket_serving').text(TICKET_SERVED[0].ticket_label);
+                } else {
+                  $('#ticket_serving').parent().hide();
+                }
+
                 $('#ticket_customers').text(Object.values(res.data).length - 1);
 
                 // TODO: COMPANY NAME
@@ -151,8 +162,8 @@ $(document).ready(function () {
     var logo = $('.branding .img-fluid').clone();
 
     if (window.nsWebViewBridge) {
-      $(logo).addClass('wd-30');
-      $(logo).addClass('ht-30');
+      $(logo).addClass('wd-300');
+      $(logo).addClass('ht-300');
       $('#ticket_logo').append(logo);
 
       $('#confirm-modal').hide();
@@ -167,7 +178,10 @@ $(document).ready(function () {
       $(logo).addClass('wd-300');
       $(logo).addClass('ht-300');
       $('#ticket_logo').append(logo);
-      window.print();
+
+      setTimeout(function () {
+        window.print();
+      }, 250)
     }
 
     return false;
