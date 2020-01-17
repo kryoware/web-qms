@@ -3,8 +3,9 @@
 } */
 
 .logged-user img{
-  width: 32px;
-  height: 32px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--theme-primary);
 }
 .slim-header {
   height: unset;

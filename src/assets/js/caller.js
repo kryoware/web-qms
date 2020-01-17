@@ -99,9 +99,19 @@ $(document).ready(function() {
           }, 500);
           $('#ticket').text(ticket.ticket_label).animate({ opacity: 1 }, 250);
         }
+      } else if (res.stat === 'error') {
+        window.location.replace('caller-login.php');
       }
     });
   }
+
+  $('body').on('click', '#caller_logout', function () {
+    callApi('caller_logout', { session_key: SESSION_KEY }, function (res) {
+      if (res.stat === 'ok') {
+        window.location.replace('caller-login.php');
+      }
+    })
+  })
 
   $('body').on('hidden.bs.modal', '#feedback-modal', function () {
     $(this).find('#spinner').show();

@@ -110,12 +110,7 @@ $(document).ready(function () {
 
                 $('#confirm-modal .ticket').text(TICKET_OBJECT.ticket_label);
 
-                var logo = $('.branding .img-fluid').clone();
-                $(logo).addClass('wd-300');
-
-
                 $('#ticket_logo').html('');
-                $('#ticket_logo').append(logo);
                 $('#ticket_no').text(TICKET_OBJECT.ticket_label);
                 $('#ticket_date').text(date);
                 $('#ticket_time').text(time);
@@ -153,7 +148,28 @@ $(document).ready(function () {
   });
 
   function printTicket() {
-    window.print();
+    var logo = $('.branding .img-fluid').clone();
+
+    if (window.nsWebViewBridge) {
+      $(logo).addClass('wd-30');
+      $(logo).addClass('ht-30');
+      $('#ticket_logo').append(logo);
+
+      $('#confirm-modal').hide();
+      $('.modal-backdrop').hide();
+      $('.content-wrap').hide();
+      $('#ticket').show();
+
+      setTimeout(function () {
+        window.nsWebViewBridge.emit('print', null);
+      }, 1000)
+    } else {
+      $(logo).addClass('wd-300');
+      $(logo).addClass('ht-300');
+      $('#ticket_logo').append(logo);
+      window.print();
+    }
+
     return false;
   }
 

@@ -30,16 +30,17 @@ $crumbs_title = "$page_title";
         <p class="mg-0" id="counter_no">Counter: <span id="counter_label"></span></p>
         <p class="mg-0" id="dept_name">Department: <span id="dept_label"></span></p>
       </div>
-      
-      <div class="d-flex">
-        <div class="d-flex flex-column justify-content-center ht-100p">
-          <div class="profile-pic">
-            <img alt="" src="assets/placeholder.jpg" class="img-fluid bd-custom" id="image">
-          </div>
-        </div>
-        
-        <div class="d-flex flex-column justify-content-center ht-100p tx-semibold">
-          <p class="mg-0 mg-l-10" id="name">Juan Dela Cruz</p>
+
+      <div class="dropdown dropdown-c show">
+        <a href="#" class="logged-user" data-toggle="dropdown" aria-expanded="true">
+          <img src="http://via.placeholder.com/500x500" alt="">
+          <span>USER</span>
+          <i class="fa fa-angle-down"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right " x-placement="bottom-end" style="position: absolute; transform: translate3d(-65px, 45px, 0px); top: 0px; left: 0px; will-change: transform;">
+          <nav class="nav">
+            <a href="#" class="nav-link wd-100p" id="caller_logout" ><i class="icon ion-forward"></i> Sign Out</a>
+          </nav>
         </div>
       </div>
     </div>
