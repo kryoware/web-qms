@@ -25,8 +25,8 @@ $crumbs_title = "$page_title";
   <link rel="stylesheet" href="assets/css/login.css">
 </head>
 <body>
-  <div class="container-fluid mg-0 pd-0 ht-100p">
-    <div class="d-flex flex-column ht-100p">
+  <div class="container-fluid mg-0 pd-0">
+    <div class="d-flex flex-column">
 
       <!-- Department Tabs -->
       <div class="header-wrap bg-white pd-20">

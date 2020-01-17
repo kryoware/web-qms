@@ -37,7 +37,7 @@
           "month": "short"
         },
         "time_format": {
-          "show_seconds": false,
+          "show_seconds": true,
           "show_suffix": true
         }
       }

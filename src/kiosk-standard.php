@@ -23,66 +23,84 @@ $crumbs_title = "$page_title";
   <link rel="stylesheet" href="assets/css/kiosk.css">
 </head>
 <body>
-  <div class="d-flex flex-column ht-100p" id="kiosk_content">
-    <div class="container-fluid mg-0 pd-0">
-      <div class="carousel fade slide bg-white" id="bg_slideshow" style="display: none;">
-        <div class="carousel-inner"></div>
-      </div>
+  <div id="ticket" style="line-height: 1.25; color: black; background: white; height: 100%">
+    <span id="ticket_logo" class="d-flex justify-content-center" style="margin-bottom: 1.25rem;"></span>
+    <span id="ticket_company_name" style="font-size: 5rem; font-weight: bold; display: block; margin-bottom: 1.25rem;">Company Name</span><br/><br/>
 
-      <!-- Welcome Wrapper -->
-      <div class="welcome-wrap ht-100p">
-        <div class="d-flex flex-column ht-100p">
-          <!-- Branding/Clock Container -->
-          <div class="branding-wrap mg-20 bg-white custom-rounded pd-x-25 pd-b-25">
-            <div class="d-flex flex-wrap justify-content-between">
+    <span style="font-size: 5rem;">Your Ticket Number</span><br/>
 
-              <div class="branding pd-t-25 flex-grow-1 tx-dark tx-semibold" style="display: none;">
-                <div class="d-flex ht-100p">
-                  <div class="d-flex flex-column justify-content-center ht-100p">
-                    <img class="img-fluid" src="http://dev.teaconcepts.net/CleverQMS/assets/company_logo.jpg">
-                  </div>
-                  <div class="d-none flex-column justify-content-center company-name-wrap">
-                    <p class="mg-0 mg-l-15 company-name"></p>
-                    <p class="mg-0 mg-l-15 mg-t-15 company-subtitle" style="display: none;">Optional Text</p>
-                  </div>
-                </div>
-              </div>
+    <span id="ticket_no" style="font-size: 10rem; font-weight: bold; line-height: 1.5;">3</span><br/>
 
-              <div class="time pd-t-25 flex-grow-1" style="display: none;">
-                <div class="d-flex flex-column justify-content-center tx-dark tx-semibold ht-100p">
-                  <p class="text-right mg-0"></p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Branding/Clock Container -->
+    <span style="font-size: 4rem; display: block; margin-bottom: 1.25rem;" class="ticket-msg"></span><br/><br/>
+    <span style="font-size: 4rem; line-height: 1.25;">Latest Ticket Served: <span id="ticket_serving"></span></span><br/>
+    <span style="font-size: 4rem; line-height: 1.25; display: block; margin-bottom: 1.25rem;">Total Customer(s) waiting: <span id="ticket_customers"></span></span><br/><br/>
 
-          <!-- Welcome Card -->
-          <div class="welcome-card custom-rounded bg-white mg-x-20 pd-x-25 pd-t-25 d-flex flex-column">
+    <span id="ticket_date" style="font-size: 3rem; float: left;">1</span>
+    <span id="ticket_time" style="font-size: 3rem; float: right;">2</span>
+  </div>
 
-            <div class="">
-              <h1 class="text-center text-uppercase tx-bold tx-dark mg-0 welcome-msg" style="font-size: 6vmin;"></h1>
-              <h3 class="text-center tx-dark mg-0 mg-t-20 mg-b-20 instruction-msg" style="font-size: 4.5vmin;"></h3>
-            </div>
-
-            <div id="departments" class="flex-grow-1">
-
-              <div class="d-flex flex-column justify-content-center ht-100p">
-                <div id="grid-wrap" class="row d-flex flex-wrap"></div>
-
-                <div id="carousel-wrap" class="d-none ht-100p justify-content-between"></div>
-              </div>
-            </div>
-          </div>
-          <!-- Welcome Card -->
-
-          <!-- Ticker Container -->
-          <div class="d-flex flex-column tx-white order-12 flex-grow-1 justify-content-end" id="ticker" style="display: none;"></div>
-          <!-- Ticker Container -->
+  <div class="content-wrap">
+    <div class="d-flex flex-column ht-100p" id="kiosk_content">
+      <div class="container-fluid mg-0 pd-0">
+        <div class="carousel fade slide bg-white" id="bg_slideshow" style="display: none;">
+          <div class="carousel-inner"></div>
         </div>
-      </div>
-      <!-- Welcome Wrapper -->
 
+        <!-- Welcome Wrapper -->
+        <div class="welcome-wrap ht-100p">
+          <div class="d-flex flex-column ht-100p">
+            <!-- Branding/Clock Container -->
+            <div class="branding-wrap mg-20 bg-white custom-rounded pd-x-25 pd-b-25">
+              <div class="d-flex flex-wrap justify-content-between">
+
+                <div class="branding pd-t-25 flex-grow-1 tx-dark tx-semibold" style="display: none;">
+                  <div class="d-flex ht-100p">
+                    <div class="d-flex flex-column justify-content-center ht-100p">
+                      <img class="img-fluid" src="http://dev.teaconcepts.net/CleverQMS/assets/company_logo.jpg">
+                    </div>
+                    <div class="d-none flex-column justify-content-center company-name-wrap">
+                      <p class="mg-0 mg-l-15 company-name"></p>
+                      <p class="mg-0 mg-l-15 mg-t-15 company-subtitle" style="display: none;">Optional Text</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="time pd-t-25 flex-grow-1" style="display: none;">
+                  <div class="d-flex flex-column justify-content-center tx-dark tx-semibold ht-100p">
+                    <p class="text-right mg-0"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Branding/Clock Container -->
+
+            <!-- Welcome Card -->
+            <div class="welcome-card custom-rounded bg-white mg-x-20 pd-x-25 pd-t-25 d-flex flex-column">
+
+              <div class="">
+                <h1 class="text-center text-uppercase tx-bold tx-dark mg-0 welcome-msg" style="font-size: 6vmin;"></h1>
+                <h3 class="text-center tx-dark mg-0 mg-t-20 mg-b-20 instruction-msg" style="font-size: 4.5vmin;"></h3>
+              </div>
+
+              <div id="departments" class="flex-grow-1">
+
+                <div class="d-flex flex-column justify-content-center ht-100p">
+                  <div id="grid-wrap" class="row d-flex flex-wrap"></div>
+
+                  <div id="carousel-wrap" class="d-none ht-100p justify-content-between"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Welcome Card -->
+
+            <!-- Ticker Container -->
+            <div class="d-flex flex-column tx-white order-12 flex-grow-1 justify-content-end" id="ticker" style="display: none;"></div>
+            <!-- Ticker Container -->
+          </div>
+        </div>
+        <!-- Welcome Wrapper -->
+
+      </div>
     </div>
   </div>
   <!-- Container -->
@@ -102,22 +120,6 @@ $crumbs_title = "$page_title";
         </div>
       </div>
     </div>
-  </div>
-
-  <div id="ticket" style="line-height: 1.25; color: black; background: white; height: 100%">
-    <span id="ticket_logo" class="d-flex justify-content-center" style="margin-bottom: 1.25rem;"></span>
-    <span id="ticket_company_name" style="font-size: 5rem; font-weight: bold; display: block; margin-bottom: 1.25rem;">Company Name</span><br/><br/>
-
-    <span style="font-size: 5rem;">Your Ticket Number</span><br/>
-
-    <span id="ticket_no" style="font-size: 10rem; font-weight: bold; line-height: 1.5;">3</span><br/>
-
-    <span style="font-size: 4rem; display: block; margin-bottom: 1.25rem;" class="ticket-msg"></span><br/><br/>
-    <span style="font-size: 4rem; line-height: 1.25;">Latest Ticket Served: <span id="ticket_serving"></span></span><br/>
-    <span style="font-size: 4rem; line-height: 1.25; display: block; margin-bottom: 1.25rem;">Total Customer(s) waiting: <span id="ticket_customers"></span></span><br/><br/>
-
-    <span id="ticket_date" style="font-size: 3rem; float: left;">1</span>
-    <span id="ticket_time" style="font-size: 3rem; float: right;">2</span>
   </div>
 
   <?php echo "$_template_footer_inc_1"; ?>

@@ -1,37 +1,25 @@
 'use strict';
 
-$('body').on('hidden.bs.modal', '#feedback-modal', function () {
-  $(this).find('#spinner').show();
-  $(this).find('#api_message p').hide().text('');
-})
-
 $(document).ready(function() {
-  // FIXME: For testing only
-  var COUNTER_ID = window.location.search.slice('counter_id'.length + 2);
-
   var TIMER_INTERVAL_ID = null,
   LOAD_INTERVAL = null,
   SESSION_KEY = null,
   TIMER_START = null,
   PREV_TICKET = null;
 
-  if (COUNTER_ID) $('#counter_label').text(COUNTER_ID);
+  function gup( name, url ) {
+    if (!url) url = location.href;
+    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+    var regexS = "[\\?&]"+name+"=([^&#]*)";
+    var regex = new RegExp( regexS );
+    var results = regex.exec( url );
+    return results == null ? null : decodeURIComponent(results[1]);
+}
 
-  (function () {
-    var data = JSON.parse(window.localStorage.getItem('user'));
 
-    if (data === null) {
-      console.error('No user found');
-    } else {
-      SESSION_KEY = data.session_key;
-      if (data.fname != '' && data.lname != '') {
-        $('#name').text(data.fname.concat(' ', data.lname));
-      }
-
-      if (data.dept_name) {
-        $('#dept_label').text(data.dept_name);
-      }
-    }
+(function () {
+    SESSION_KEY = gup('session_key');
+    if (SESSION_KEY === null) window.location.replace('caller-login.php')
 
     loadStats();
     startTimer();
@@ -76,7 +64,7 @@ $(document).ready(function() {
   }
 
   function loadStats() {
-    callApi('load_counter_stats', { counter_id: COUNTER_ID }, function (res) {
+    callApi('caller_counter_stats', { session_key: SESSION_KEY }, function (res) {
       if (res.stat === 'ok' && res.data) {
         Object.keys(res.data).forEach(function (key) {
           var stat_label = key.split('_')[1];
@@ -84,6 +72,22 @@ $(document).ready(function() {
 
           $('#' + stat_label).text(data);
         });
+
+        if (res.data.hasOwnProperty('current_user')) {
+          var user = res.data.current_user;
+
+          if (user.fname != '' && user.lname != '') {
+            $('#name').text(user.fname.concat(' ', user.lname));
+          }
+
+          if (user.hasOwnProperty('counter_no')) {
+            $('#counter_no span').text(user.counter_no);
+          }
+
+          if (user.hasOwnProperty('dept_name')) {
+            $('#dept_name span').text(user.dept_name);
+          }
+        }
 
         if (res.data.hasOwnProperty('current_ticket')) {
           var ticket = res.data.current_ticket;
@@ -99,16 +103,21 @@ $(document).ready(function() {
     });
   }
 
+  $('body').on('hidden.bs.modal', '#feedback-modal', function () {
+    $(this).find('#spinner').show();
+    $(this).find('#api_message p').hide().text('');
+  })
+
   // Handle all buttons
   $('body').on('click', 'button[id*="caller_"]', function () {
-    if (SESSION_KEY === null && COUNTER_ID === null) {
+    if (SESSION_KEY === null) {
       return;
     }
 
     $('#feedback-modal').modal('show');
     var action = $(this).attr('id');
 
-    callApi(action, { session_key: SESSION_KEY, counter_id: COUNTER_ID }, function (res) {
+    callApi(action, { session_key: SESSION_KEY }, function (res) {
       clearInterval(TIMER_INTERVAL_ID);
       showMessage(res.stat, res.statMsg);
 

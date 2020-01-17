@@ -85,7 +85,7 @@ $crumbs_title = "$page_title";
 
       <div class="d-flex flex-column wd-45p">
         <div class="row no-gutters" id="large">
-          <div class="col ht-100p d-flex carousel-wrap">
+          <div class="col ht-100p d-flex carousel-wrap bg-custom">
             <div class="carousel slide" data-ride="carousel" id="media">
               <div class="carousel-inner" role="listbox">
                 <div class="carousel-item" data-interval="10000">
@@ -222,21 +222,16 @@ $crumbs_title = "$page_title";
           AUDIO.play();
           setTimeout(function () {
             speak(data.message);
-          }, 500);
-
-          clearInterval(CAROUSEL_INTERVAL_ID)
-          var slide_dom = $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').closest('.carousel-item');
+          }, 300);
 
           // Add blinking effect
-          $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').find('.ticket-no').addClass('blink')
-          $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').find('.counter-no').addClass('blink')
+          $('[data-counter_no="' + data.counter_no + '"]').find('.ticket-no').addClass('blink');
+          $('[data-counter_no="' + data.counter_no + '"]').find('.counter-no').addClass('blink');
 
           setTimeout(function () {
-            $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').find('.ticket-no').removeClass('blink')
-            $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').find('.counter-no').removeClass('blink')
-          }, 13000)
-
-          CAROUSEL_PAGE = $(slide_dom).index() + 1;
+            $('[data-counter_no="' + data.counter_no + '"]').find('.ticket-no').removeClass('blink');
+            $('[data-counter_no="' + data.counter_no + '"]').find('.counter-no').removeClass('blink');
+          }, 20000)
 
           $('#ticket').text(data.ticket_label);
           $('#counter').text(data.counter_no);
@@ -250,41 +245,6 @@ $crumbs_title = "$page_title";
               announce(QUEUE);
             }, 500);
           }, 10000);
-        }
-      }
-
-      function loadAnnouncements() {
-        $.ajax({
-          url: host + 'engine/api.php?act=announcements',
-          success: function success(res) {
-            if (res.stat === 'ok' && res.data) {
-              var T_QUEUE = QUEUE.map(function (ann) {
-                return ann.ann_id;
-              });
-
-              var NEW_QUEUE = Object.values(res.data).filter(function (data) {
-                return !ANNOUNCED.includes(data.ann_id) || !T_QUEUE.includes(data.ann_id);
-              });
-
-              QUEUE = QUEUE.concat(NEW_QUEUE);
-            }
-          }
-        });
-      }
-
-      function carouselScroll(page) {
-        var  max_pages = $('#counter_carousel').children().length;
-        var carousel = $('#counter_carousel').width();
-        var slide = $($('#counter_carousel').children()[page - 1]);
-
-        $('#counter_carousel .active').removeClass('active');
-        $(slide).addClass('active');
-
-        document.querySelector('.carousel-item.active').scrollIntoView();
-
-        // Return to first slide
-        if (page === max_pages) {
-          CAROUSEL_PAGE = 1;
         }
       }
 
@@ -306,7 +266,7 @@ $crumbs_title = "$page_title";
                     <div class="col-${12 / COLUMNS}">
                       <div class="bg-white custom-rounded pd-y-10 pd-x-20 ht-100p counter-card d-flex flex-column" data-counter_id="${counter.counter_id}" data-counter_no="${counter.counter_no}">
 
-                        <p class="counter-no text-center tx-semibold text-uppercase mg-0">Counter ${counter.counter_no}</p>
+                        <p class="counter-no tx-dark text-center tx-semibold text-uppercase mg-0">Counter ${counter.counter_no}</p>
 
                         <div class="d-flex flex-column justify-content-center flex-grow-1">
                           <span class="custom-rounded bg-custom ticket-no tx-semibold pd-10 mx-auto mt-auto tx-white">
@@ -327,11 +287,28 @@ $crumbs_title = "$page_title";
         })
       }
 
-      function loadTickets() {
-        var dept_id = ''; // FIXME: This should be dynamic
-
+      function loadAnnouncements() {
         $.ajax({
-          url: host + 'engine/api.php?act=load_tickets&ds=active' + dept_id,
+          url: host + 'engine/api.php?act=announcements',
+          success: function success(res) {
+            if (res.stat === 'ok' && res.data) {
+              var T_QUEUE = QUEUE.map(function (ann) {
+                return ann.ann_id;
+              });
+
+              var NEW_QUEUE = Object.values(res.data).filter(function (data) {
+                return !ANNOUNCED.includes(data.ann_id) || !T_QUEUE.includes(data.ann_id);
+              });
+
+              QUEUE = QUEUE.concat(NEW_QUEUE);
+            }
+          }
+        });
+      }
+
+      function loadTickets() {
+        $.ajax({
+          url: host + 'engine/api.php?act=load_tickets&ds=active',
           success: function success(res) {
             if (res.stat === 'ok' && res.data) {
               var NEW_TICKETS = [];
@@ -339,7 +316,7 @@ $crumbs_title = "$page_title";
                 NEW_TICKETS.push(ticket);
 
                 if (parseInt(ticket.counter_id) != 0) {
-                  var counter_card = $("[data-dept_id=\"".concat(ticket.dept_id, "\"]")).find("[data-counter_id=\"".concat(ticket.counter_id, "\"]"));
+                  var counter_card = $("[data-counter_id=\"".concat(ticket.counter_id, "\"]"));
                   var ticket_dom = $(counter_card).find('.ticket-no');
                   ticket_dom.text(ticket.ticket_label);
                 }
@@ -382,13 +359,13 @@ $crumbs_title = "$page_title";
           if (clock.enabled) {
             var format = '';
 
-            if (clock.date_format.show_dow) {
-              format += clock.date_format.dow == 'short' ? 'ddd, ' : 'dddd, ';
-            }
+            // if (clock.date_format.show_dow) {
+            //   format += clock.date_format.dow == 'short' ? 'ddd, ' : 'dddd, ';
+            // }
 
-            format += clock.date_format.month == 'short' ? 'MMM ' : 'MMMM ';
-            format += clock.date_format.day == 'short' ? 'D ' : 'DD ';
-            format += clock.date_format.show_year ? 'Y' : '';
+            // format += clock.date_format.month == 'short' ? 'MMM ' : 'MMMM ';
+            // format += clock.date_format.day == 'short' ? 'D ' : 'DD ';
+            // format += clock.date_format.show_year ? 'Y' : '';
             format += clock.time_format.hours == 'short' ? ' h:mm' : ' hh:mm';
             format += clock.time_format.show_seconds ? ':ss ' : '';
             format += clock.time_format.show_suffix ? ' A' : '';
@@ -400,7 +377,6 @@ $crumbs_title = "$page_title";
 
         (function () {
           loadDepartments();
-          rideCarousel();
         })();
 
         setInterval(loadAnnouncements, ANNOUNCEMENT_INTERVAL);

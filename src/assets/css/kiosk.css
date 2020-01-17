@@ -57,7 +57,7 @@
 
 @media print {
   #confirm-modal,
-  .container-fluid {
+  .content-wrap {
     display: none !important;
   }
   

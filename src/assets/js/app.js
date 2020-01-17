@@ -97,13 +97,13 @@ $(document).ready(function () {
       if (clock.enabled) {
         var format = '';
 
-        if (clock.date_format.show_dow) {
-          format += clock.date_format.dow == 'short' ? 'ddd, ' : 'dddd, ';
-        }
+        // if (clock.date_format.show_dow) {
+        //   format += clock.date_format.dow == 'short' ? 'ddd, ' : 'dddd, ';
+        // }
 
-        format += clock.date_format.month == 'short' ? 'MMM ' : 'MMMM ';
-        format += clock.date_format.day == 'short' ? 'D ' : 'DD ';
-        format += clock.date_format.show_year ? 'Y' : '';
+        // format += clock.date_format.month == 'short' ? 'MMM ' : 'MMMM ';
+        // format += clock.date_format.day == 'short' ? 'D ' : 'DD ';
+        // format += clock.date_format.show_year ? 'Y' : '';
         format += clock.time_format.hours == 'short' ? ' h:mm' : ' hh:mm';
         format += clock.time_format.show_seconds ? ':ss ' : '';
         format += clock.time_format.show_suffix ? ' A' : '';
