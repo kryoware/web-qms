@@ -1,25 +1,17 @@
 'use strict';
 
-$(document).ready(function() {
+$(document).ready(function () {
   var TIMER_INTERVAL_ID = null,
   LOAD_INTERVAL = null,
   SESSION_KEY = null,
   TIMER_START = null,
   PREV_TICKET = null;
 
-  function gup( name, url ) {
-    if (!url) url = location.href;
-    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-    var regexS = "[\\?&]"+name+"=([^&#]*)";
-    var regex = new RegExp( regexS );
-    var results = regex.exec( url );
-    return results == null ? null : decodeURIComponent(results[1]);
-}
-
-
-(function () {
+  (function () {
     SESSION_KEY = gup('session_key');
-    if (SESSION_KEY === null) window.location.replace('caller-login.php')
+    if (SESSION_KEY === null) {
+      window.location.replace('caller-login.php');
+    }
 
     loadStats();
     startTimer();
@@ -39,19 +31,19 @@ $(document).ready(function() {
         break;
     }
     context = 'bg-'.concat(css);
-  
+
     $('#feedback-modal').find('#spinner').fadeOut(function () {
       $('#feedback-modal').find('#api_message')
         .removeClass('bg-danger')
         .removeClass('bg-custom')
         .addClass(context)
         .toggleClass('show');
-  
+
       setTimeout(function () {
         $('#feedback-modal').find('#api_message p').html(message).fadeIn();
       }, 350);
     });
-    
+
     setTimeout(function () {
       $('#feedback-modal').find('#api_message').toggleClass('show');
       $('#feedback-modal').modal('hide');
@@ -92,7 +84,7 @@ $(document).ready(function() {
         if (res.data.hasOwnProperty('current_ticket')) {
           var ticket = res.data.current_ticket;
           clearInterval(TIMER_INTERVAL_ID);
-          
+
           TIMER_START = moment(ticket.dt_served);
           TIMER_INTERVAL_ID = setInterval(function () {
             $('#time').text(moment(moment().diff(TIMER_START)).format('mm:ss'));

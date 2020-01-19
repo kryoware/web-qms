@@ -29,7 +29,7 @@ $crumbs_title = "$page_title";
         <div class="d-flex flex-column justify-content-center pd-l-10">
           <div class="d-flex ht-100p">
             <div class="d-none flex-column justify-content-center brand-wrap">
-              <div class="slim-logo mg-0"><img class="pd-y-10" src="http://dev.teaconcepts.net/CleverQMS/assets/company_logo.jpg"></div>
+              <div class="slim-logo mg-0"><img class="pd-y-10" src="../assets/company_logo.png"></div>
             </div>
             <div class="d-none flex-column justify-content-center ht-100p company-name-wrap">
               <p class="mg-0 mg-l-10 company-name tx-dark tx-semibold"></p>
@@ -108,7 +108,7 @@ $crumbs_title = "$page_title";
     </div>
     <div class="row no-gutters bg-custom tx-white" id="ticker" style="display: none;"></div>
   </div>
-  
+
   <div aria-hidden="true" aria-labelledby="announceModalLabel" class="modal fade effect-scale" data-backdrop="static" id="announce-modal" role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document">
       <div class="modal-content">

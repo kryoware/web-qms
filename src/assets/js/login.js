@@ -15,13 +15,13 @@ $(document).ready(function () {
                 </a>
               </li>
             `);
-  
+
             $('#counters').append(`
               <div class="ht-100p tab-pane fade ${key === 0 ? 'show active' : ''}" id="${dept.dept_name.toLowerCase().split(' ').join('-')}" role="tabpanel" aria-labelledby="${dept.dept_name.toLowerCase().split(' ').join('-')}-tab">
                 <div class="row d-flex flex-wrap flex-grow-1 counter-list"></div>
               </div>
             `);
-            
+
             Object.values(dept.counters).forEach(function (counter) {
               $('#' + dept.dept_name.toLowerCase().split(' ').join('-')).find('.counter-list').append(`
                 <div class="department-select col-6">
@@ -78,7 +78,7 @@ $(document).ready(function () {
     e.preventDefault();
     e.stopImmediatePropagation();
 
-    if (e.isDefaultPrevented() && e.isImmediatePropagationStopped()) {  
+    if (e.isDefaultPrevented() && e.isImmediatePropagationStopped()) {
       appendSpinner($('[type="submit"]'));
 
       var payload = {};
@@ -92,7 +92,7 @@ $(document).ready(function () {
       }, function (res) {
         setTimeout(function () {
           removeSpinner($('[type="submit"]'));
-  
+
           if (res.data && res.data.user) {
             window.location.href = 'caller-standard.php?session_key='.concat(res.data.session_key);
           } else {

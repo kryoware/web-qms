@@ -22,7 +22,6 @@ $(document).ready(function () {
   ticker_msg = null;
 
   (function () {
-
     callApi('load_settings', {}, function (res) {
       if (res.stat === 'ok' && res.data) {
         Object.keys(res.data).forEach(function (key) {
@@ -45,13 +44,13 @@ $(document).ready(function () {
             if (res.stat === 'ok' && Object.keys(res.data).length) {
               // FIXME: MOCK API
               CONFIG = res.data.config;
-    
+
               ANNOUNCEMENT_INTERVAL = parseFloat(CONFIG['load_announcements']) * 1000;
               TICKET_INTERVAL = parseFloat(CONFIG['load_ticket']) * 1000;
               SLIDE_INTERVAL = parseFloat(CONFIG['slide_dept']) * 1000;
               IMAGE_INTERVAL = parseFloat(CONFIG['slide_image']) * 1000;
               VIDEO_INTERVAL = parseFloat(CONFIG['slide_video']) * 1000;
-    
+
               initializeLayout();
             }
           },
@@ -62,9 +61,6 @@ $(document).ready(function () {
       }
     });
   })();
-
-  // FIXME: Remove when live
-  var host = 'http://dev.teaconcepts.net/CleverQMS/';
 
   function initializeLayout(data) {
     $('.main-content').toggleClass('show-ticker', CONFIG['show_ticker'] === true);
@@ -112,7 +108,7 @@ $(document).ready(function () {
         }, 500);
       }
     }
-  
+
     (function () {
       loadDepartments();
       rideCarousel();
@@ -133,107 +129,99 @@ $(document).ready(function () {
   }
 
   function loadDepartments() {
-    $.ajax({
-      url: host + 'engine/api.php?act=load_departments&stat=open&details=full',
-      success: function success(res) {
-        if (res.stat === 'ok' && res.data) {
-          $('#counter_carousel').html('');
-          DEPARTMENTS = Object.values(res.data);
-          Object.values(res.data).forEach(function (dept, key) {
-            CURR = 0;
-            $('#generate_ticket').parent().find('select').append("<option value=\"".concat(dept.dept_id, "\">").concat(dept.dept_name, "</option>"));
-            $('#counter_carousel').append(`
-            <div class="carousel-item ${key === 0 ? 'active' : ''}">
-              <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
-                <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
-                  <div class="d-flex flex-column justify-content-center">
-                    <span class="dept-name mg-0 tx-semibold tx-custom text-left text-wrap text-uppercase">${dept.dept_name}</span>
-                  </div>
+    callApi('load_departments',{ stat: 'open', details: 'full' }, function (res) {
+      if (res.stat === 'ok' && res.data) {
+        $('#counter_carousel').html('');
+        DEPARTMENTS = Object.values(res.data);
+        Object.values(res.data).forEach(function (dept, key) {
+          CURR = 0;
+          $('#generate_ticket').parent().find('select').append("<option value=\"".concat(dept.dept_id, "\">").concat(dept.dept_name, "</option>"));
+          $('#counter_carousel').append(`
+          <div class="carousel-item ${key === 0 ? 'active' : ''}">
+            <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
+              <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
+                <div class="d-flex flex-column justify-content-center">
+                  <span class="dept-name mg-0 tx-semibold tx-custom text-left text-wrap text-uppercase">${dept.dept_name}</span>
+                </div>
 
-                  <div class="d-flex flex-column justify-content-center">
-                    <span class="tx-dark now-serving mg-0 tx-semibold text-center text-uppercase">Now Serving</span>
-                  </div>
+                <div class="d-flex flex-column justify-content-center">
+                  <span class="tx-dark now-serving mg-0 tx-semibold text-center text-uppercase">Now Serving</span>
                 </div>
               </div>
             </div>
-          `);
+          </div>
+        `);
 
-            Object.values(dept.counters).forEach(function (counter) {
-              if (CURR < MAX_COUNTERS) {
-                CURR++;
-              } else {
-                $('#counter_carousel').append(`
-                <div class="carousel-item">
-                  <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
-                    <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
-                      <div class="d-flex flex-column justify-content-center">
-                        <span class="dept-name mg-0 tx-semibold tx-custom text-left text-wrap text-uppercase">${dept.dept_name}</span>
-                      </div>
-
-                      <div class="d-flex flex-column justify-content-center">
-                        <span class="tx-dark now-serving mg-0 tx-semibold text-center text-uppercase">Now Serving</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              `);
-                CURR = 0;
-              }
-
-              var containers = $('#counter_carousel').find("[data-dept_id=\"".concat(counter.dept_id, "\"]"));
-              $(containers[containers.length - 1]).append(`
-              <div class="custom-rounded bg-white mg-b-10" data-counter_id="${counter.counter_id}" data-counter_no="${counter.counter_no}">
-                <div class="tx-dark">
-                  <div class="row no-gutters">
-
-                    <div class="col-7 text-left">
-                      <div class="d-flex flex-column justify-content-center ht-100p pd-10">
-                        <p class="counter-no tx-semibold text-uppercase mg-0">Counter ${counter.counter_no}</p>
-                      </div>
+          Object.values(dept.counters).forEach(function (counter) {
+            if (CURR < MAX_COUNTERS) {
+              CURR++;
+            } else {
+              $('#counter_carousel').append(`
+              <div class="carousel-item">
+                <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
+                  <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
+                    <div class="d-flex flex-column justify-content-center">
+                      <span class="dept-name mg-0 tx-semibold tx-custom text-left text-wrap text-uppercase">${dept.dept_name}</span>
                     </div>
 
-                    <div class="col-5 text-right">
-                      <div class="d-flex justify-content-end ht-100p">
-                        <span class="custom-rounded bg-custom ticket-no tx-semibold pd-10 mg-y-10 mg-r-10 tx-white">
-                          <span style="opacity: 0">S-001</span>
-                        </span>
-                      </div>
+                    <div class="d-flex flex-column justify-content-center">
+                      <span class="tx-dark now-serving mg-0 tx-semibold text-center text-uppercase">Now Serving</span>
                     </div>
-
                   </div>
                 </div>
               </div>
             `);
-            });
-          });
+              CURR = 0;
+            }
 
-          setInterval(function () {
-            loadTickets();
-          }, TICKET_INTERVAL);
-        }
+            var containers = $('#counter_carousel').find("[data-dept_id=\"".concat(counter.dept_id, "\"]"));
+            $(containers[containers.length - 1]).append(`
+            <div class="custom-rounded bg-white mg-b-10" data-counter_id="${counter.counter_id}" data-counter_no="${counter.counter_no}">
+              <div class="tx-dark">
+                <div class="row no-gutters">
+
+                  <div class="col-7 text-left">
+                    <div class="d-flex flex-column justify-content-center ht-100p pd-10">
+                      <p class="counter-no tx-semibold text-uppercase mg-0">Counter ${counter.counter_no}</p>
+                    </div>
+                  </div>
+
+                  <div class="col-5 text-right">
+                    <div class="d-flex justify-content-end ht-100p">
+                      <span class="custom-rounded bg-custom ticket-no tx-semibold pd-10 mg-y-10 mg-r-10 tx-white">
+                        <span style="opacity: 0">S-001</span>
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          `);
+          });
+        });
+
+        setInterval(function () {
+          loadTickets();
+        }, TICKET_INTERVAL);
       }
     });
   }
 
   function loadTickets() {
-    var dept_id = ''; // FIXME: This should be dynamic
+    callApi('load_tickets', { ds: 'active' }, function (res) {
+      if (res.stat === 'ok' && res.data) {
+        var NEW_TICKETS = [];
+        Object.values(res.data).forEach(function (ticket) {
+          NEW_TICKETS.push(ticket);
 
-    $.ajax({
-      url: host + 'engine/api.php?act=load_tickets&ds=active' + dept_id,
-      success: function success(res) {
-        if (res.stat === 'ok' && res.data) {
-          var NEW_TICKETS = [];
-          Object.values(res.data).forEach(function (ticket) {
-            NEW_TICKETS.push(ticket);
-
-            if (parseInt(ticket.counter_id) != 0) {
-              var counter_card = $("[data-dept_id=\"".concat(ticket.dept_id, "\"]")).find("[data-counter_id=\"".concat(ticket.counter_id, "\"]"));
-              var ticket_dom = $(counter_card).find('.ticket-no');
-              ticket_dom.text(ticket.ticket_label);
-            }
-          });
-          if (TICKETS.length == 0) TICKETS = NEW_TICKETS;
-        }
+          if (parseInt(ticket.counter_id) != 0) {
+            var counter_card = $("[data-dept_id=\"".concat(ticket.dept_id, "\"]")).find("[data-counter_id=\"".concat(ticket.counter_id, "\"]"));
+            var ticket_dom = $(counter_card).find('.ticket-no');
+            ticket_dom.text(ticket.ticket_label);
+          }
+        });
+        if (TICKETS.length == 0) TICKETS = NEW_TICKETS;
       }
     });
   }
@@ -287,20 +275,17 @@ $(document).ready(function () {
   }
 
   function loadAnnouncements() {
-    $.ajax({
-      url: host + 'engine/api.php?act=announcements',
-      success: function success(res) {
-        if (res.stat === 'ok' && res.data) {
-          var T_QUEUE = QUEUE.map(function (ann) {
-            return ann.ann_id;
-          });
+    callApi('announcements', {}, function (res) {
+      if (res.stat === 'ok' && res.data) {
+        var T_QUEUE = QUEUE.map(function (ann) {
+          return ann.ann_id;
+        });
 
-          var NEW_QUEUE = Object.values(res.data).filter(function (data) {
-            return !ANNOUNCED.includes(data.ann_id) || !T_QUEUE.includes(data.ann_id);
-          });
+        var NEW_QUEUE = Object.values(res.data).filter(function (data) {
+          return !ANNOUNCED.includes(data.ann_id) || !T_QUEUE.includes(data.ann_id);
+        });
 
-          QUEUE = QUEUE.concat(NEW_QUEUE);
-        }
+        QUEUE = QUEUE.concat(NEW_QUEUE);
       }
     });
   }

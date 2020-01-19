@@ -1,69 +1,65 @@
 'use strict';
 
 $(document).ready(function () {
-  var host = 'http://dev.teaconcepts.net/CleverQMS/',
-    CONFIG = null,
+  var CONFIG = null,
     DEPARTMENTS = null,
     SELECTED_DEPT = null,
     NEW_TICKET = false,
+    API_KEY = null,
     ticker_msg = null;
 
   (function () {
-    $.ajax({
-      url: host + 'engine/api.php?act=load_settings',
-      success: function (res) {
-        if (res.stat === 'ok' && res.data) {
-          Object.keys(res.data).forEach(function (key) {
-            var data = res.data[key];
+    API_KEY = gup('ak');
 
-            switch (key) {
-              case 'company':
-                $('.company-name').text(data);
-                $('#ticket_company_name').text(data);
-                break;
+    callApi('load_settings', { ak: API_KEY }, function (res) {
+      if (res.stat === 'ok' && res.data) {
+        Object.keys(res.data).forEach(function (key) {
+          var data = res.data[key];
 
-              case 'kiosk_welcome_msg':
-                var strings = data.split('. ');
+          switch (key) {
+            case 'company':
+              $('.company-name').text(data);
+              $('#ticket_company_name').text(data);
+              break;
 
-                // Removed period
-                $('.welcome-msg').text(strings[0]);
-                // Slice to remove period
-                $('.instruction-msg').text(strings[1].slice(0, -1));
-                break;
+            case 'kiosk_welcome_msg':
+              var strings = data.split('. ');
 
-              case 'kiosk_ticket_msg':
-                $('.ticket-msg').text(data);
-                break;
+              // Removed period
+              $('.welcome-msg').text(strings[0]);
+              // Slice to remove period
+              $('.instruction-msg').text(strings[1].slice(0, -1));
+              break;
 
-              case 'ticker_msg':
-                ticker_msg = data;
-                break;
+            case 'kiosk_ticket_msg':
+              $('.ticket-msg').text(data);
+              break;
 
-              case 'ticker_color':
-                break;
+            case 'ticker_msg':
+              ticker_msg = data;
+              break;
+
+            case 'ticker_color':
+              break;
+          }
+        });
+
+        $.ajax({
+          url: 'config_kiosk.json',
+          success: function (res) {
+            if (res.stat === 'ok' && res.data) {
+              CONFIG = res.data.config;
+
+              callApi('load_departments', { stat: 'open', details: 'full', ak: API_KEY }, function (res) {
+                if (res.stat === 'ok' && res.data) {
+                  DEPARTMENTS = Object.values(res.data);
+
+                  initializeLayout();
+                }
+              });
             }
-          });
-
-          $.ajax({
-            url: 'config_kiosk.json',
-            success: function (res) {
-              if (res.stat === 'ok' && res.data) {
-                CONFIG = res.data.config;
-
-                $.ajax({
-                  url: host + 'engine/api.php?act=load_departments&stat=open&details=full',
-                  success: function (res) {
-                    if (res.stat === 'ok' && res.data) {
-                      DEPARTMENTS = Object.values(res.data);
-
-                      initializeLayout();
-                    }
-                  }
-                });
-              }
-            }
-          });
-        }
+          }
+        });
       }
     });
   })();
@@ -79,71 +75,63 @@ $(document).ready(function () {
   $('body').on('click', '.kiosk-dept-wrap', function () {
     SELECTED_DEPT = $(this).data('dept_id')
 
-    // Create Ticket
-    $.ajax({
-      url: host + 'engine/api.php?act=issue_ticket&dept_id=' + SELECTED_DEPT,
-      success: function(res) {
+    callApi('issue_ticket', { dept_id: SELECTED_DEPT, ak: API_KEY }, function (res) {
+      if (res.stat === 'ok' && res.data) {
+        NEW_TICKET = res.data.ticket_no;
 
-        if (res.stat === 'ok' && res.data) {
-          NEW_TICKET = res.data.ticket_no;
+        // Load Tickets
+        callApi('load_tickets', { ds: 'active', ak: API_KEY, dept_id: SELECTED_DEPT }, function(res) {
+          var TICKET_OBJECT = Object.values(res.data).filter(function(ticket) {
+            return parseInt(ticket.ticket_no) === parseInt(NEW_TICKET);
+          });
 
-          // Load Tickets
-          $.ajax({
-            url: host + 'engine/api.php?act=load_tickets&ds=active&dept_id=' + SELECTED_DEPT,
-            success: function(res) {
-              var TICKET_OBJECT = Object.values(res.data).filter(function(ticket) {
-                return parseInt(ticket.ticket_no) === parseInt(NEW_TICKET);
-              });
-
-              var TICKET_SERVED = Object.values(res.data).filter(function(ticket) {
-                return parseInt(ticket.ticket_no) != NEW_TICKET && parseInt(ticket.counter_id) != 0;
-              })
-
-              console.log({ TICKET_SERVED })
-
-              if (TICKET_OBJECT.length > 0) {
-                TICKET_OBJECT = TICKET_OBJECT[0];
-
-                // var date = moment(TICKET_OBJECT.dt_added.split(' ')[0], 'Y-MM-DD');
-                // var time = moment(TICKET_OBJECT.dt_added.split(' ')[0], 'H:mm:ss');
-
-                var date = moment().format('DD-MM-Y');
-                var time = moment().format('hh:mm:ss A');
-
-                $('#confirm-modal .ticket').text(TICKET_OBJECT.ticket_label);
-
-                $('#ticket_logo').html('');
-                $('#ticket_no').text(TICKET_OBJECT.ticket_label);
-                $('#ticket_date').text(date);
-                $('#ticket_time').text(time);
-
-                $('#ticket_serving').parent().hide();
-
-                if (TICKET_SERVED.length) {
-                  $('#ticket_serving').parent().show();
-                  $('#ticket_serving').text(TICKET_SERVED[0].ticket_label);
-                } else {
-                  $('#ticket_serving').parent().hide();
-                }
-
-                $('#ticket_customers').text(Object.values(res.data).length - 1);
-
-                // TODO: COMPANY NAME
-                // $('#ticket_company_name').text();
-
-                $('#confirm-modal').modal('show');
-
-                setTimeout(printTicket, 1000);
-
-                setTimeout(function () {
-                  $('#confirm-modal').modal('hide');
-                }, 4000);
-              } else {
-                console.error('TICKET NOT FOUND');
-              }
-            }
+          var TICKET_SERVED = Object.values(res.data).filter(function(ticket) {
+            return parseInt(ticket.ticket_no) != NEW_TICKET && parseInt(ticket.counter_id) != 0;
           })
-        }
+
+          console.log({ TICKET_SERVED })
+
+          if (TICKET_OBJECT.length > 0) {
+            TICKET_OBJECT = TICKET_OBJECT[0];
+
+            // var date = moment(TICKET_OBJECT.dt_added.split(' ')[0], 'Y-MM-DD');
+            // var time = moment(TICKET_OBJECT.dt_added.split(' ')[0], 'H:mm:ss');
+
+            var date = moment().format('DD-MM-Y');
+            var time = moment().format('hh:mm:ss A');
+
+            $('#confirm-modal .ticket').text(TICKET_OBJECT.ticket_label);
+
+            $('#ticket_logo').html('');
+            $('#ticket_no').text(TICKET_OBJECT.ticket_label);
+            $('#ticket_date').text(date);
+            $('#ticket_time').text(time);
+
+            $('#ticket_serving').parent().hide();
+
+            if (TICKET_SERVED.length) {
+              $('#ticket_serving').parent().show();
+              $('#ticket_serving').text(TICKET_SERVED[0].ticket_label);
+            } else {
+              $('#ticket_serving').parent().hide();
+            }
+
+            $('#ticket_customers').text(Object.values(res.data).length - 1);
+
+            // TODO: COMPANY NAME
+            // $('#ticket_company_name').text();
+
+            $('#confirm-modal').modal('show');
+
+            setTimeout(printTicket, 1000);
+
+            setTimeout(function () {
+              $('#confirm-modal').modal('hide');
+            }, 4000);
+          } else {
+            console.error('TICKET NOT FOUND');
+          }
+        })
       }
     });
   });

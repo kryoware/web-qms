@@ -11,7 +11,6 @@ $page_title = "";
 $content_title = "$page_title";
 $crumbs_title = "$page_title";
 
-
 ?>
 <!DOCTYPE html>
 <html>

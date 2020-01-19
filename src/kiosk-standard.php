@@ -58,7 +58,7 @@ $crumbs_title = "$page_title";
                 <div class="branding pd-t-25 flex-grow-1 tx-dark tx-semibold" style="display: none;">
                   <div class="d-flex ht-100p">
                     <div class="d-flex flex-column justify-content-center ht-100p">
-                      <img class="img-fluid" src="http://dev.teaconcepts.net/CleverQMS/assets/company_logo.jpg">
+                      <img class="img-fluid" src="../assets/company_logo.png">
                     </div>
                     <div class="d-none flex-column justify-content-center company-name-wrap">
                       <p class="mg-0 mg-l-15 company-name"></p>
@@ -127,6 +127,7 @@ $crumbs_title = "$page_title";
   <?php echo "$_template_footer_inc_1"; ?>
   <?php echo "$_template_footer_inc_2"; ?>
 
+  <script src="assets/js/utils.js"></script>
   <script src="assets/js/kiosk.js"></script>
 </body>
 </html>

@@ -57,7 +57,7 @@ $crumbs_title = "$page_title";
         <div class="d-flex flex-column justify-content-center pd-l-10">
           <div class="d-flex ht-100p">
             <div class="d-none flex-column justify-content-center brand-wrap">
-              <div class="slim-logo mg-0"><img class="pd-y-10" src="http://dev.teaconcepts.net/CleverQMS/assets/company_logo.jpg"></div>
+              <div class="slim-logo mg-0"><img class="pd-y-10" src="../assets/company_logo.png"></div>
             </div>
             <div class="d-none flex-column justify-content-center ht-100p company-name-wrap">
               <p class="mg-0 mg-l-10 company-name tx-dark tx-semibold"></p>
@@ -138,11 +138,11 @@ $crumbs_title = "$page_title";
   <?php echo "$_template_footer_inc_1"; ?>
   <?php echo "$_template_footer_inc_2"; ?>
 
+
+  <script src="//cdn.jsdelivr.net/npm/jquery.marquee@1.5.0/jquery.marquee.min.js" type="text/javascript"></script>
   <script src="assets/js/utils.js?v=<?php echo microtime() ?>"></script>
   <script>
     $(document).ready(function () {
-      var host = 'http://dev.teaconcepts.net/CleverQMS/';
-
       var AUDIO = new Audio('./assets/ding_dong.mp3'),
         TICKET_INTERVAL = null,
         ANNOUNCEMENT_INTERVAL = null,
@@ -187,13 +187,13 @@ $crumbs_title = "$page_title";
                 if (res.stat === 'ok' && Object.keys(res.data).length) {
                   // FIXME: MOCK API
                   CONFIG = res.data.config;
-        
+
                   ANNOUNCEMENT_INTERVAL = parseFloat(CONFIG['load_announcements']) * 1000;
                   TICKET_INTERVAL = parseFloat(CONFIG['load_ticket']) * 1000;
                   SLIDE_INTERVAL = parseFloat(CONFIG['slide_dept']) * 1000;
                   IMAGE_INTERVAL = parseFloat(CONFIG['slide_image']) * 1000;
                   VIDEO_INTERVAL = parseFloat(CONFIG['slide_video']) * 1000;
-        
+
                   initializeLayout();
                 }
               },
@@ -256,74 +256,65 @@ $crumbs_title = "$page_title";
       }
 
       function loadDepartments() {
-        $.ajax({
-          url: host + 'engine/api.php?act=load_departments&stat=open&details=full',
-          success: function success(res) {
-            if (res.stat === 'ok' && res.data) {
-              Object.values(res.data).forEach(function (dept, key) {
-                Object.values(dept.counters).forEach(function (counter) {
-                  $('#vertical .row').append(`
-                    <div class="col-${12 / COLUMNS}">
-                      <div class="bg-white custom-rounded pd-y-10 pd-x-20 ht-100p counter-card d-flex flex-column" data-counter_id="${counter.counter_id}" data-counter_no="${counter.counter_no}">
+        callApi('load_departments', { stat: 'open', details: 'full' }, function (res) {
+          if (res.stat === 'ok' && res.data) {
+            Object.values(res.data).forEach(function (dept, key) {
+              Object.values(dept.counters).forEach(function (counter) {
+                $('#vertical .row').append(`
+                  <div class="col-${12 / COLUMNS}">
+                    <div class="bg-white custom-rounded pd-y-10 pd-x-20 ht-100p counter-card d-flex flex-column" data-counter_id="${counter.counter_id}" data-counter_no="${counter.counter_no}">
 
-                        <p class="counter-no tx-dark text-center tx-semibold text-uppercase mg-0">Counter ${counter.counter_no}</p>
+                      <p class="counter-no tx-dark text-center tx-semibold text-uppercase mg-0">Counter ${counter.counter_no}</p>
 
-                        <div class="d-flex flex-column justify-content-center flex-grow-1">
-                          <span class="custom-rounded bg-custom ticket-no tx-semibold pd-10 mx-auto mt-auto tx-white">
-                            <span style="opacity: 0">S-001</span>
-                          </span>
-                        </div>
+                      <div class="d-flex flex-column justify-content-center flex-grow-1">
+                        <span class="custom-rounded bg-custom ticket-no tx-semibold pd-10 mx-auto mt-auto tx-white">
+                          <span style="opacity: 0">S-001</span>
+                        </span>
                       </div>
                     </div>
-                  `)
-                });
+                  </div>
+                `)
               });
+            });
 
-              setInterval(function () {
-                loadTickets();
-              }, TICKET_INTERVAL);
-            }
+            setInterval(function () {
+              loadTickets();
+            }, TICKET_INTERVAL);
           }
         })
       }
 
       function loadAnnouncements() {
-        $.ajax({
-          url: host + 'engine/api.php?act=announcements',
-          success: function success(res) {
-            if (res.stat === 'ok' && res.data) {
-              var T_QUEUE = QUEUE.map(function (ann) {
-                return ann.ann_id;
-              });
+        callApi('announcements', {}, function (res) {
+          if (res.stat === 'ok' && res.data) {
+            var T_QUEUE = QUEUE.map(function (ann) {
+              return ann.ann_id;
+            });
 
-              var NEW_QUEUE = Object.values(res.data).filter(function (data) {
-                return !ANNOUNCED.includes(data.ann_id) || !T_QUEUE.includes(data.ann_id);
-              });
+            var NEW_QUEUE = Object.values(res.data).filter(function (data) {
+              return !ANNOUNCED.includes(data.ann_id) || !T_QUEUE.includes(data.ann_id);
+            });
 
-              QUEUE = QUEUE.concat(NEW_QUEUE);
-            }
+            QUEUE = QUEUE.concat(NEW_QUEUE);
           }
         });
       }
 
       function loadTickets() {
-        $.ajax({
-          url: host + 'engine/api.php?act=load_tickets&ds=active',
-          success: function success(res) {
-            if (res.stat === 'ok' && res.data) {
-              var NEW_TICKETS = [];
-              Object.values(res.data).forEach(function (ticket) {
-                NEW_TICKETS.push(ticket);
+        callApi('load_tickets', { ds: 'active' },  function (res) {
+          if (res.stat === 'ok' && res.data) {
+            var NEW_TICKETS = [];
+            Object.values(res.data).forEach(function (ticket) {
+              NEW_TICKETS.push(ticket);
 
-                if (parseInt(ticket.counter_id) != 0) {
-                  var counter_card = $("[data-counter_id=\"".concat(ticket.counter_id, "\"]"));
-                  var ticket_dom = $(counter_card).find('.ticket-no');
-                  ticket_dom.text(ticket.ticket_label);
-                }
-              });
+              if (parseInt(ticket.counter_id) != 0) {
+                var counter_card = $("[data-counter_id=\"".concat(ticket.counter_id, "\"]"));
+                var ticket_dom = $(counter_card).find('.ticket-no');
+                ticket_dom.text(ticket.ticket_label);
+              }
+            });
 
-              if (TICKETS.length == 0) TICKETS = NEW_TICKETS;
-            }
+            if (TICKETS.length == 0) TICKETS = NEW_TICKETS;
           }
         });
       }
@@ -333,7 +324,11 @@ $crumbs_title = "$page_title";
 
         if (CONFIG['show_ticker'] === true) {
           $('#ticker').toggle();
-          $('#ticker').append(`<marquee style="line-height: 10vh; font-size: 7vh;">${ticker_msg}</marquee>`);
+          $('#ticker').append(`<div class='marquee'>${ticker_msg}</div>`);
+
+          setTimeout(() => {
+            $('body').find('.marquee').marquee({ duration: 15000 });
+          }, 500);
         }
 
         if (CONFIG['show_logo'] === true || CONFIG['clock'].enabled) {
