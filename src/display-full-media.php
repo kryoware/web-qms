@@ -54,7 +54,9 @@ $crumbs_title = "$page_title";
       <div class="d-flex flex-column wd-60p">
         <div class="row no-gutters" id="large">
           <div class="col ht-100p d-flex carousel-wrap bg-custom">
-            <div class="carousel slide" data-ride="carousel" id="media">
+            <div class="media-wrap"></div>
+            
+            <!-- <div class="carousel slide" data-ride="carousel" id="media">
               <div class="carousel-inner" role="listbox">
                 <div class="carousel-item" data-interval="10000">
                   <div><img class="img-fluid" src="./assets/media_1.jpg"></div>
@@ -66,7 +68,7 @@ $crumbs_title = "$page_title";
                   <div><img class="img-fluid" src="./assets/media_3.jpg"></div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="row pd-x-15" id="horizontal_">

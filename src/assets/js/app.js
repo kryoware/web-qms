@@ -1,5 +1,66 @@
 'use strict';
 
+function onVideoEnded() {
+  next();
+}
+
+function start() {
+  var active = $('.media-wrap .active');
+  var isImage = $('.media-wrap .active').find('img').length != 0;
+  var isVideo = $('.media-wrap .active').find('video').length != 0;
+
+  // check if image
+  if (isImage) {
+    var ttl = $(active).data('ttl');
+
+    setTimeout(function () {
+      $(active).fadeOut(function () {
+        next();
+      });
+    }, ttl);
+  }
+
+  // check if video
+  if (isVideo) {
+    // play video
+    $(active).find('button').click();
+  }
+}
+
+function next() {
+  var totalSlides = $('.media-wrap').children().length;
+  var activeIndex = $('.media-wrap .active').index();
+  var thisSlide = $('.media-wrap').children()[activeIndex];
+  var nextSlide = null;
+
+  if (activeIndex + 1 === totalSlides) {
+    nextSlide = $('.media-wrap').children()[0];
+  } else {
+    nextSlide = $('.media-wrap').children()[activeIndex + 1];
+  }
+
+  $(thisSlide).removeClass('active').fadeOut(function () {
+    $(nextSlide).addClass('active').fadeIn();
+  });
+
+  var isImage = $(nextSlide).find('img');
+  var ttl = parseInt($(nextSlide).data('ttl')) * 1000;
+
+  if (isImage.length) {
+    setTimeout(function () {
+      $(nextSlide).fadeOut(function () {
+        next();
+      });
+    }, ttl);
+  } else {
+    $(nextSlide).find('button').click();
+
+    setTimeout(function () {
+      next();
+    }, ttl)
+  }
+}
+
 $(document).ready(function () {
   var AUDIO = new Audio('./assets/ding_dong.mp3'),
   TICKET_INTERVAL = null,
@@ -22,6 +83,31 @@ $(document).ready(function () {
   ticker_msg = null;
 
   (function () {
+    callApi('load_ads', {}, function (res) {
+      if (res.stat === 'ok') {
+        Object.values(res.data).forEach(function (m, key) {
+          if (m.type === 'image') {
+            $('.media-wrap').append(`
+              <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
+                <img class="img-fluid" src="assets/${m.filename}" />
+              <\/div>
+            `);
+          }
+
+          if (m.type === 'video') {
+            $('.media-wrap').append(`
+              <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
+                <video src="assets/${m.filename}" onended="onVideoEnded()"><\/video>
+                <button type="button" style="display: none" />
+              <\/div>
+            `);
+          }
+        });
+
+        start();
+      }
+    });
+
     callApi('load_settings', {}, function (res) {
       if (res.stat === 'ok' && res.data) {
         Object.keys(res.data).forEach(function (key) {
@@ -312,4 +398,8 @@ $(document).ready(function () {
       carouselScroll(CAROUSEL_PAGE++);
     }, SLIDE_INTERVAL);
   }
+
+  $('body').on('click', '.media-wrap button', function () {
+    $(this).parent().find('video').get(0).play();
+  });
 }); // Ready

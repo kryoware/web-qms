@@ -2,6 +2,10 @@
 
 $(document).ready(function () {
   (function () {
+    API_URL = gup('url');
+    API_KEY = gup('ak');
+    API_VER = gup('v');
+    
     callApi('load_departments', { details: 'full' } , function (res) {
       if (res.stat === 'ok' && res.data) {
         Object.values(res.data).forEach(function (dept, key) {
@@ -92,9 +96,14 @@ $(document).ready(function () {
       }, function (res) {
         setTimeout(function () {
           removeSpinner($('[type="submit"]'));
+          var extras = '';
+
+          if (API_URL != null && API_VER != null && API_KEY != null) {
+            extras = '&'.concat('url=', API_URL, '&v=', API_VER, '&ak=', API_KEY);
+          }
 
           if (res.data && res.data.user) {
-            window.location.href = 'caller-standard.php?session_key='.concat(res.data.session_key);
+            window.location.href = 'caller-standard.php?session_key='.concat(res.data.session_key, extras);
           } else {
             $('form .form-control').addClass('parsley-error');
             $('form .error').text(res.statMsg != '' ? res.statMsg : 'Invalid PIN');

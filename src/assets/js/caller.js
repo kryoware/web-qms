@@ -8,6 +8,10 @@ $(document).ready(function () {
   PREV_TICKET = null;
 
   (function () {
+    API_KEY = gup('ak');
+    API_URL = gup('url');
+    API_VER = gup('v');
+
     SESSION_KEY = gup('session_key');
     if (SESSION_KEY === null) {
       window.location.replace('caller-login.php');

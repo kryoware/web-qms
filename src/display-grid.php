@@ -86,7 +86,8 @@ $crumbs_title = "$page_title";
       <div class="d-flex flex-column wd-45p">
         <div class="row no-gutters" id="large">
           <div class="col ht-100p d-flex carousel-wrap bg-custom">
-            <div class="carousel slide" data-ride="carousel" id="media">
+            <div class="media-wrap"></div>
+            <!-- <div class="carousel slide" data-ride="carousel" id="media">
               <div class="carousel-inner" role="listbox">
                 <div class="carousel-item" data-interval="10000">
                   <div><img class="img-fluid" src="./assets/media_1.jpg"></div>
@@ -98,7 +99,7 @@ $crumbs_title = "$page_title";
                   <div><img class="img-fluid" src="./assets/media_3.jpg"></div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="row pd-x-15" id="horizontal_">
@@ -142,6 +143,67 @@ $crumbs_title = "$page_title";
   <script src="//cdn.jsdelivr.net/npm/jquery.marquee@1.5.0/jquery.marquee.min.js" type="text/javascript"></script>
   <script src="assets/js/utils.js?v=<?php echo microtime() ?>"></script>
   <script>
+    function onVideoEnded() {
+      next();
+    }
+
+    function start() {
+      var active = $('.media-wrap .active');
+      var isImage = $('.media-wrap .active').find('img').length != 0;
+      var isVideo = $('.media-wrap .active').find('video').length != 0;
+
+      // check if image
+      if (isImage) {
+        var ttl = $(active).data('ttl');
+
+        setTimeout(function () {
+          $(active).fadeOut(function () {
+            next();
+          });
+        }, ttl);
+      }
+
+      // check if video
+      if (isVideo) {
+        // play video
+        $(active).find('button').click();
+      }
+    }
+
+    function next() {
+      var totalSlides = $('.media-wrap').children().length;
+      var activeIndex = $('.media-wrap .active').index();
+      var thisSlide = $('.media-wrap').children()[activeIndex];
+      var nextSlide = null;
+
+      if (activeIndex + 1 === totalSlides) {
+        nextSlide = $('.media-wrap').children()[0];
+      } else {
+        nextSlide = $('.media-wrap').children()[activeIndex + 1];
+      }
+
+      $(thisSlide).removeClass('active').fadeOut(function () {
+        $(nextSlide).addClass('active').fadeIn();
+      });
+
+      var isImage = $(nextSlide).find('img');
+      var ttl = parseInt($(nextSlide).data('ttl')) * 1000;
+
+      if (isImage.length) {
+        setTimeout(function () {
+          $(nextSlide).fadeOut(function () {
+            next();
+          });
+        }, ttl);
+      } else {
+        $(nextSlide).find('button').click();
+
+        setTimeout(function () {
+          next();
+        }, ttl)
+      }
+    }
+
     $(document).ready(function () {
       var AUDIO = new Audio('./assets/ding_dong.mp3'),
         TICKET_INTERVAL = null,
@@ -165,6 +227,31 @@ $crumbs_title = "$page_title";
         ticker_msg = null;
 
       (function () {
+        callApi('load_ads', {}, function (res) {
+          if (res.stat === 'ok') {
+            Object.values(res.data).forEach(function (m, key) {
+              if (m.type === 'image') {
+                $('.media-wrap').append(`
+                  <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
+                    <img class="img-fluid" src="assets/${m.filename}" />
+                  <\/div>
+                `);
+              }
+
+              if (m.type === 'video') {
+                $('.media-wrap').append(`
+                  <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
+                    <video src="assets/${m.filename}" onended="onVideoEnded()"><\/video>
+                    <button type="button" style="display: none" />
+                  <\/div>
+                `);
+              }
+            });
+
+            start();
+          }
+        });
+
         callApi('load_settings', {}, function (res) {
           if (res.stat === 'ok' && res.data) {
             Object.keys(res.data).forEach(function (key) {
@@ -204,6 +291,10 @@ $crumbs_title = "$page_title";
           }
         });
       })();
+
+      $('body').on('click', '.media-wrap button', function () {
+        $(this).parent().find('video').get(0).play();
+      });
 
       function announce(queue) {
         var modal_shown = $('#announce-modal').hasClass('show');
