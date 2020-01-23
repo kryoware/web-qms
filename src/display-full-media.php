@@ -141,6 +141,7 @@ $crumbs_title = "$page_title";
   <?php echo "$_template_footer_inc_1"; ?>
   <?php echo "$_template_footer_inc_2"; ?>
 
+  <script src="assets/js/marquee.min.js" type="text/javascript"></script>
   <script src="assets/js/utils.js?v=<?php echo microtime() ?>"></script>
   <script src="assets/js/app.js?v=<?php echo microtime() ?>"></script>
 </body>

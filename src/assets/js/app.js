@@ -1,6 +1,11 @@
 'use strict';
 
+var videoFallback = null;
+
 function onVideoEnded() {
+  next();
+}
+function onVideoPaused() {
   next();
 }
 
@@ -9,9 +14,10 @@ function start() {
   var isImage = $('.media-wrap .active').find('img').length != 0;
   var isVideo = $('.media-wrap .active').find('video').length != 0;
 
+  var ttl = parseInt($(active).data('ttl')) * 1000;
+
   // check if image
   if (isImage) {
-    var ttl = $(active).data('ttl');
 
     setTimeout(function () {
       $(active).fadeOut(function () {
@@ -22,8 +28,15 @@ function start() {
 
   // check if video
   if (isVideo) {
+    ttl += 1000;
+
     // play video
     $(active).find('button').click();
+
+    videoFallback = setTimeout(function () {
+      // pause video
+      $(active).find('button').click();
+    }, ttl);
   }
 }
 
@@ -53,10 +66,14 @@ function next() {
       });
     }, ttl);
   } else {
-    $(nextSlide).find('button').click();
+    ttl += 1000;
 
-    setTimeout(function () {
-      next();
+    // play video
+    $(nextSlide).find('button').click();
+    
+    videoFallback = setTimeout(function () {
+      // pause video
+      $(nextSlide).find('button').click();
     }, ttl)
   }
 }
@@ -89,7 +106,7 @@ $(document).ready(function () {
           if (m.type === 'image') {
             $('.media-wrap').append(`
               <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
-                <img class="img-fluid" src="assets/${m.filename}" />
+                <img class="img-fluid" src="../assets/ads/${m.filename}" />
               <\/div>
             `);
           }
@@ -97,7 +114,7 @@ $(document).ready(function () {
           if (m.type === 'video') {
             $('.media-wrap').append(`
               <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
-                <video src="assets/${m.filename}" onended="onVideoEnded()"><\/video>
+                <video class="img-fluid" src="../assets/ads/${m.filename}" onended="onVideoEnded()" onpause="onVideoPaused()"><\/video>
                 <button type="button" style="display: none" />
               <\/div>
             `);
@@ -153,7 +170,11 @@ $(document).ready(function () {
 
     if (CONFIG['show_ticker'] === true) {
       $('#ticker').toggle();
-      $('#ticker').append(`<marquee style="line-height: 10vh; font-size: 7vh;">${ticker_msg}</marquee>`);
+      $('#ticker').append(`<div class="marquee">${ticker_msg}</div>`);
+
+      setTimeout(() => {
+        $('body').find('.marquee').marquee({ duration: 15000 });
+      }, 500);
     }
 
     if (CONFIG['show_logo'] === true || CONFIG['clock'].enabled) {
@@ -400,6 +421,15 @@ $(document).ready(function () {
   }
 
   $('body').on('click', '.media-wrap button', function () {
-    $(this).parent().find('video').get(0).play();
+    var video = $(this).parent().find('video').get(0);
+    
+    if (video.currentTime != 0) {
+      clearTimeout(videoFallback);
+      
+      video.pause();
+      video.currentTime = 0;
+    } else {
+      video.play();
+    }
   });
 }); // Ready

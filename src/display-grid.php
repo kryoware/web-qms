@@ -140,10 +140,15 @@ $crumbs_title = "$page_title";
   <?php echo "$_template_footer_inc_2"; ?>
 
 
-  <script src="//cdn.jsdelivr.net/npm/jquery.marquee@1.5.0/jquery.marquee.min.js" type="text/javascript"></script>
+  <script src="assets/js/marquee.min.js" type="text/javascript"></script>
   <script src="assets/js/utils.js?v=<?php echo microtime() ?>"></script>
   <script>
+    var videoFallback = null;
+
     function onVideoEnded() {
+      next();
+    }
+    function onVideoPaused() {
       next();
     }
 
@@ -152,9 +157,10 @@ $crumbs_title = "$page_title";
       var isImage = $('.media-wrap .active').find('img').length != 0;
       var isVideo = $('.media-wrap .active').find('video').length != 0;
 
+      var ttl = parseInt($(active).data('ttl')) * 1000;
+
       // check if image
       if (isImage) {
-        var ttl = $(active).data('ttl');
 
         setTimeout(function () {
           $(active).fadeOut(function () {
@@ -165,8 +171,15 @@ $crumbs_title = "$page_title";
 
       // check if video
       if (isVideo) {
+        ttl += 1000;
+
         // play video
         $(active).find('button').click();
+
+        videoFallback = setTimeout(function () {
+          // pause video
+          $(active).find('button').click();
+        }, ttl);
       }
     }
 
@@ -196,10 +209,14 @@ $crumbs_title = "$page_title";
           });
         }, ttl);
       } else {
-        $(nextSlide).find('button').click();
+        ttl += 1000;
 
-        setTimeout(function () {
-          next();
+        // play video
+        $(nextSlide).find('button').click();
+        
+        videoFallback = setTimeout(function () {
+          // pause video
+          $(nextSlide).find('button').click();
         }, ttl)
       }
     }
@@ -241,7 +258,7 @@ $crumbs_title = "$page_title";
               if (m.type === 'video') {
                 $('.media-wrap').append(`
                   <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
-                    <video src="assets/${m.filename}" onended="onVideoEnded()"><\/video>
+                    <video class="img-fluid" src="assets/${m.filename}" onended="onVideoEnded()" onpause="onVideoPaused()"><\/video>
                     <button type="button" style="display: none" />
                   <\/div>
                 `);
@@ -291,9 +308,18 @@ $crumbs_title = "$page_title";
           }
         });
       })();
-
+      
       $('body').on('click', '.media-wrap button', function () {
-        $(this).parent().find('video').get(0).play();
+        var video = $(this).parent().find('video').get(0);
+        
+        if (video.currentTime != 0) {
+          clearTimeout(videoFallback);
+          
+          video.pause();
+          video.currentTime = 0;
+        } else {
+          video.play();
+        }
       });
 
       function announce(queue) {
@@ -415,7 +441,7 @@ $crumbs_title = "$page_title";
 
         if (CONFIG['show_ticker'] === true) {
           $('#ticker').toggle();
-          $('#ticker').append(`<div class='marquee'>${ticker_msg}</div>`);
+          $('#ticker').append(`<div class="marquee">${ticker_msg}</div>`);
 
           setTimeout(() => {
             $('body').find('.marquee').marquee({ duration: 15000 });
