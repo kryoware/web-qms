@@ -250,7 +250,7 @@ $crumbs_title = "$page_title";
               if (m.type === 'image') {
                 $('.media-wrap').append(`
                   <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
-                    <img class="img-fluid" src="assets/${m.filename}" />
+                    <img class="img-fluid" src="../assets/ads/${m.filename}" />
                   <\/div>
                 `);
               }
@@ -258,7 +258,7 @@ $crumbs_title = "$page_title";
               if (m.type === 'video') {
                 $('.media-wrap').append(`
                   <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
-                    <video class="img-fluid" src="assets/${m.filename}" onended="onVideoEnded()" onpause="onVideoPaused()"><\/video>
+                    <video class="img-fluid" src="../assets/ads/${m.filename}" onended="onVideoEnded()" onpause="onVideoPaused()"><\/video>
                     <button type="button" style="display: none" />
                   <\/div>
                 `);
