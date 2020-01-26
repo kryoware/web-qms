@@ -70,7 +70,7 @@ function next() {
 
     // play video
     $(nextSlide).find('button').click();
-    
+
     videoFallback = setTimeout(function () {
       // pause video
       $(nextSlide).find('button').click();
@@ -112,9 +112,15 @@ $(document).ready(function () {
           }
 
           if (m.type === 'video') {
+            var props = '';
+
+            if (parseInt(m.enable_audio) === 0) {
+              props = 'muted';
+            }
+
             $('.media-wrap').append(`
               <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
-                <video class="img-fluid" src="../assets/ads/${m.filename}" onended="onVideoEnded()" onpause="onVideoPaused()"><\/video>
+                <video ${props} class="img-fluid" src="../assets/ads/${m.filename}" onended="onVideoEnded()" onpause="onVideoPaused()"><\/video>
                 <button type="button" style="display: none" />
               <\/div>
             `);
@@ -223,7 +229,7 @@ $(document).ready(function () {
 
     setInterval(loadAnnouncements, ANNOUNCEMENT_INTERVAL);
     setInterval(function () {
-      console.log('ANNS IN QUEUE: ' + QUEUE.length);
+      console.debug('ANNS IN QUEUE: ' + QUEUE.length);
       if (QUEUE.length) announce(QUEUE);else return;
     }, ANNOUNCEMENT_INTERVAL / 2);
   }
@@ -345,6 +351,9 @@ $(document).ready(function () {
       announce(QUEUE);
       return;
     } else {
+      $("video").each(function () {
+        $(this).prop('muted', true);
+      });
       ANNOUNCED.push(data.ann_id);
 
       AUDIO.play();
@@ -372,6 +381,9 @@ $(document).ready(function () {
 
       setTimeout(function () {
         $('#announce-modal').modal('hide');
+        $("video").each(function () {
+          $(this).prop('muted', false);
+        });
 
         setTimeout(function () {
           QUEUE.shift();
@@ -414,7 +426,6 @@ $(document).ready(function () {
   }
 
   function rideCarousel() {
-    console.log('start carousel')
     CAROUSEL_INTERVAL_ID = setInterval(function () {
       carouselScroll(CAROUSEL_PAGE++);
     }, SLIDE_INTERVAL);
@@ -422,10 +433,10 @@ $(document).ready(function () {
 
   $('body').on('click', '.media-wrap button', function () {
     var video = $(this).parent().find('video').get(0);
-    
+
     if (video.currentTime != 0) {
       clearTimeout(videoFallback);
-      
+
       video.pause();
       video.currentTime = 0;
     } else {
