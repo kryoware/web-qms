@@ -124,8 +124,10 @@ $(document).ready(function () {
     var action = $(this).attr('id');
 
     callApi(action, { session_key: SESSION_KEY }, function (res) {
+      console.warn(res);
+
       clearInterval(TIMER_INTERVAL_ID);
-      showMessage(res.stat, res.statMsg);
+      showMessage(res.stat, typeof res.statMsg === 'undefined');
 
       $('#ticket').animate({ opacity: 0 }, 250);
       $('#time').text('00:00');
