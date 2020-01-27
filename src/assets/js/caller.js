@@ -91,7 +91,7 @@ $(document).ready(function () {
 
           TIMER_START = moment(ticket.dt_served);
           TIMER_INTERVAL_ID = setInterval(function () {
-            $('#time').text(moment(moment().diff(TIMER_START)).format('mm:ss'));
+            $('#time').text(moment(moment().diff(TIMER_START)).format('hh:mm:ss'));
           }, 500);
           $('#ticket').text(ticket.ticket_label).animate({ opacity: 1 }, 250);
         }
@@ -130,7 +130,7 @@ $(document).ready(function () {
       showMessage(res.stat, typeof res.statMsg === 'undefined');
 
       $('#ticket').animate({ opacity: 0 }, 250);
-      $('#time').text('00:00');
+      $('#time').text('00:00:00');
 
       if (typeof res.data === 'undefined') {
         return;

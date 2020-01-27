@@ -61,7 +61,7 @@ $crumbs_title = "$page_title";
 
                 <div class="d-flex flex-column justify-content-between">
                   <p class="summary-label mg-0 text-center text-uppercase">Time Elapsed</p>
-                  <p class="wd-75p mx-auto custom-oblong pd-10 bg-custom tx-white mg-0 text-center" id="time">00:00</p>
+                  <p class="wd-75p mx-auto custom-oblong pd-10 bg-custom tx-white mg-0 text-center" id="time">00:00:00</p>
                 </div>
               </div>
 
