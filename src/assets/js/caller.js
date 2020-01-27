@@ -91,9 +91,18 @@ $(document).ready(function () {
           var ticket = res.data.current_ticket;
           clearInterval(TIMER_INTERVAL_ID);
 
-          TIMER_START = moment(ticket.dt_served);
           TIMER_INTERVAL_ID = setInterval(function () {
-            $('#time').text(moment(moment().diff(TIMER_START)).format('hh:mm:ss'));
+            TIMER_START = moment(ticket.dt_served);
+            var elapsedSeconds = moment().diff(TIMER_START, 'seconds');
+            var hours = parseInt(elapsedSeconds / 3600);
+            var minutes = parseInt((elapsedSeconds - (hours * 3600)) / 60);
+            var seconds = elapsedSeconds - (hours * 3600) - (minutes * 60);
+  
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            $('#time').text([hours, minutes, seconds].join(':'));
           }, 500);
           $('#ticket').text(ticket.ticket_label).animate({ opacity: 1 }, 250);
         }
