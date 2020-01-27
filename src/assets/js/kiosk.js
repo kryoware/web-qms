@@ -1,7 +1,14 @@
 'use strict';
 
+var JSPlugin = new function () {
+  this.printTicket = function (jsonString) {
+    JSBridgePlugin.printTicket(jsonString);
+  };
+};
+
 $(document).ready(function () {
   var CONFIG = null,
+    ANDROID_TICKET = {},
     DEPARTMENTS = null,
     SELECTED_DEPT = null,
     NEW_TICKET = false,
@@ -88,14 +95,12 @@ $(document).ready(function () {
           var TICKET_SERVED = Object.values(res.data).filter(function(ticket) {
             return parseInt(ticket.ticket_no) != NEW_TICKET && parseInt(ticket.counter_id) != 0;
           })
-
-          console.log({ TICKET_SERVED })
+          .sort(function (a,b) {
+            return new Date(a.dt_served) - new Date(b.dt_served);
+          });
 
           if (TICKET_OBJECT.length > 0) {
             TICKET_OBJECT = TICKET_OBJECT[0];
-
-            // var date = moment(TICKET_OBJECT.dt_added.split(' ')[0], 'Y-MM-DD');
-            // var time = moment(TICKET_OBJECT.dt_added.split(' ')[0], 'H:mm:ss');
 
             var date = moment().format('DD-MM-Y');
             var time = moment().format('hh:mm:ss A');
@@ -118,12 +123,17 @@ $(document).ready(function () {
 
             $('#ticket_customers').text(Object.values(res.data).length - 1);
 
-            // TODO: COMPANY NAME
-            // $('#ticket_company_name').text();
-
             $('#confirm-modal').modal('show');
 
-            setTimeout(printTicket, 1000);
+            setTimeout(printTicket, 2000);
+            ANDROID_TICKET = {
+              date,
+              time,
+              ticket_no: TICKET_OBJECT.ticket_label,
+              served: TICKET_SERVED.length ? TICKET_SERVED[0] : {},
+              company_name: $('#ticket_company_name').text(),
+              customers: $('#ticket_customers').text()
+            };
 
             setTimeout(function () {
               $('#confirm-modal').modal('hide');
@@ -149,20 +159,7 @@ $(document).ready(function () {
   function printTicket() {
     var logo = $('.branding .img-fluid').clone();
 
-    if (window.nsWebViewBridge) {
-      $(logo).addClass('wd-300');
-      $(logo).addClass('ht-300');
-      $('#ticket_logo').append(logo);
-
-      $('#confirm-modal').hide();
-      $('.modal-backdrop').hide();
-      $('.content-wrap').hide();
-      $('#ticket').show();
-
-      setTimeout(function () {
-        window.nsWebViewBridge.emit('print', null);
-      }, 1000)
-    } else {
+    if (typeof JSBridgePlugin === 'undefined') {
       $(logo).addClass('wd-300');
       $(logo).addClass('ht-300');
       $('#ticket_logo').append(logo);
@@ -170,6 +167,8 @@ $(document).ready(function () {
       setTimeout(function () {
         window.print();
       }, 250)
+    } else {
+      JSPlugin.printTicket(JSON.stringify(ANDROID_TICKET));
     }
 
     return false;

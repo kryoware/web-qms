@@ -61,6 +61,8 @@ $(document).ready(function () {
 
   function loadStats() {
     callApi('caller_counter_stats', { session_key: SESSION_KEY }, function (res) {
+      Sentry.captureMessage(JSON.stringify(res), 'debug');
+
       if (res.stat === 'ok' && res.data) {
         Object.keys(res.data).forEach(function (key) {
           var stat_label = key.split('_')[1];
@@ -98,6 +100,9 @@ $(document).ready(function () {
       } else if (res.stat === 'error') {
         window.location.replace('caller-login.php');
       }
+    },
+    function (err) {
+      showMessage('error', 'Server Error');
     });
   }
 
@@ -124,10 +129,10 @@ $(document).ready(function () {
     var action = $(this).attr('id');
 
     callApi(action, { session_key: SESSION_KEY }, function (res) {
-      console.warn(res);
+      Sentry.captureMessage(JSON.stringify(res), 'debug');
 
       clearInterval(TIMER_INTERVAL_ID);
-      showMessage(res.stat, typeof res.statMsg === 'undefined');
+      showMessage(res.stat, typeof res.statMsg === 'undefined' ? '' : res.statMsg);
 
       $('#ticket').animate({ opacity: 0 }, 250);
       $('#time').text('00:00:00');
@@ -154,9 +159,11 @@ $(document).ready(function () {
           startTimer();
           break;
       }
+    },
+    function (err) {
+      showMessage('error', 'Server Error');
     });
-  })
+  });
 
-  // Scroll fix ?
   $('.main-content').css('height', 'calc(100vh - ' + $('.custom-header').innerHeight() + 'px)');
 });

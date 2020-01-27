@@ -148,6 +148,13 @@ $crumbs_title = "$page_title";
   <?php echo "$_template_footer_inc_1"; ?>
   <?php echo "$_template_footer_inc_2"; ?>
 
+  <!-- For Debugging -->
+  <script src="https://browser.sentry-cdn.com/5.11.1/bundle.min.js" integrity="sha384-r7/ZcDRYpWjCNXLUKk3iuyyyEcDJ+o+3M5CqXP5GUGODYbolXewNHAZLYSJ3ZHcV" crossorigin="anonymous"></script>
+  <script>
+    Sentry.init({ dsn: 'https://e172e3c73d894417834ccc525ee30a67@sentry.io/2011088' });
+  </script>
+  <!-- For Debugging -->
+
   <script src="assets/js/utils.js"></script>
   <script src="assets/js/caller.js"></script>
 </body>
