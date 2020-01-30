@@ -119,7 +119,7 @@ $(document).ready(function () {
 
             $('.media-wrap').append(`
               <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
-                <video ${props} class="img-fluid" ${props} src="../assets/ads/${m.filename}" onended="onVideoEnded()" onpause="onVideoPaused()"><\/video>
+                <video ${props} class="img-fluid ${props}" src="../assets/ads/${m.filename}" onended="onVideoEnded()" onpause="onVideoPaused()"><\/video>
                 <button type="button" style="display: none" />
               <\/div>
             `);
@@ -205,13 +205,16 @@ $(document).ready(function () {
         speak(data.message);
       }, 300);
 
+      var counter_dom = $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]');
+
       // Add blinking effect
-      $('[data-counter_no="' + data.counter_no + '"]').find('.ticket-no').addClass('blink');
-      $('[data-counter_no="' + data.counter_no + '"]').find('.counter-no').addClass('blink');
+      $(counter_dom).find('.ticket-no').addClass('blink');
+      $(counter_dom).find('.counter-no').addClass('blink');
 
       setTimeout(function () {
-        $('[data-counter_no="' + data.counter_no + '"]').find('.ticket-no').removeClass('blink');
-        $('[data-counter_no="' + data.counter_no + '"]').find('.counter-no').removeClass('blink');
+        // Remove blinking effect
+        $(counter_dom).find('.ticket-no').removeClass('blink');
+        $(counter_dom).find('.counter-no').removeClass('blink');
       }, 20000)
 
       $('#ticket').text(data.ticket_label);

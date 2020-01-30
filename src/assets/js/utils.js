@@ -28,7 +28,7 @@ function callApi(action, params, callback, error_callback) {
   if (API_URL === null) {
     API_URL = gup('url');
   }
-  API_URL = API_URL === null ? 'http://localhost' : API_URL;
+  API_URL = API_URL === null ? 'http://dev.teaconcepts.net/CleverQMS' : API_URL;
 
   var host = API_URL;
   var query = '';

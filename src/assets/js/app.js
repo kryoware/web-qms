@@ -114,10 +114,6 @@ $(document).ready(function () {
           if (m.type === 'video') {
             var props = '';
 
-            if (m.filename === '3.mp4') {
-              m.enable_audio = 1;
-            }
-
             if (parseInt(m.enable_audio) === 0) {
               props = 'muted';
             }
@@ -385,7 +381,7 @@ $(document).ready(function () {
         // Remove blinking effect
         $(counter_dom).find('.ticket-no').removeClass('blink');
         $(counter_dom).find('.counter-no').removeClass('blink');
-      }, 15000)
+      }, 20000)
 
       $('#ticket').text(data.ticket_label);
       $('#counter').text(data.counter_no);
