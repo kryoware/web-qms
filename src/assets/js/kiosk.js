@@ -125,7 +125,6 @@ $(document).ready(function () {
 
             $('#confirm-modal').modal('show');
 
-            setTimeout(printTicket, 2000);
             ANDROID_TICKET = {
               date,
               time,
@@ -134,7 +133,7 @@ $(document).ready(function () {
               company_name: $('#ticket_company_name').text(),
               customers: $('#ticket_customers').text()
             };
-
+            setTimeout(printTicket, 2000);
             setTimeout(function () {
               $('#confirm-modal').modal('hide');
             }, 4000);

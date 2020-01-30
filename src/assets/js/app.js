@@ -114,13 +114,17 @@ $(document).ready(function () {
           if (m.type === 'video') {
             var props = '';
 
+            if (m.filename === '3.mp4') {
+              m.enable_audio = 1;
+            }
+
             if (parseInt(m.enable_audio) === 0) {
               props = 'muted';
             }
 
             $('.media-wrap').append(`
               <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
-                <video ${props} class="img-fluid" src="../assets/ads/${m.filename}" onended="onVideoEnded()" onpause="onVideoPaused()"><\/video>
+                <video ${props} class="img-fluid ${props}" src="../assets/ads/${m.filename}" onended="onVideoEnded()" onpause="onVideoPaused()"><\/video>
                 <button type="button" style="display: none" />
               <\/div>
             `);
@@ -247,30 +251,11 @@ $(document).ready(function () {
         $('#counter_carousel').html('');
         DEPARTMENTS = Object.values(res.data);
         Object.values(res.data).forEach(function (dept, key) {
-          CURR = 0;
-          $('#generate_ticket').parent().find('select').append("<option value=\"".concat(dept.dept_id, "\">").concat(dept.dept_name, "</option>"));
-          $('#counter_carousel').append(`
-          <div class="carousel-item ${key === 0 ? 'active' : ''}">
-            <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
-              <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
-                <div class="d-flex flex-column justify-content-center">
-                  <span class="dept-name mg-0 tx-semibold tx-custom text-left text-wrap text-uppercase">${dept.dept_name}</span>
-                </div>
-
-                <div class="d-flex flex-column justify-content-center">
-                  <span class="tx-dark now-serving mg-0 tx-semibold text-center text-uppercase">Now Serving</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        `);
-
-          Object.values(dept.counters).forEach(function (counter) {
-            if (CURR < MAX_COUNTERS) {
-              CURR++;
-            } else {
-              $('#counter_carousel').append(`
-              <div class="carousel-item">
+          if (dept.counters) {
+            CURR = 0;
+            $('#generate_ticket').parent().find('select').append("<option value=\"".concat(dept.dept_id, "\">").concat(dept.dept_name, "</option>"));
+            $('#counter_carousel').append(`
+              <div class="carousel-item ${key === 0 ? 'active' : ''}">
                 <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
                   <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
                     <div class="d-flex flex-column justify-content-center">
@@ -284,36 +269,58 @@ $(document).ready(function () {
                 </div>
               </div>
             `);
-              CURR = 0;
-            }
 
-            var containers = $('#counter_carousel').find("[data-dept_id=\"".concat(counter.dept_id, "\"]"));
-            $(containers[containers.length - 1]).append(`
-            <div class="custom-rounded bg-white mg-b-10" data-counter_id="${counter.counter_id}" data-counter_no="${counter.counter_no}">
-              <div class="tx-dark">
-                <div class="row no-gutters">
+            Object.values(dept.counters).forEach(function (counter) {
+              if (CURR < MAX_COUNTERS) {
+                CURR++;
+              } else {
+                $('#counter_carousel').append(`
+                  <div class="carousel-item">
+                    <div class="d-flex flex-column" data-dept_id="${dept.dept_id}">
+                      <div class="d-flex justify-content-between custom-rounded bg-white mg-b-10 pd-10 ht-100p">
+                        <div class="d-flex flex-column justify-content-center">
+                          <span class="dept-name mg-0 tx-semibold tx-custom text-left text-wrap text-uppercase">${dept.dept_name}</span>
+                        </div>
 
-                  <div class="col-7 text-left">
-                    <div class="d-flex flex-column justify-content-center ht-100p pd-10">
-                      <p class="counter-no tx-semibold text-uppercase mg-0">Counter ${counter.counter_no}</p>
+                        <div class="d-flex flex-column justify-content-center">
+                          <span class="tx-dark now-serving mg-0 tx-semibold text-center text-uppercase">Now Serving</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
+                `);
+                CURR = 0;
+              }
 
-                  <div class="col-5 text-right">
-                    <div class="d-flex justify-content-end ht-100p">
-                      <span class="custom-rounded bg-custom ticket-no tx-semibold pd-10 mg-y-10 mg-r-10 tx-white">
-                        <span style="opacity: 0">S-001</span>
-                      </span>
+              var containers = $('#counter_carousel').find("[data-dept_id=\"".concat(counter.dept_id, "\"]"));
+              $(containers[containers.length - 1]).append(`
+                <div class="custom-rounded bg-white mg-b-10" data-counter_id="${counter.counter_id}" data-counter_no="${counter.counter_no}">
+                  <div class="tx-dark">
+                    <div class="row no-gutters">
+
+                      <div class="col-7 text-left">
+                        <div class="d-flex flex-column justify-content-center ht-100p pd-10">
+                          <p class="counter-no tx-semibold text-uppercase mg-0">Counter ${counter.counter_no}</p>
+                        </div>
+                      </div>
+
+                      <div class="col-5 text-right">
+                        <div class="d-flex justify-content-end ht-100p">
+                          <span class="custom-rounded bg-custom ticket-no tx-semibold pd-10 mg-y-10 mg-r-10 tx-white">
+                            <span style="opacity: 0">S-001</span>
+                          </span>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
-
                 </div>
-              </div>
-            </div>
-          `);
-          });
+              `);
+            });
+          }
         });
 
+        loadTickets();
         setInterval(function () {
           loadTickets();
         }, TICKET_INTERVAL);
@@ -351,9 +358,10 @@ $(document).ready(function () {
       announce(QUEUE);
       return;
     } else {
-      $("video").each(function () {
+      $('video:not(.muted)').each(function () {
         $(this).prop('muted', true);
       });
+
       ANNOUNCED.push(data.ann_id);
 
       AUDIO.play();
@@ -361,19 +369,23 @@ $(document).ready(function () {
         speak(data.message);
       }, 500);
 
-      clearInterval(CAROUSEL_INTERVAL_ID)
-      var slide_dom = $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').closest('.carousel-item');
+      // Stop carousel
+      clearInterval(CAROUSEL_INTERVAL_ID);
 
-      // Add blinking effect
-      $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').find('.ticket-no').addClass('blink')
-      $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').find('.counter-no').addClass('blink')
-
-      setTimeout(function () {
-        $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').find('.ticket-no').removeClass('blink')
-        $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]').find('.counter-no').removeClass('blink')
-      }, 13000)
+      var counter_dom = $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]');
+      var slide_dom = $(counter_dom).closest('.carousel-item');
 
       CAROUSEL_PAGE = $(slide_dom).index() + 1;
+
+      // Add blinking effect
+      $(counter_dom).find('.ticket-no').addClass('blink');
+      $(counter_dom).find('.counter-no').addClass('blink');
+
+      setTimeout(function () {
+        // Remove blinking effect
+        $(counter_dom).find('.ticket-no').removeClass('blink');
+        $(counter_dom).find('.counter-no').removeClass('blink');
+      }, 15000)
 
       $('#ticket').text(data.ticket_label);
       $('#counter').text(data.counter_no);
@@ -381,7 +393,8 @@ $(document).ready(function () {
 
       setTimeout(function () {
         $('#announce-modal').modal('hide');
-        $("video").each(function () {
+
+        $('video:not(.muted)').each(function () {
           $(this).prop('muted', false);
         });
 
@@ -431,6 +444,11 @@ $(document).ready(function () {
     }, SLIDE_INTERVAL);
   }
 
+  $('body').on('hide.bs.modal', '#announce-modal', function () {
+    carouselScroll(CAROUSEL_PAGE);
+    rideCarousel();
+  });
+
   $('body').on('click', '.media-wrap button', function () {
     var video = $(this).parent().find('video').get(0);
 
@@ -443,4 +461,4 @@ $(document).ready(function () {
       video.play();
     }
   });
-}); // Ready
+});

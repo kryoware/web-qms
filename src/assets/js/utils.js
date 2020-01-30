@@ -25,7 +25,10 @@ function removeSpinner(dom) {
 }
 
 function callApi(action, params, callback, error_callback) {
-  API_URL = API_URL === null ? 'http://dev.teaconcepts.net' : API_URL;
+  if (API_URL === null) {
+    API_URL = gup('url');
+  }
+  API_URL = API_URL === null ? 'http://localhost' : API_URL;
 
   var host = API_URL;
   var query = '';
@@ -45,12 +48,12 @@ function callApi(action, params, callback, error_callback) {
     query += '&'.concat(payload.join('&'));
   }
 
-  if (Sentry) {
-    Sentry.captureMessage(host + '/CleverQMS/engine/api.php?act='+ action + query, 'debug');
+  if (typeof Sentry != 'undefined') {
+    Sentry.captureMessage(host + '/engine/api.php?act='+ action + query, 'debug');
   }
 
   $.ajax({
-    url: host + '/CleverQMS/engine/api.php?act='+ action + query,
+    url: host + '/engine/api.php?act='+ action + query,
     success: function(res) {
       if (typeof callback === 'function') {
         callback(res);
@@ -58,13 +61,13 @@ function callApi(action, params, callback, error_callback) {
     },
     error: function(err) {
       console.error(err);
-
-      if (Sentry) {
+      
+      if (typeof Sentry != 'undefined') {
         Sentry.captureException(err, 'fatal');
       }
 
       if (typeof error_callback === 'function') {
-        error_callback(res);
+        error_callback(err);
       }
     }
   });

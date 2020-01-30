@@ -119,7 +119,7 @@ $(document).ready(function () {
 
             $('.media-wrap').append(`
               <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
-                <video ${props} class="img-fluid" src="../assets/ads/${m.filename}" onended="onVideoEnded()" onpause="onVideoPaused()"><\/video>
+                <video ${props} class="img-fluid" ${props} src="../assets/ads/${m.filename}" onended="onVideoEnded()" onpause="onVideoPaused()"><\/video>
                 <button type="button" style="display: none" />
               <\/div>
             `);
@@ -195,7 +195,7 @@ $(document).ready(function () {
       announce(QUEUE);
       return;
     } else {
-      $("video").each(function () {
+      $('video:not(.muted)').each(function () {
         $(this).prop('muted', true);
       });
       ANNOUNCED.push(data.ann_id);
@@ -220,7 +220,7 @@ $(document).ready(function () {
 
       setTimeout(function () {
         $('#announce-modal').modal('hide');
-        $("video").each(function () {
+        $('video:not(.muted)').each(function () {
           $(this).prop('muted', false);
         });
 
@@ -243,24 +243,27 @@ $(document).ready(function () {
     callApi('load_departments', { stat: 'open', details: 'full' }, function (res) {
       if (res.stat === 'ok' && res.data) {
         Object.values(res.data).forEach(function (dept, key) {
-          Object.values(dept.counters).forEach(function (counter) {
-            $('#vertical .row').append(`
-              <div class="col-${12 / COLUMNS}">
-                <div class="bg-white custom-rounded pd-y-10 pd-x-20 ht-100p counter-card d-flex flex-column" data-counter_id="${counter.counter_id}" data-counter_no="${counter.counter_no}">
-
-                  <p class="counter-no tx-dark text-center tx-semibold text-uppercase mg-0">Counter ${counter.counter_no}</p>
-
-                  <div class="d-flex flex-column justify-content-center flex-grow-1">
-                    <span class="custom-rounded bg-custom ticket-no tx-semibold pd-10 mx-auto mt-auto tx-white">
-                      <span style="opacity: 0">S-001</span>
-                    </span>
+          if (dept.counters) {
+            Object.values(dept.counters).forEach(function (counter) {
+              $('#vertical .row').append(`
+                <div class="col-${12 / COLUMNS}">
+                  <div class="bg-white custom-rounded pd-y-10 pd-x-20 ht-100p counter-card d-flex flex-column" data-counter_id="${counter.counter_id}" data-counter_no="${counter.counter_no}">
+  
+                    <p class="counter-no tx-dark text-center tx-semibold text-uppercase mg-0">Counter ${counter.counter_no}</p>
+  
+                    <div class="d-flex flex-column justify-content-center flex-grow-1">
+                      <span class="custom-rounded bg-custom ticket-no tx-semibold pd-10 mx-auto mt-auto tx-white">
+                        <span style="opacity: 0">S-001</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            `)
-          });
+              `)
+            });
+          }
         });
 
+        loadTickets();
         setInterval(function () {
           loadTickets();
         }, TICKET_INTERVAL);
