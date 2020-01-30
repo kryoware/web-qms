@@ -96,7 +96,9 @@ $crumbs_title = "$page_title";
             <!-- Welcome Card -->
 
             <!-- Ticker Container -->
-            <div class="d-flex flex-column tx-white order-12 flex-grow-1 justify-content-end" id="ticker" style="display: none;"></div>
+            <div class="d-flex flex-column tx-white order-12 justify-content-end flex-grow-1">
+              <div id="ticker" class="bg-custom" style="display: none;"></div>
+            </div>
             <!-- Ticker Container -->
           </div>
         </div>
@@ -130,10 +132,13 @@ $crumbs_title = "$page_title";
   <!-- For Debugging -->
   <script src="https://browser.sentry-cdn.com/5.11.1/bundle.min.js" integrity="sha384-r7/ZcDRYpWjCNXLUKk3iuyyyEcDJ+o+3M5CqXP5GUGODYbolXewNHAZLYSJ3ZHcV" crossorigin="anonymous"></script>
   <script>
-    Sentry.init({ dsn: 'https://e172e3c73d894417834ccc525ee30a67@sentry.io/2011088' });
+    if (typeof Sentry != 'undefined') {
+      Sentry.init({ dsn: 'https://e172e3c73d894417834ccc525ee30a67@sentry.io/2011088' });
+    }
   </script>
   <!-- For Debugging -->
 
+  <script src="assets/js/marquee.min.js" type="text/javascript"></script>
   <script src="assets/js/utils.js"></script>
   <script src="assets/js/kiosk.js"></script>
 </body>

@@ -194,15 +194,17 @@ $(document).ready(function () {
         }
 
         DEPARTMENTS.forEach(function (dept, key) {
-          $('#grid-wrap').append(`
-            <div class="${css}">
-              <div class="kiosk-dept-wrap custom-rounded bg-custom tx-white" data-dept_id="${dept.dept_id}">
-                <div class="d-flex flex-column justify-content-center ht-100p">
-                  <p class="text-center mg-0 text-uppercase kiosk-dept-name">${dept.dept_name}</p>
+          if (dept.counters) {
+            $('#grid-wrap').append(`
+              <div class="${css}">
+                <div class="kiosk-dept-wrap custom-rounded bg-custom tx-white" data-dept_id="${dept.dept_id}">
+                  <div class="d-flex flex-column justify-content-center ht-100p">
+                    <p class="text-center mg-0 text-uppercase kiosk-dept-name">${dept.dept_name}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          `);
+            `);
+          }
         });
       } else if (CONFIG.layout.type === 'slides') {
         $('#carousel-wrap').removeClass('d-none');
@@ -216,15 +218,17 @@ $(document).ready(function () {
         `);
 
         DEPARTMENTS.forEach(function (dept, key) {
-          $('#dept_slides .carousel-inner').append(`
-            <div class="carousel-item ${key === 0 ? 'active' : ''}">
-              <div class="kiosk-dept-wrap custom-rounded bg-custom tx-white mg-x-25">
-                <div class="d-flex flex-column justify-content-center ht-100p">
-                  <p class="text-center mg-0 text-uppercase kiosk-dept-name">${dept.dept_name}</p>
+          if (dept.counters) {
+            $('#dept_slides .carousel-inner').append(`
+              <div class="carousel-item ${key === 0 ? 'active' : ''}">
+                <div class="kiosk-dept-wrap custom-rounded bg-custom tx-white mg-x-25">
+                  <div class="d-flex flex-column justify-content-center ht-100p">
+                    <p class="text-center mg-0 text-uppercase kiosk-dept-name">${dept.dept_name}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          `);
+            `);
+          }
         });
 
         $('#dept_slides').carousel({ interval: false, wrap: true });
@@ -256,7 +260,11 @@ $(document).ready(function () {
     if (CONFIG['show_ticker'] === true) {
       $('#ticker').addClass(CONFIG.ticker_location === 'header' ? 'order-0' : 'order-12' );
       $('#ticker').toggle();
-      $('#ticker').append(`<marquee class="ticker bg-custom">${ticker_msg}</marquee>`);
+      $('#ticker').append(`<div class="marquee">${ticker_msg}</div>`);
+
+      setTimeout(() => {
+        $('body').find('.marquee').marquee({ duration: 15000 });
+      }, 500);
     }
 
     $('.branding-wrap').addClass(CONFIG.branding_location === 'header' ? 'order-0' : 'order-12' );
