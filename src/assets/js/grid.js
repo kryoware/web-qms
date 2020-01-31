@@ -1,8 +1,11 @@
+"use strict";
+
 var videoFallback = null;
 
 function onVideoEnded() {
   next();
 }
+
 function onVideoPaused() {
   next();
 }
@@ -11,26 +14,21 @@ function start() {
   var active = $('.media-wrap .active');
   var isImage = $('.media-wrap .active').find('img').length != 0;
   var isVideo = $('.media-wrap .active').find('video').length != 0;
+  var ttl = parseInt($(active).data('ttl')) * 1000; // check if image
 
-  var ttl = parseInt($(active).data('ttl')) * 1000;
-
-  // check if image
   if (isImage) {
-
     setTimeout(function () {
       $(active).fadeOut(function () {
         next();
       });
     }, ttl);
-  }
+  } // check if video
 
-  // check if video
+
   if (isVideo) {
-    ttl += 1000;
+    ttl += 1000; // play video
 
-    // play video
     $(active).find('button').click();
-
     videoFallback = setTimeout(function () {
       // pause video
       $(active).find('button').click();
@@ -53,7 +51,6 @@ function next() {
   $(thisSlide).removeClass('active').fadeOut(function () {
     $(nextSlide).addClass('active').fadeIn();
   });
-
   var isImage = $(nextSlide).find('img');
   var ttl = parseInt($(nextSlide).data('ttl')) * 1000;
 
@@ -64,50 +61,44 @@ function next() {
       });
     }, ttl);
   } else {
-    ttl += 1000;
+    ttl += 1000; // play video
 
-    // play video
     $(nextSlide).find('button').click();
-
     videoFallback = setTimeout(function () {
       // pause video
       $(nextSlide).find('button').click();
-    }, ttl)
+    }, ttl);
   }
 }
 
 $(document).ready(function () {
   var AUDIO = new Audio('./assets/ding_dong.mp3'),
-    TICKET_INTERVAL = null,
-    ANNOUNCEMENT_INTERVAL = null,
-    SLIDE_INTERVAL = null,
-    IMAGE_INTERVAL = null,
-    VIDEO_INTERVAL = null,
-    MAX_COUNTERS = 5,
-    CURR = 0,
-    FULLSCREEN_ENABLED = false,
-    FULLSCREEN_TIMEOUT = null,
-    COUNTERS = null,
-    DEPARTMENTS = null,
-    TICKETS = [],
-    CONFIG = null,
-    QUEUE = [],
-    ANNOUNCED = [],
-    CAROUSEL_PAGE = 2,
-    CAROUSEL_INTERVAL_ID = null,
-    COLUMNS = 3,
-    ticker_msg = null;
+      TICKET_INTERVAL = null,
+      ANNOUNCEMENT_INTERVAL = null,
+      SLIDE_INTERVAL = null,
+      IMAGE_INTERVAL = null,
+      VIDEO_INTERVAL = null,
+      MAX_COUNTERS = 5,
+      CURR = 0,
+      FULLSCREEN_ENABLED = false,
+      FULLSCREEN_TIMEOUT = null,
+      COUNTERS = null,
+      DEPARTMENTS = null,
+      TICKETS = [],
+      CONFIG = null,
+      QUEUE = [],
+      ANNOUNCED = [],
+      CAROUSEL_PAGE = 2,
+      CAROUSEL_INTERVAL_ID = null,
+      COLUMNS = 3,
+      ticker_msg = null;
 
   (function () {
     callApi('load_ads', {}, function (res) {
       if (res.stat === 'ok') {
         Object.values(res.data).forEach(function (m, key) {
           if (m.type === 'image') {
-            $('.media-wrap').append(`
-              <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
-                <img class="img-fluid" src="../assets/ads/${m.filename}" />
-              <\/div>
-            `);
+            $('.media-wrap').append("\n              <div id=\"".concat(key, "\" data-ttl=\"").concat(m.ttl, "\" class=\"").concat(key === 0 ? 'active' : '', "\" ").concat(key === 0 ? '' : 'style="display: none"', ">\n                <img class=\"img-fluid\" src=\"../assets/ads/").concat(m.filename, "\" />\n              </div>\n            "));
           }
 
           if (m.type === 'video') {
@@ -117,19 +108,12 @@ $(document).ready(function () {
               props = 'muted';
             }
 
-            $('.media-wrap').append(`
-              <div id="${key}" data-ttl="${m.ttl}" class="media ${key === 0 ? 'active' : ''}" ${key === 0 ? '' : 'style="display: none"'}>
-                <video ${props} class="img-fluid ${props}" src="../assets/ads/${m.filename}" onended="onVideoEnded()" onpause="onVideoPaused()"><\/video>
-                <button type="button" style="display: none" />
-              <\/div>
-            `);
+            $('.media-wrap').append("\n              <div id=\"".concat(key, "\" data-ttl=\"").concat(m.ttl, "\" class=\"").concat(key === 0 ? 'active' : '', "\" ").concat(key === 0 ? '' : 'style="display: none"', ">\n                <video ").concat(props, " class=\"img-fluid wd-100p ").concat(props, "\" src=\"../assets/ads/").concat(m.filename, "\" onended=\"onVideoEnded()\" onpause=\"onVideoPaused()\"></video>\n                <button type=\"button\" style=\"display: none\" />\n              </div>\n            "));
           }
         });
-
         start();
       }
     });
-
     callApi('load_settings', {}, function (res) {
       if (res.stat === 'ok' && res.data) {
         Object.keys(res.data).forEach(function (key) {
@@ -145,20 +129,17 @@ $(document).ready(function () {
               break;
           }
         });
-
         $.ajax({
           url: 'config.json',
           success: function success(res) {
             if (res.stat === 'ok' && Object.keys(res.data).length) {
               // FIXME: MOCK API
               CONFIG = res.data.config;
-
               ANNOUNCEMENT_INTERVAL = parseFloat(CONFIG['load_announcements']) * 1000;
               TICKET_INTERVAL = parseFloat(CONFIG['load_ticket']) * 1000;
               SLIDE_INTERVAL = parseFloat(CONFIG['slide_dept']) * 1000;
               IMAGE_INTERVAL = parseFloat(CONFIG['slide_image']) * 1000;
               VIDEO_INTERVAL = parseFloat(CONFIG['slide_video']) * 1000;
-
               initializeLayout();
             }
           },
@@ -175,7 +156,6 @@ $(document).ready(function () {
 
     if (video.currentTime != 0) {
       clearTimeout(videoFallback);
-
       video.pause();
       video.currentTime = 0;
     } else {
@@ -186,10 +166,8 @@ $(document).ready(function () {
   function announce(queue) {
     var modal_shown = $('#announce-modal').hasClass('show');
     var data = queue[0];
+    if (!data || modal_shown) return; // Already announced, removed from queue
 
-    if (!data || modal_shown) return;
-
-    // Already announced, removed from queue
     if (ANNOUNCED.includes(data.ann_id)) {
       QUEUE.shift();
       announce(QUEUE);
@@ -199,34 +177,27 @@ $(document).ready(function () {
         $(this).prop('muted', true);
       });
       ANNOUNCED.push(data.ann_id);
-
       AUDIO.play();
       setTimeout(function () {
         speak(data.message);
       }, 300);
+      var counter_dom = $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]'); // Add blinking effect
 
-      var counter_dom = $('#counter_carousel [data-dept_id="' + data.dept_id + '"] [data-counter_no="' + data.counter_no + '"]');
-
-      // Add blinking effect
       $(counter_dom).find('.ticket-no').addClass('blink');
       $(counter_dom).find('.counter-no').addClass('blink');
-
       setTimeout(function () {
         // Remove blinking effect
         $(counter_dom).find('.ticket-no').removeClass('blink');
         $(counter_dom).find('.counter-no').removeClass('blink');
-      }, 20000)
-
+      }, 20000);
       $('#ticket').text(data.ticket_label);
       $('#counter').text(data.counter_no);
       $('#announce-modal').modal('show');
-
       setTimeout(function () {
         $('#announce-modal').modal('hide');
         $('video:not(.muted)').each(function () {
           $(this).prop('muted', false);
         });
-
         setTimeout(function () {
           QUEUE.shift();
           announce(QUEUE);
@@ -243,35 +214,24 @@ $(document).ready(function () {
   }
 
   function loadDepartments() {
-    callApi('load_departments', { stat: 'open', details: 'full' }, function (res) {
+    callApi('load_departments', {
+      stat: 'open',
+      details: 'full'
+    }, function (res) {
       if (res.stat === 'ok' && res.data) {
         Object.values(res.data).forEach(function (dept, key) {
           if (dept.counters) {
             Object.values(dept.counters).forEach(function (counter) {
-              $('#vertical .row').append(`
-                <div class="col-${12 / COLUMNS}">
-                  <div class="bg-white custom-rounded pd-y-10 pd-x-20 ht-100p counter-card d-flex flex-column" data-counter_id="${counter.counter_id}" data-counter_no="${counter.counter_no}">
-  
-                    <p class="counter-no tx-dark text-center tx-semibold text-uppercase mg-0">Counter ${counter.counter_no}</p>
-  
-                    <div class="d-flex flex-column justify-content-center flex-grow-1">
-                      <span class="custom-rounded bg-custom ticket-no tx-semibold pd-10 mx-auto mt-auto tx-white">
-                        <span style="opacity: 0">S-001</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              `)
+              $('#vertical .row').append("\n                <div class=\"col-".concat(12 / COLUMNS, "\">\n                  <div class=\"bg-white custom-rounded pd-y-10 pd-x-20 ht-100p counter-card d-flex flex-column\" data-counter_id=\"").concat(counter.counter_id, "\" data-counter_no=\"").concat(counter.counter_no, "\">\n  \n                    <p class=\"counter-no tx-dark text-center tx-semibold text-uppercase mg-0\">Counter ").concat(counter.counter_no, "</p>\n  \n                    <div class=\"d-flex flex-column justify-content-center flex-grow-1\">\n                      <span class=\"custom-rounded bg-custom ticket-no tx-semibold pd-10 mx-auto mt-auto tx-white\">\n                        <span style=\"opacity: 0\">S-001</span>\n                      </span>\n                    </div>\n                  </div>\n                </div>\n              "));
             });
           }
         });
-
         loadTickets();
         setInterval(function () {
           loadTickets();
         }, TICKET_INTERVAL);
       }
-    })
+    });
   }
 
   function loadAnnouncements() {
@@ -280,18 +240,18 @@ $(document).ready(function () {
         var T_QUEUE = QUEUE.map(function (ann) {
           return ann.ann_id;
         });
-
         var NEW_QUEUE = Object.values(res.data).filter(function (data) {
           return !ANNOUNCED.includes(data.ann_id) || !T_QUEUE.includes(data.ann_id);
         });
-
         QUEUE = QUEUE.concat(NEW_QUEUE);
       }
     });
   }
 
   function loadTickets() {
-    callApi('load_tickets', { ds: 'active' },  function (res) {
+    callApi('load_tickets', {
+      ds: 'active'
+    }, function (res) {
       if (res.stat === 'ok' && res.data) {
         var NEW_TICKETS = [];
         Object.values(res.data).forEach(function (ticket) {
@@ -303,7 +263,6 @@ $(document).ready(function () {
             ticket_dom.text(ticket.ticket_label);
           }
         });
-
         if (TICKETS.length == 0) TICKETS = NEW_TICKETS;
       }
     });
@@ -314,10 +273,11 @@ $(document).ready(function () {
 
     if (CONFIG['show_ticker'] === true) {
       $('#ticker').toggle();
-      $('#ticker').append(`<div class="marquee">${ticker_msg}</div>`);
-
-      setTimeout(() => {
-        $('body').find('.marquee').marquee({ duration: 15000 });
+      $('#ticker').append("<div class=\"marquee\">".concat(ticker_msg, "</div>"));
+      setTimeout(function () {
+        $('body').find('.marquee').marquee({
+          duration: 15000
+        });
       }, 500);
     }
 
@@ -342,15 +302,13 @@ $(document).ready(function () {
       $('.time').toggle(clock.enabled);
 
       if (clock.enabled) {
-        var format = '';
-
-        // if (clock.date_format.show_dow) {
+        var format = ''; // if (clock.date_format.show_dow) {
         //   format += clock.date_format.dow == 'short' ? 'ddd, ' : 'dddd, ';
         // }
-
         // format += clock.date_format.month == 'short' ? 'MMM ' : 'MMMM ';
         // format += clock.date_format.day == 'short' ? 'D ' : 'DD ';
         // format += clock.date_format.show_year ? 'Y' : '';
+
         format += clock.time_format.hours == 'short' ? ' h:mm' : ' hh:mm';
         format += clock.time_format.show_seconds ? ':ss ' : '';
         format += clock.time_format.show_suffix ? ' A' : '';
