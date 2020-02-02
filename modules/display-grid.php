@@ -86,7 +86,7 @@ $crumbs_title = "$page_title";
       <div class="d-flex flex-column wd-45p">
         <div class="row no-gutters" id="large">
           <div class="col ht-100p d-flex carousel-wrap bg-custom">
-            <div class="media-wrap"></div>
+            <div class="media-wrap wd-100p"></div>
             <!-- <div class="carousel slide" data-ride="carousel" id="media">
               <div class="carousel-inner" role="listbox">
                 <div class="carousel-item" data-interval="10000">

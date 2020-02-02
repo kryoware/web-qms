@@ -108,7 +108,7 @@ $(document).ready(function () {
               props = 'muted';
             }
 
-            $('.media-wrap').append("\n              <div id=\"".concat(key, "\" data-ttl=\"").concat(m.ttl, "\" class=\"").concat(key === 0 ? 'active' : '', "\" ").concat(key === 0 ? '' : 'style="display: none"', ">\n                <video ").concat(props, " class=\"img-fluid wd-100p ").concat(props, "\" src=\"../assets/ads/").concat(m.filename, "\" onended=\"onVideoEnded()\" onpause=\"onVideoPaused()\"></video>\n                <button type=\"button\" style=\"display: none\" />\n              </div>\n            "));
+            $('.media-wrap').append("\n              <div id=\"".concat(key, "\" data-ttl=\"").concat(m.ttl, "\" class=\"").concat(key === 0 ? 'active' : '', "\" ").concat(key === 0 ? '' : 'style="display: none"', ">\n                <video ").concat(props, " class=\"wd-100p ").concat(props, "\" src=\"../assets/ads/").concat(m.filename, "\" onended=\"onVideoEnded()\" onpause=\"onVideoPaused()\"></video>\n                <button type=\"button\" style=\"display: none\" />\n              </div>\n            "));
           }
         });
         start();

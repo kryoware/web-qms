@@ -117,3 +117,9 @@
   font-size: 7vh;
   line-height: 10vh;
 }
+
+.media-wrap video,
+.media-wrap img {
+  border-radius: 1rem !important;
+  max-height: 100%;
+}
