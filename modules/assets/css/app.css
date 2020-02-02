@@ -1,0 +1,119 @@
+:root {
+  /* --theme-primary: #1CAF9A; */
+  --theme-primary: #0F4C81;
+  --theme-accent: rgb(231, 0, 14);
+}
+
+/* COLOR THEME */
+.bg-custom {
+  background-color: var(--theme-primary);
+}
+.tx-custom {
+  color: var(--theme-primary);
+}
+
+.btn-custom {
+  background-color: var(--theme-primary);
+}
+
+.bd-custom {
+  border-color: var(--theme-primary);
+}
+/* COLOR THEME */
+
+.custom-rounded {
+  border-radius: 1rem !important;
+}
+
+.flex-grow-1 {
+  flex-grow: 1 !important;
+}
+
+.flex-shrink-1 {
+  flex-shrink: 1 !important;
+}
+
+.dept-name,
+.ticket-no {
+  font-size: 2.25vw;
+  line-height: 2.25vw;
+}
+
+.now-serving,
+.counter-no {
+  font-size: 1.75vw;
+  line-height: 1.75vw;
+}
+
+.text-wrap {
+  white-space: normal!important;
+}
+
+.time p,
+.company-name {
+  line-height: 4vmin;
+  font-size: 4vmin;
+}
+
+/*
+ * SCREEN SPECIFIC CSS
+ */
+ 
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .dept-name {
+    font-size: 3vw;
+    line-height: 3vw;
+  }
+
+  .now-serving {
+    font-size: 2vw;
+    line-height: 2vw;
+  }
+  
+  .ticket-no {
+    font-size: 4vw;
+    line-height: 4vw;
+  }
+
+  .counter-no {
+    font-size: 3vw;
+    line-height: 3vw;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}
+
+@media screen and (orientation: portrait) {
+  #grid-wrap [class*="col"] {
+    min-height: 11vh;
+    max-height: 11vh;
+  }
+}
+
+
+@media screen and (orientation: landscape) {
+  #grid-wrap [class*="col"] {
+    min-height: 8.5vh;
+    max-height: 8.5vh;
+  }
+}
+
+.marquee {
+  overflow: hidden;
+  font-size: 7vh;
+  line-height: 10vh;
+}
