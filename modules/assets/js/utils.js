@@ -50,10 +50,6 @@ function callApi(action, params, callback, error_callback) {
     query += '&'.concat(payload.join('&'));
   }
 
-  if (typeof Sentry != 'undefined') {
-    Sentry.captureMessage(host + '/CleverQMS/engine/api.php?act=' + action + query, 'debug');
-  }
-
   $.ajax({
     url: host + '/CleverQMS/engine/api.php?act=' + action + query,
     success: function success(res) {
@@ -63,10 +59,6 @@ function callApi(action, params, callback, error_callback) {
     },
     error: function error(err) {
       console.error(err);
-
-      if (typeof Sentry != 'undefined') {
-        Sentry.captureException(err, 'fatal');
-      }
 
       if (typeof error_callback === 'function') {
         error_callback(err);

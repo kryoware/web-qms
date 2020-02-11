@@ -60,8 +60,6 @@ $(document).ready(function () {
     callApi('caller_counter_stats', {
       session_key: SESSION_KEY
     }, function (res) {
-      Sentry.captureMessage(JSON.stringify(res), 'debug');
-
       if (res.stat === 'ok' && res.data) {
         Object.keys(res.data).forEach(function (key) {
           var stat_label = key.split('_')[1];
@@ -135,7 +133,6 @@ $(document).ready(function () {
     callApi(action, {
       session_key: SESSION_KEY
     }, function (res) {
-      Sentry.captureMessage(JSON.stringify(res), 'debug');
       clearInterval(TIMER_INTERVAL_ID);
       showMessage(res.stat, typeof res.statMsg === 'undefined' ? '' : res.statMsg);
       $('#ticket').animate({
