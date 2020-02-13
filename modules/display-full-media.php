@@ -21,6 +21,16 @@ $crumbs_title = "$page_title";
   <title><?php echo "$page_title"; ?></title>
   <link rel="stylesheet" href="assets/css/app.css">
   <link rel="stylesheet" href="assets/css/display.css">
+  <style>
+    .main-content.show-ticker,
+    .main-content.show-header {
+      height: 90vh;
+    }
+
+    .main-content.show-ticker.show-header {
+      height: 80vh !important;
+    }
+  </style>
 </head>
 <body>
   <div class="container-fluid pd-0">

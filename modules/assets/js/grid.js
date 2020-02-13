@@ -90,7 +90,8 @@ $(document).ready(function () {
       ANNOUNCED = [],
       CAROUSEL_PAGE = 2,
       CAROUSEL_INTERVAL_ID = null,
-      COLUMNS = 3,
+      COLUMNS = 5,
+      TOTAL_COUNTERS = 0,
       ticker_msg = null;
 
   (function () {
@@ -224,10 +225,19 @@ $(document).ready(function () {
         Object.values(res.data).forEach(function (dept, key) {
           if (dept.counters) {
             Object.values(dept.counters).forEach(function (counter) {
-              $('#vertical .row').append("\n                <div class=\"col-".concat(12 / COLUMNS, "\">\n                  <div class=\"bg-white custom-rounded pd-y-10 pd-x-20 ht-100p counter-card d-flex flex-column\" data-counter_id=\"").concat(counter.counter_id, "\" data-counter_no=\"").concat(counter.counter_no, "\">\n  \n                    <p class=\"counter-no tx-dark text-center tx-semibold text-uppercase mg-0\">Counter ").concat(counter.counter_no, "</p>\n  \n                    <div class=\"d-flex flex-column justify-content-center flex-grow-1\">\n                      <span class=\"custom-rounded bg-custom ticket-no tx-semibold pd-10 mx-auto mt-auto tx-white\">\n                        <span style=\"opacity: 0\">S-001</span>\n                      </span>\n                    </div>\n                  </div>\n                </div>\n              "));
+              TOTAL_COUNTERS++;
+              $('#vertical .row').append("<div class=\"counter-wrap\">\n<div class=\"mx-2 bg-white custom-rounded pd-y-10 pd-x-20 ht-100p counter-card d-flex flex-column\" data-counter_id=\"".concat(counter.counter_id, "\" data-counter_no=\"").concat(counter.counter_no, "\">\n  \n                    <p class=\"counter-no tx-dark text-center tx-semibold text-uppercase mg-0\">Counter ").concat(counter.counter_no, "</p>\n  \n                    <div class=\"d-flex flex-column justify-content-center flex-grow-1\">\n                      <span class=\"custom-rounded bg-custom ticket-no tx-semibold pd-10 mx-auto mt-auto tx-white\">\n                        <span style=\"opacity: 0\">S-001</span>\n                      </span>\n                    </div>\n                  </div>\n                </div>\n              "));
             });
           }
         });
+
+        // Auto - fit
+        if (TOTAL_COUNTERS < 5) {
+          $('body').find('.counter-wrap').css('width', (100 / TOTAL_COUNTERS).toString().concat('%'));
+        } else {
+          $('body').find('.counter-wrap').css('width', '20%');
+        }
+
         loadTickets();
         setInterval(function () {
           loadTickets();

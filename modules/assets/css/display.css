@@ -40,15 +40,6 @@
   transition: all .3s ease-in-out;
 }
 
-.main-content.show-ticker,
-.main-content.show-header {
-  height: 90vh;
-}
-
-.main-content.show-ticker.show-header {
-  height: 80vh !important;
-}
-
 #counter_carousel .carousel-item {
   height: 80vh;
   padding: 10px;

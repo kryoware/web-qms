@@ -52,59 +52,44 @@ $crumbs_title = "$page_title";
   </div>
 
   <div class="container-fluid pd-0">
-    <div class="row no-gutters bg-white" id="header">
-      <div class="d-flex wd-100p">
-        <div class="d-flex flex-column justify-content-center pd-l-10">
-          <div class="d-flex ht-100p">
-            <div class="d-none flex-column justify-content-center brand-wrap">
-              <div class="slim-logo mg-0"><img class="pd-y-10" src="../assets/company_logo.png"></div>
-            </div>
-            <div class="d-none flex-column justify-content-center ht-100p company-name-wrap">
-              <p class="mg-0 mg-l-10 company-name tx-dark tx-semibold"></p>
-            </div>
-          </div>
-        </div>
-        <div class="ml-auto time ht-100p" style="display: none;">
-          <div class="d-flex flex-column justify-content-center tx-dark tx-semibold ht-100p pd-10">
-            <p class="mg-0"></p>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="d-flex main-content">
-      <div class="d-flex flex-column wd-55p bg-custom" id="vertical">
-        <div class="row pd-x-30 pd-t-15">
+    <div class="d-flex flex-wrap main-content">
 
+      <div class="d-flex flex-column wd-100p">
 
-          <!-- <div class="col">
-            <div id="counter_carousel"></div>
-          </div> -->
-        </div>
-      </div>
-
-      <div class="d-flex flex-column wd-45p">
         <div class="row no-gutters" id="large">
-          <div class="col ht-100p d-flex carousel-wrap bg-custom">
-            <div class="media-wrap wd-100p"></div>
-            <!-- <div class="carousel slide" data-ride="carousel" id="media">
-              <div class="carousel-inner" role="listbox">
-                <div class="carousel-item" data-interval="10000">
-                  <div><img class="img-fluid" src="./assets/media_1.jpg"></div>
-                </div>
-                <div class="carousel-item" data-interval="10000">
-                  <div><img class="img-fluid" src="./assets/media_2.jpg"></div>
-                </div>
-                <div class="carousel-item active" data-interval="10000">
-                  <div><img class="img-fluid" src="./assets/media_3.jpg"></div>
+          <!-- Info -->
+          <div class="col-5 bg-white" id="header">
+            <div class="d-flex flex-column ht-100p justify-content-center">
+              <div class="wd-100p justify-content-center brand-wrap d-flex">
+                    <div class="slim-logo mg-0"><img class="pd-y-10" src="../assets/company_logo.png"></div>
+                  </div><div class="mg-t-15 wd-100p justify-content-center company-name-wrap d-flex">
+                    <p class="mg-0 mg-l-10 company-name tx-dark tx-semibold">Development Bank of the Philippines</p>
+                  </div><div class="time text-center mg-t-60" style="">
+                <div class="d-flex flex-column justify-content-center tx-dark tx-semibold ht-100p pd-10">
+                  <p class="mg-0"> 09:55:14  PM</p>
                 </div>
               </div>
-            </div> -->
+              
+            </div>
+          </div>
+
+          <!-- Media -->
+          <div class="col-7 d-flex carousel-wrap bg-custom">
+            <div class="media-wrap wd-100p ht-45p"></div>
           </div>
         </div>
-        <div class="row pd-x-15" id="horizontal_">
+
+        <!-- Misc -->
+        <div class="row pd-x-15" id="horizontal_"></div>
+      </div>
+
+      <!-- Counters -->
+      <div class="d-flex flex-column wd-100p bg-custom" id="vertical">
+        <div class="row pd-x-30 pd-t-15">
         </div>
       </div>
+
     </div>
     <div class="row no-gutters bg-custom tx-white" id="ticker" style="display: none;"></div>
   </div>
