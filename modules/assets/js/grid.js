@@ -85,7 +85,6 @@ $(document).ready(function () {
       COUNTERS = null,
       DEPARTMENTS = null,
       TICKETS = [],
-      CONFIG = null,
       QUEUE = [],
       ANNOUNCED = [],
       CAROUSEL_PAGE = 2,
@@ -130,24 +129,13 @@ $(document).ready(function () {
               break;
           }
         });
-        $.ajax({
-          url: 'config.json',
-          success: function success(res) {
-            if (res.stat === 'ok' && Object.keys(res.data).length) {
-              // FIXME: MOCK API
-              CONFIG = res.data.config;
-              ANNOUNCEMENT_INTERVAL = parseFloat(CONFIG['load_announcements']) * 1000;
-              TICKET_INTERVAL = parseFloat(CONFIG['load_ticket']) * 1000;
-              SLIDE_INTERVAL = parseFloat(CONFIG['slide_dept']) * 1000;
-              IMAGE_INTERVAL = parseFloat(CONFIG['slide_image']) * 1000;
-              VIDEO_INTERVAL = parseFloat(CONFIG['slide_video']) * 1000;
-              initializeLayout();
-            }
-          },
-          error: function error(err) {
-            console.error(err);
-          }
-        });
+
+        ANNOUNCEMENT_INTERVAL = parseFloat(CONFIG['load_announcements']) * 1000;
+        TICKET_INTERVAL = parseFloat(CONFIG['load_ticket']) * 1000;
+        SLIDE_INTERVAL = parseFloat(CONFIG['slide_dept']) * 1000;
+        IMAGE_INTERVAL = parseFloat(CONFIG['slide_image']) * 1000;
+        VIDEO_INTERVAL = parseFloat(CONFIG['slide_video']) * 1000;
+        initializeLayout();
       }
     });
   })();
@@ -223,19 +211,27 @@ $(document).ready(function () {
     }, function (res) {
       if (res.stat === 'ok' && res.data) {
         Object.values(res.data).forEach(function (dept, key) {
-          if (dept.counters) {
+          if (dept.counters && key < 3) {
             Object.values(dept.counters).forEach(function (counter) {
               TOTAL_COUNTERS++;
-              $('#vertical .row').append("<div class=\"counter-wrap\">\n<div class=\"mx-2 bg-white custom-rounded pd-y-10 pd-x-20 ht-100p counter-card d-flex flex-column\" data-counter_id=\"".concat(counter.counter_id, "\" data-counter_no=\"").concat(counter.counter_no, "\">\n  \n                    <p class=\"counter-no tx-dark text-center tx-semibold text-uppercase mg-0\">Counter ").concat(counter.counter_no, "</p>\n  \n                    <div class=\"d-flex flex-column justify-content-center flex-grow-1\">\n                      <span class=\"custom-rounded bg-custom ticket-no tx-semibold pd-10 mx-auto mt-auto tx-white\">\n                        <span style=\"opacity: 0\">S-001</span>\n                      </span>\n                    </div>\n                  </div>\n                </div>\n              "));
+              $('#vertical .row').append("<div class=\"counter-wrap d-flex flex-column\">\n<div class=\"mx-2 bg-white custom-rounded pd-y-10 pd-x-20 flex-grow-1 counter-card d-flex flex-column\" data-counter_id=\"".concat(counter.counter_id, "\" data-counter_no=\"").concat(counter.counter_no, "\"><div class=\"d-flex flex-column justify-content-center  flex-grow-1\"><p class=\"counter-no m-auto tx-dark text-center tx-semibold text-uppercase mg-0\">Counter ").concat(counter.counter_no, "</p>\n</div>\n<div class=\"d-flex flex-column justify-content-center flex-grow-1\">\n<span class=\"custom-rounded bg-custom ticket-no tx-semibold pd-10 m-auto tx-white\">\n<span style=\"opacity: 0\">S-001</span>\n</span>\n</div>\n</div>\n</div>\n"));
             });
           }
         });
 
         // Auto - fit
-        if (TOTAL_COUNTERS < 5) {
+        if (TOTAL_COUNTERS < CONFIG.grid.columns) {
           $('body').find('.counter-wrap').css('width', (100 / TOTAL_COUNTERS).toString().concat('%'));
         } else {
-          $('body').find('.counter-wrap').css('width', '20%');
+          $('body').find('.counter-wrap').css('width', (100 / CONFIG.grid.columns).toString().concat('%'));
+        }
+
+        if (CONFIG.grid.counter_label_size != 0) {
+          $('body').find('.counter-no').css('font-size', CONFIG.grid.counter_label_size);
+        }
+
+        if (CONFIG.grid.ticket_label_size != 0) {
+          $('body').find('.ticket-no').css('font-size', CONFIG.grid.ticket_label_size);
         }
 
         loadTickets();
@@ -282,6 +278,19 @@ $(document).ready(function () {
 
   function initializeLayout(data) {
     $('.main-content').toggleClass('show-ticker', CONFIG['show_ticker'] === true);
+
+    if (CONFIG.grid.company_label_size != 0) {
+      $('.company-name').css('font-size', CONFIG.grid.company_label_size);
+    }
+
+    if (CONFIG.grid.time_label_size != 0) {
+      $('.time p').css('font-size', CONFIG.grid.time_label_size);
+    }
+
+    $('#header img').css('width', CONFIG.grid.company_logo_width);
+
+    $('#header').css('width', (100 - CONFIG.grid.media_box_width).toString().concat('%'));
+    $('#media').css('width', CONFIG.grid.media_box_width.toString().concat('%'));
 
     if (CONFIG['show_ticker'] === true) {
       $('#ticker').toggle();

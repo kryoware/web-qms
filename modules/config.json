@@ -3,7 +3,7 @@
   "data": {
     "config": {
       "fullscreen_announce": true,
-      
+
       "load_ticket": 3,
       "load_announcements": 5,
       "slide_dept": 5,
@@ -13,7 +13,22 @@
       "show_ticker": true,
       "show_logo": true,
       "show_company_name": true,
-      
+
+      "grid": {
+        "columns": 5,
+        "counter_label_size": 0,
+        "ticket_label_size": 0,
+        "time_label_size": 0,
+        "company_label_size": 0,
+        "company_logo_width": 128,
+        "media_box_width": 55
+      },
+
+      "media": {
+        "counter_label_size": 48,
+        "ticket_label_size": 48
+      },
+
       "clock": {
         "enabled": true,
         "date_format": {
