@@ -98,7 +98,7 @@ $(document).ready(function () {
       if (res.stat === 'ok') {
         Object.values(res.data).forEach(function (m, key) {
           if (m.type === 'image') {
-            $('.media-wrap').append("\n              <div id=\"".concat(key, "\" data-ttl=\"").concat(m.ttl, "\" class=\"").concat(key === 0 ? 'active' : '', "\" ").concat(key === 0 ? '' : 'style="display: none"', ">\n                <img class=\"img-fluid\" src=\"../assets/ads/").concat(m.filename, "\" />\n              </div>\n            "));
+            $('.media-wrap').append("\n              <div id=\"".concat(key, "\" data-ttl=\"").concat(m.ttl, "\" class=\"wd-100p ht-100p ").concat(key === 0 ? 'active' : '', "\" ").concat(key === 0 ? '' : 'style="display: none"', ">\n                <img class=\"img-fluid\" src=\"../assets/ads/").concat(m.filename, "\" />\n              </div>\n            "));
           }
 
           if (m.type === 'video') {
@@ -108,7 +108,7 @@ $(document).ready(function () {
               props = 'muted';
             }
 
-            $('.media-wrap').append("\n              <div id=\"".concat(key, "\" data-ttl=\"").concat(m.ttl, "\" class=\"").concat(key === 0 ? 'active' : '', "\" ").concat(key === 0 ? '' : 'style="display: none"', ">\n                <video ").concat(props, " class=\"wd-100p ").concat(props, "\" src=\"../assets/ads/").concat(m.filename, "\" onended=\"onVideoEnded()\" onpause=\"onVideoPaused()\"></video>\n                <button type=\"button\" style=\"display: none\" />\n              </div>\n            "));
+            $('.media-wrap').append("\n              <div id=\"".concat(key, "\" data-ttl=\"").concat(m.ttl, "\" class=\"ht-100p ").concat(key === 0 ? 'active' : '', "\" ").concat(key === 0 ? '' : 'style="display: none"', ">\n                <video ").concat(props, " class=\"").concat(props, "\" src=\"../assets/ads/").concat(m.filename, "\" onended=\"onVideoEnded()\" onpause=\"onVideoPaused()\"></video>\n                <button type=\"button\" style=\"display: none\" />\n              </div>\n            "));
           }
         });
         start();

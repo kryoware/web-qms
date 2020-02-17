@@ -80,7 +80,7 @@ $crumbs_title = "$page_title";
 
           <!-- Media -->
           <div class="d-flex bg-custom" id="media">
-            <div class="media-wrap wd-100p ht-35p"></div>
+            <div class="media-wrap ht-100p d-flex flex-column justify-content-center"></div>
           </div>
 
           <!-- Misc -->
@@ -89,7 +89,7 @@ $crumbs_title = "$page_title";
       </div>
 
       <!-- Counters -->
-      <div class="container-fluid pd-0 flex-grow-1">
+      <div class="container-fluid pd-0 flex-shrink-1">
         <div class="d-flex flex-column wd-100p ht-100p bg-custom" id="vertical">
           <div class="row pd-x-20 pd-t-15 ht-100p">
           </div>
