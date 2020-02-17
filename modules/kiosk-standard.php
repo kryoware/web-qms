@@ -24,21 +24,27 @@ $crumbs_title = "$page_title";
 </head>
 <body>
   <div id="ticket" style="line-height: 1.25; color: black; background: white;">
-    <span id="ticket_logo" class="d-flex justify-content-center" style="margin-bottom: 1.25rem;"></span>
-    <span id="ticket_company_name" style="font-size: 5rem; font-weight: bold; display: block; margin-bottom: 1.25rem;">Company Name</span><br/><br/>
+    <span class="d-flex">
+      <span id="ticket_logo" class="d-flex justify-content-center" style="margin-bottom: 1.25rem;"></span>
+      <div class="d-flex justify-content-center">
+        <span id="ticket_company_name" style="font-size: 5rem; font-weight: bold; display: block; margin-bottom: 1.25rem;">Company Name</span>
+      </div>
+    </span>
+    
+    <!-- <br/><br/> -->
 
-    <span style="font-size: 5rem;">Your Ticket Number</span><br/>
+    <!-- <span style="font-size: 5rem;">Your Ticket Number</span><br/> -->
 
     <span id="ticket_no" style="font-size: 10rem; font-weight: bold; line-height: 1.5;">3</span><br/>
 
-    <span style="font-size: 4rem; display: block; margin-bottom: 1.25rem;" class="ticket-msg"></span><br/><br/>
+    <!-- <span style="font-size: 4rem; display: block; margin-bottom: 1.25rem;" class="ticket-msg"></span><br/><br/>
     <span style="font-size: 4rem; line-height: 1.25;">Latest Ticket Served: <span id="ticket_serving"></span></span><br/>
     <span style="font-size: 4rem; line-height: 1.25; display: block; margin-bottom: 1.25rem;">Total Customer(s) waiting: <span id="ticket_customers"></span></span><br/><br/>
 
     <div class="clearfix">
       <span id="ticket_date" style="font-size: 3rem; float: left;">1</span>
       <span id="ticket_time" style="font-size: 3rem; float: right;">2</span>
-    </div>
+    </div> -->
   </div>
 
   <div class="content-wrap">
