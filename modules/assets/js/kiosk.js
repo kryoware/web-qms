@@ -153,7 +153,7 @@ $(document).ready(function () {
 
     if (typeof JSBridgePlugin === 'undefined') {
       $(logo).addClass('wd-300');
-      $(logo).addClass('ht-300');
+      // $(logo).addClass('ht-300');
       $('#ticket_logo').append(logo);
       setTimeout(function () {
         window.print();

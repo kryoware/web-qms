@@ -24,12 +24,10 @@ $crumbs_title = "$page_title";
 </head>
 <body>
   <div id="ticket" style="line-height: 1.25; color: black; background: white;">
-    <span class="d-flex">
-      <span id="ticket_logo" class="d-flex justify-content-center" style="margin-bottom: 1.25rem;"></span>
-      <div class="d-flex justify-content-center">
-        <span id="ticket_company_name" style="font-size: 5rem; font-weight: bold; display: block; margin-bottom: 1.25rem;">Company Name</span>
-      </div>
-    </span>
+    <div class="d-flex">
+      <div id="ticket_logo" class="d-flex justify-content-center flex-shrink-0 flex-grow-1" style="margin-bottom: 1.25rem;"></div>
+      <p class="text-wrap flex-shrink-1" id="ticket_company_name" style="font-size: 5rem; font-weight: bold; display: block; margin-bottom: 1.25rem;">Company Name</p>
+    </div>
     
     <!-- <br/><br/> -->
 
