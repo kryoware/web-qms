@@ -51,7 +51,7 @@ function callApi(action, params, callback, error_callback) {
   }
 
   $.ajax({
-    url: host + '/CleverQMS/engine/api.php?act=' + action + query,
+    url: host + '/engine/api.php?act=' + action + query,
     success: function success(res) {
       if (typeof callback === 'function') {
         callback(res);
